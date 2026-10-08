@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cell Transport Vocab Warm-Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1d2b36; --muted:#56666f; --paper:#f3f6f5; --card:#ffffff; --line:#d3dedb;
+  --amber:#e2a33b; --teal:#1f7f7a; --teal-dark:#155e5a; --teal-soft:#e3f3f1;
+  --violet:#6d4fa3; --water:#3a86c8; --ok:#2e7d4f; --ok-bg:#e7f4ec;
+  --bad:#b8403a; --bad-bg:#f9e8e6; --flag:#a86a00; --flag-bg:#fff3dc;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* header */
+.band{display:block;width:100%;height:72px}
+header h1{font-size:clamp(30px,5vw,46px);font-weight:800;letter-spacing:-.015em;margin-top:22px}
+.sub{color:var(--muted);margin:6px 0 18px;max-width:62ch}
+.who{display:flex;flex-wrap:wrap;gap:14px;align-items:end}
+.who label{display:flex;flex-direction:column;font-size:15px;font-weight:700;gap:4px}
+.who input{border:2px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff;min-width:0}
+.who input#name{width:260px;max-width:70vw}
+.who input#period{width:90px}
+.who input.error{border-color:var(--bad);background:var(--bad-bg)}
+
+/* tabs */
+nav.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:2px solid var(--line);margin-top:22px}
+.tab{appearance:none;border:0;background:none;padding:12px 14px 10px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--teal-dark);border-bottom-color:var(--teal)}
+.tab .count{font-weight:400;font-size:14px;margin-left:7px;color:var(--muted)}
+.tab.done .count{color:var(--ok);font-weight:700}
+
+/* parts */
+.part{padding:24px 0 70px}
+.part-head h2{font-size:28px;font-weight:800}
+.intro{margin:6px 0 0;max-width:68ch}
+.hint{margin:4px 0 0;color:var(--muted);font-size:15px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{width:18px;height:18px}
+
+.bank{position:sticky;top:0;z-index:5;background:var(--paper);margin-top:14px;padding:12px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:2px dashed var(--line);min-height:64px}
+.bank-empty{color:var(--muted);font-size:15px}
+.chip{touch-action:none;-webkit-user-select:none;user-select:none;border:2px solid var(--teal);background:#fff;color:var(--teal-dark);font-weight:700;padding:7px 15px;border-radius:999px;cursor:grab;line-height:1.3}
+.chip:hover{background:var(--teal-soft)}
+.chip.selected{background:var(--teal);color:#fff;box-shadow:0 0 0 4px #bfe3df}
+.chip.lifted{opacity:.35}
+.ghost{position:fixed;left:0;top:0;pointer-events:none;z-index:100;transform:translate(-50%,-50%) rotate(-3deg);box-shadow:0 8px 18px rgba(20,50,50,.28);cursor:grabbing;margin:0}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 12px 14px;margin:0;scroll-margin-top:90px}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pic-label{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:19px}
+.card svg{width:100%;height:auto;display:block}
+.zone{margin-top:10px;min-height:54px;border:2px dashed #9fb4b0;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:6px;color:var(--muted);font-size:15px;text-align:center;cursor:pointer;transition:background .12s,border-color .12s}
+.zone.target{border-color:var(--teal);background:#f0f9f8}
+.zone.hover{border-color:var(--teal);background:var(--teal-soft);border-style:solid}
+.zone.filled{border-style:solid;border-color:#b7cfcb;background:#f7fbfa;cursor:default}
+
+.flag{border:1px solid var(--line);background:#fff;border-radius:6px;font-size:14px;padding:3px 9px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.flag[aria-pressed="true"]{background:var(--flag-bg);border-color:var(--flag);color:var(--flag);font-weight:700}
+
+/* SVG pieces */
+.hd{fill:var(--amber)}
+.tl{stroke:#c9a060;stroke-width:1.3}
+.mol{fill:var(--teal);stroke:#fff;stroke-width:1}
+.wat{fill:var(--water);stroke:#fff;stroke-width:.8}
+.sol{fill:var(--violet);stroke:#fff;stroke-width:1}
+.prot{fill:#9a83c9;stroke:#5b3f8f;stroke-width:1.5}
+.arr{stroke:var(--ink);stroke-width:2.4;fill:none}
+.warr{stroke:var(--water);stroke-width:2.6;fill:none}
+.lbl{font:700 11.5px "Atkinson Hyperlegible",system-ui,sans-serif;fill:#56666f}
+.lbl-w{font:700 11.5px "Atkinson Hyperlegible",system-ui,sans-serif;fill:var(--water)}
+.mem-out{fill:none;stroke:var(--amber);stroke-width:11;stroke-linejoin:round}
+.mem-in{fill:none;stroke:#fbeccd;stroke-width:3.5;stroke-linejoin:round}
+.cyto{fill:#fbf0de}
+.soln{fill:#e5f0f9;stroke:#a9c8e0;stroke-width:1.5}
+.rbc{fill:#e3685a;stroke:#a63a2f;stroke-width:2}
+.rbc-c{fill:#ef9a8f}
+.atp{fill:#ffd35c;stroke:#b98900;stroke-width:1.3}
+.atp-t{font:700 9.5px "Atkinson Hyperlegible",system-ui,sans-serif;fill:#5a4300}
+
+/* matching */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:20px;align-items:start}
+.defs{list-style:none;margin:0;padding:16px;background:#fff;border:1px solid var(--line);border-radius:12px;position:sticky;top:12px}
+.defs h3{font-size:17px;margin-bottom:8px}
+.defs li{display:flex;gap:10px;padding:7px 0;border-top:1px solid #edf2f1}
+.defs li:first-of-type{border-top:0}
+.defs li b{flex:0 0 26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-dark);display:flex;align-items:center;justify-content:center;font-size:14px}
+.defs li.used{color:#8b9a9f}
+.defs li.used b{background:#e9eeed;color:#8b9a9f}
+.terms{display:flex;flex-direction:column;gap:10px}
+.term-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;scroll-margin-top:30px}
+.term-row label{font-weight:700;font-size:18px}
+select{border:2px solid #9fb4b0;border-radius:8px;padding:7px 10px;background:#fff;cursor:pointer;max-width:100%}
+select.has{border-color:var(--teal);background:var(--teal-soft);font-weight:700}
+
+.scen{display:flex;flex-direction:column;gap:12px;margin-top:20px;max-width:780px}
+.scen-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;scroll-margin-top:30px}
+.scen-top{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.scen-card p{margin:0 0 10px}
+.scen-card .n{font-weight:700;color:var(--teal-dark);margin-right:6px}
+
+/* review */
+.review{max-width:760px;margin-top:18px}
+.sum{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sum th,.sum td{text-align:left;padding:10px 14px;border-top:1px solid #edf2f1}
+.sum th{background:#f7fbfa;font-size:15px}
+.jumps{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.jump{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:15px}
+.jump:hover{border-color:var(--teal)}
+.review h3{margin-top:24px;font-size:19px}
+.muted{color:var(--muted)}
+.btn{border:0;border-radius:10px;padding:12px 22px;font-weight:700;cursor:pointer;background:var(--teal);color:#fff;font-size:18px}
+.btn:hover{background:var(--teal-dark)}
+.btn.secondary{background:#fff;color:var(--teal-dark);border:2px solid var(--teal)}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.err{color:var(--bad);font-weight:700;margin-top:10px}
+.flash{animation:flash 1.2s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 5px var(--violet)}100%{box-shadow:0 0 0 0 transparent}}
+
+/* results */
+#results{padding:24px 0 70px}
+.res-top{display:flex;flex-wrap:wrap;gap:24px 40px;align-items:end;margin:14px 0 24px}
+.score{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:64px;line-height:1}
+.score small{font-size:26px;color:var(--muted);font-weight:600}
+.res-meta{color:var(--muted)}
+.res-part h3{font-size:22px;margin:28px 0 10px}
+.res-part h3 span{font-family:"Atkinson Hyperlegible",sans-serif;font-size:16px;color:var(--muted);font-weight:400;margin-left:8px}
+.res-row{display:grid;grid-template-columns:34px 160px 1fr;gap:14px;align-items:start;padding:14px;background:#fff;border:1px solid var(--line);border-left:6px solid #9aa8ab;border-radius:10px;margin-bottom:10px;break-inside:avoid}
+.res-row.ok{border-left-color:var(--ok)}
+.res-row.bad{border-left-color:var(--bad)}
+.mark{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:#9aa8ab}
+.ok .mark{background:var(--ok)}
+.bad .mark{background:var(--bad)}
+.res-q{font-weight:700}
+.res-q svg{width:100%;height:auto;display:block;margin-top:4px;border:1px solid #edf2f1;border-radius:6px}
+.res-a div{margin-bottom:2px}
+.res-a .yours.wrong{color:var(--bad)}
+.res-a .explain{margin:8px 0 0;color:var(--ink);background:#f7fbfa;border-radius:8px;padding:8px 10px;font-size:16px}
+.note{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;color:var(--muted);font-size:16px}
+
+@media (max-width:760px){
+  .match{grid-template-columns:1fr}
+  .defs{position:static}
+  .res-row{grid-template-columns:30px 1fr}
+  .res-q{grid-column:2}
+  .res-a{grid-column:2}
+  .score{font-size:52px}
+}
+@media (max-width:460px){
+  .term-row{grid-template-columns:1fr auto}
+  .term-row label{grid-column:1 / -1}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+@media print{
+  body{background:#fff;font-size:11pt}
+  .band,nav.tabs,.part,.no-print,.who{display:none!important}
+  header h1{margin-top:0;font-size:22pt}
+  .sub{display:none}
+  #results{padding:0}
+  .res-row{grid-template-columns:24px 110px 1fr;padding:8px;gap:10px}
+  .score{font-size:40pt}
+}
+</style>
+</head>
+<body>
+
+<!-- shared arrowheads (kept out of display:none so every diagram can use them) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d2b36"/></marker>
+    <marker id="aw" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3a86c8"/></marker>
+  </defs>
+</svg>
+
+<header>
+  <div id="band"></div>
+  <div class="wrap">
+    <h1>Cell transport warm-up</h1>
+    <p class="sub">Review the vocabulary for how things move into and out of cells. Four short parts, about 10 minutes.</p>
+    <div class="who">
+      <label for="name">Your name<input id="name" type="text" autocomplete="name"></label>
+      <label for="period">Period<input id="period" type="text" inputmode="numeric"></label>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Warm-up parts" hidden></nav>
+  </div>
+</header>
+
+<section class="wrap" id="gate" style="padding:26px 0 60px"><div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;max-width:640px">
+ <h2 style="font-size:26px;font-weight:800;margin-bottom:8px">🔒 Ready to start?</h2>
+ <p style="margin:0 0 10px">Type your name and period above, then press <b>Start</b>. The warm-up opens in full screen.</p>
+ <p style="margin:0 0 14px">If you leave the warm-up (switch tabs, open another app, or exit full screen), it locks and your teacher has to unlock it. Leaving is recorded on your results.</p>
+ <button type="button" class="btn" id="ldStart">Start</button><div class="err" id="gateErr" role="alert" style="color:var(--bad);font-weight:700;margin-top:10px"></div></div></section>
+<main class="wrap" id="main" hidden></main>
+<div class="wrap" id="results" hidden></div>
+<div id="live" class="sr-only" aria-live="polite"></div>
+
+<script src="exit-ticket-config.js"></script>
+<script>
+/* ===== Lockdown mode: full screen + leave-the-page detection + teacher unlock code =====
+   Settings come from exit-ticket-config.js (LOCKDOWN, UNLOCK_CODE, LOCK_ON_EXIT). */
+(function(){
+  const C=Object.assign({LOCKDOWN:true,UNLOCK_CODE:"Austin",LOCK_ON_EXIT:true},window.EXIT_TICKET_CONFIG||{},window.LOCKDOWN_OVERRIDE||{});
+  const L={active:false,count:0,away:0,locked:false,fsOK:false,ignoreUntil:0,leftAt:null,log:[]};
+  window.LOCKDOWN=L;
+  L.enabled=!!C.LOCKDOWN;
+  L.summary=()=>({count:L.count,away:Math.round(L.away)});
+  L.confirm=msg=>{L.ignoreUntil=Date.now()+1500;const r=window.confirm(msg);L.ignoreUntil=Date.now()+800;return r;};
+  if(!L.enabled){L.start=()=>{};L.stop=()=>{};return;}
+  const css=document.createElement("style");
+  css.textContent=`#ldOverlay{position:fixed;inset:0;z-index:99999;background:rgba(21,27,51,.97);color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+#ldOverlay[hidden],#ldBadge[hidden]{display:none!important}
+#ldOverlay .box{max-width:520px;text-align:center}
+#ldOverlay h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:32px;margin:0 0 10px}
+#ldOverlay p{font-size:18px;line-height:1.5;margin:0 0 14px}
+#ldOverlay input{font:inherit;font-size:22px;padding:10px 12px;border-radius:10px;border:2px solid #9fb4b0;width:220px;text-align:center;letter-spacing:2px}
+#ldOverlay button{font:inherit;font-weight:700;font-size:18px;border:0;border-radius:10px;padding:11px 22px;margin:10px 6px 0;cursor:pointer;background:#ffd35c;color:#1d2b36}
+#ldOverlay .err{color:#ffb4a8;font-weight:700;min-height:24px;margin-top:8px}
+#ldBadge{position:fixed;right:10px;bottom:10px;z-index:9999;background:#151b33;color:#fff;border-radius:999px;padding:5px 12px;font:700 13px system-ui,sans-serif;opacity:.85}
+body.ld-active .tabpanel,body.ld-active .prompt,body.ld-active .opts,body.ld-active .dnd{-webkit-user-select:none;user-select:none}`;
+  document.head.appendChild(css);
+  const ov=document.createElement("div");ov.id="ldOverlay";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");document.body.appendChild(ov);
+  const badge=document.createElement("div");badge.id="ldBadge";badge.hidden=true;document.body.appendChild(badge);
+  const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+  function goFS(){const el=document.documentElement,fn=el.requestFullscreen||el.webkitRequestFullscreen;if(!fn)return;try{const p=fn.call(el);if(p&&p.then)p.then(()=>{L.fsOK=true;}).catch(()=>{});else L.fsOK=true;}catch(e){}}
+  function setBadge(){badge.hidden=!L.active;badge.textContent=`🔒 Lockdown on${L.count?` · left ${L.count}×`:""}`;}
+  function showLock(reason){
+    ov.hidden=false;
+    if(C.LOCK_ON_EXIT){L.locked=true;
+      ov.innerHTML=`<div class="box"><h2>🔒 Locked</h2><p>You ${reason}. Leaving is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><p>Raise your hand. Your teacher will type the unlock code.</p><input id="ldCode" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Teacher unlock code"><br><button type="button" id="ldUnlock">Unlock</button><div class="err" id="ldErr" role="alert"></div></div>`;
+      setTimeout(()=>{const i=document.getElementById("ldCode");if(i)i.focus();},50);}
+    else{ov.innerHTML=`<div class="box"><h2>⚠ Stay on this page</h2><p>You ${reason}. This is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><button type="button" id="ldBack">Go back</button></div>`;
+      setTimeout(()=>{const b=document.getElementById("ldBack");if(b)b.focus();},50);}
+  }
+  function violation(reason){
+    if(!L.active||Date.now()<L.ignoreUntil)return;
+    if(L.locked||!ov.hidden)return;           // already counted this exit
+    L.count++;L.log.push({t:new Date().toLocaleTimeString(),reason});setBadge();showLock(reason);
+  }
+  document.addEventListener("visibilitychange",()=>{if(!L.active)return;
+    if(document.hidden){L.leftAt=Date.now();violation("switched to another tab or app");}
+    else if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  window.addEventListener("blur",()=>{if(!L.active)return;setTimeout(()=>{if(!document.hasFocus()&&!document.hidden){L.leftAt=L.leftAt||Date.now();violation("clicked outside this page");}},150);});
+  window.addEventListener("focus",()=>{if(L.leftAt&&!document.hidden){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  const onFS=()=>{if(!L.active)return;if(fsEl()){L.fsOK=true;}else if(L.fsOK){violation("left full screen");}};
+  document.addEventListener("fullscreenchange",onFS);document.addEventListener("webkitfullscreenchange",onFS);
+  ov.addEventListener("click",e=>{
+    if(e.target.id==="ldUnlock"){const v=(document.getElementById("ldCode").value||"").trim();
+      if(v.toLowerCase()===String(C.UNLOCK_CODE).trim().toLowerCase()){L.locked=false;ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+      else{document.getElementById("ldErr").textContent="That code isn't right. Ask your teacher.";}}
+    if(e.target.id==="ldBack"){ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+  });
+  ov.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ldCode"){e.preventDefault();document.getElementById("ldUnlock").click();}});
+  // block copy, paste, right-click, and print shortcuts while the exit ticket is running
+  ["copy","cut","paste","contextmenu","dragstart"].forEach(ev=>document.addEventListener(ev,e=>{if(!L.active)return;if(ev==="dragstart"&&e.target.closest&&e.target.closest(".dchip"))return;e.preventDefault();},true));
+  document.addEventListener("keydown",e=>{if(!L.active)return;const k=(e.key||"").toLowerCase();if((e.ctrlKey||e.metaKey)&&["c","v","x","p","s","u"].includes(k)){e.preventDefault();}},true);
+  L.start=function(){L.active=true;document.body.classList.add("ld-active");setBadge();goFS();};
+  L.stop=function(){if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}L.active=false;L.locked=false;ov.hidden=true;badge.hidden=true;document.body.classList.remove("ld-active");if(fsEl()){const x=document.exitFullscreen||document.webkitExitFullscreen;try{const p=x.call(document);if(p&&p.catch)p.catch(()=>{});}catch(e){}}};
+})();
+</script>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- drawing helpers ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function scatter(n,box,seed,minD,avoid){
+  const r=rng(seed),pts=[];let tries=0;
+  while(pts.length<n&&tries<6000){tries++;
+    const x=box[0]+r()*(box[2]-box[0]),y=box[1]+r()*(box[3]-box[1]);
+    if(avoid&&avoid(x,y))continue;
+    if(pts.some(p=>Math.hypot(p[0]-x,p[1]-y)<minD))continue;
+    pts.push([x,y]);}
+  return pts;
+}
+const dots=(pts,cls,r)=>pts.map(([x,y])=>`<circle class="${cls}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}"/>`).join("");
+const near=(list,d)=>(x,y)=>list.some(([a,b])=>Math.hypot(x-a,y-b)<d);
+function bilayerV(x,y1,y2,skips){
+  skips=skips||[];let s="";
+  for(let y=y1;y<=y2;y+=10){
+    if(skips.some(([a,b])=>y>a-6&&y<b+6))continue;
+    s+=`<line class="tl" x1="${x-8}" y1="${y-1.6}" x2="${x-1}" y2="${y-1.6}"/><line class="tl" x1="${x-8}" y1="${y+1.6}" x2="${x-1}" y2="${y+1.6}"/>`+
+       `<line class="tl" x1="${x+1}" y1="${y-1.6}" x2="${x+8}" y2="${y-1.6}"/><line class="tl" x1="${x+1}" y1="${y+1.6}" x2="${x+8}" y2="${y+1.6}"/>`+
+       `<circle class="hd" cx="${x-11}" cy="${y}" r="4.5"/><circle class="hd" cx="${x+11}" cy="${y}" r="4.5"/>`;
+  }
+  return s;
+}
+function star(cx,cy,R,r,n){const p=[];for(let i=0;i<2*n;i++){const a=Math.PI*i/n-Math.PI/2,rad=i%2?r:R;p.push((cx+rad*Math.cos(a)).toFixed(1)+","+(cy+rad*Math.sin(a)).toFixed(1));}return p.join(" ");}
+function crenate(cx,cy,r,amp,n){let d="";for(let i=0;i<=144;i++){const t=i/144*2*Math.PI,rr=r+amp*Math.cos(n*t);d+=(i?"L":"M")+(cx+rr*Math.cos(t)).toFixed(1)+","+(cy+rr*Math.sin(t)).toFixed(1);}return d+"Z";}
+const svg=(inner,label)=>`<svg viewBox="0 0 240 165" role="img" aria-label="${esc(label)}">${inner}</svg>`;
+const L=[14,14,98,124], R=[142,14,226,124];
+const ends=(l,r)=>`<text class="lbl" x="6" y="159">${l}</text><text class="lbl" x="234" y="159" text-anchor="end">${r}</text><line class="arr" x1="${l.length>3?44:40}" y1="155" x2="${r.length>3?190:196}" y2="155" marker-end="url(#ah)"/>`;
+
+function picDiffusion(){
+  return svg(bilayerV(120,12,128)+dots(scatter(11,L,11,15),"mol",4.5)+dots(scatter(3,R,12,32),"mol",4.5)+dots([[120,70]],"mol",4.5)+ends("high","low"),
+    "Small particles passing straight through the lipid membrane from the crowded side to the less crowded side. No protein is involved.");
+}
+function picFacilitated(){
+  const prot=`<rect class="prot" x="101" y="47" width="13" height="54" rx="5"/><rect class="prot" x="126" y="47" width="13" height="54" rx="5"/>`;
+  return svg(bilayerV(120,12,128,[[50,98]])+prot+dots(scatter(11,L,21,15),"mol",4.5)+dots(scatter(3,R,22,32),"mol",4.5)+dots([[120,74]],"mol",4.5)+ends("high","low"),
+    "Particles moving through a channel protein in the membrane, from the crowded side to the less crowded side.");
+}
+function picActive(){
+  const atpC=[76,110];
+  const avoidATP=near([atpC],24);
+  const pump=`<rect class="prot" x="100" y="44" width="40" height="64" rx="11"/><rect x="115" y="50" width="10" height="52" rx="5" fill="#c9bbe6"/>`;
+  const atp=`<polygon class="atp" points="${star(atpC[0],atpC[1],17,11,9)}"/><text class="atp-t" x="${atpC[0]}" y="${atpC[1]+3.5}" text-anchor="middle">ATP</text><line class="arr" x1="90" y1="100" x2="99" y2="94" marker-end="url(#ah)" style="stroke-width:1.8"/>`;
+  return svg(bilayerV(120,12,128,[[42,110]])+pump+dots(scatter(3,L,31,30,avoidATP),"mol",4.5)+dots(scatter(11,R,32,15),"mol",4.5)+dots([[120,76]],"mol",4.5)+atp+ends("low","high"),
+    "A membrane protein moving particles from the less crowded side to the crowded side, powered by ATP.");
+}
+function picOsmosis(){
+  const ls=[[38,48],[72,104]], rs=scatter(6,R,43,24);
+  return svg(bilayerV(120,12,128)+dots(scatter(16,L,41,13,near(ls,14)),"wat",3.2)+dots(ls,"sol",7)+dots(scatter(5,R,44,14,near(rs,14)),"wat",3.2)+dots(rs,"sol",7)+dots([[120,64]],"wat",3.2)+
+    `<text class="lbl-w" x="120" y="148" text-anchor="middle">water</text><line class="warr" x1="60" y1="156" x2="180" y2="156" marker-end="url(#aw)"/>`,
+    "Small water particles crossing the membrane toward the side with more large solute particles. The large particles cannot cross.");
+}
+const memEndo="M0,50 H62 C70,50 70,62 64,70 C50,90 58,120 82,120 C106,120 114,90 100,70 C94,62 94,50 102,50 H240";
+const memExo="M0,50 H118 C130,50 128,82 151,82 C174,82 172,50 184,50 H240";
+const mem=d=>`<path class="cyto" d="${d} V165 H0 Z"/><path class="mem-out" d="${d}"/><path class="mem-in" d="${d}"/>`;
+const vesicle=(x,y)=>`<circle class="mem-out" cx="${x}" cy="${y}" r="22"/><circle class="mem-in" cx="${x}" cy="${y}" r="22"/>`;
+const sides=`<text class="lbl" x="6" y="18">outside cell</text><text class="lbl" x="6" y="158">inside cell</text>`;
+function picEndo(){
+  return svg(mem(memEndo)+vesicle(188,116)+dots([[82,97],[188,116]],"sol",9)+
+    `<line class="arr" x1="82" y1="14" x2="82" y2="40" marker-end="url(#ah)"/><path class="arr" d="M112,104 Q140,94 160,110" marker-end="url(#ah)"/>`+sides,
+    "The membrane folding inward around a large particle, then pinching off as a bubble that carries the particle inside the cell.");
+}
+function picExo(){
+  return svg(mem(memExo)+vesicle(62,118)+dots([[55,112],[70,126]],"sol",5.5)+dots([[151,68],[137,34],[166,26]],"sol",5.5)+
+    `<path class="arr" d="M88,108 Q116,100 132,80" marker-end="url(#ah)"/>`+sides,
+    "A bubble inside the cell moving to the membrane, joining it, and releasing its particles to the outside.");
+}
+function picTonic(kind){
+  const cx=120,cy=84,dy=17;
+  let cell,edge,inPts,outN,outSeed;
+  if(kind==="iso"){
+    cell=`<ellipse class="rbc" cx="${cx}" cy="${cy}" rx="46" ry="34"/><ellipse class="rbc-c" cx="${cx}" cy="${cy}" rx="20" ry="12"/>`;
+    edge=46*Math.sqrt(1-(dy/34)**2);
+    inPts=scatter(3,[cx-34,cy-24,cx+34,cy+24],7,16,(x,y)=>((x-cx)/36)**2+((y-cy)/25)**2>1);
+    outN=12;outSeed=71;
+  }else if(kind==="hypo"){
+    cell=`<circle class="rbc" cx="${cx}" cy="${cy}" r="56"/>`;
+    edge=Math.sqrt(56*56-dy*dy);
+    inPts=scatter(8,[cx-44,cy-44,cx+44,cy+44],8,15,(x,y)=>Math.hypot(x-cx,y-cy)>44);
+    outN=4;outSeed=72;
+  }else{
+    cell=`<path class="rbc" d="${crenate(cx,cy,29,4.5,11)}"/>`;
+    edge=26;
+    inPts=scatter(2,[cx-16,cy-16,cx+16,cy+16],9,12,(x,y)=>Math.hypot(x-cx,y-cy)>16);
+    outN=26;outSeed=73;
+  }
+  const rx=kind==="iso"?56:kind==="hypo"?64:40, ry=kind==="iso"?44:kind==="hypo"?64:40;
+  const outPts=scatter(outN,[14,14,226,151],outSeed,15,(x,y)=>((x-cx)/rx)**2+((y-cy)/ry)**2<1||(Math.abs(Math.abs(y-cy)-dy)<8&&Math.abs(x-cx)>edge-6));
+  let arrows="";
+  [-dy,dy].forEach(o=>{
+    const y=cy+o,le=cx-edge-5,re=cx+edge+5;
+    if(kind==="hypo") arrows+=`<line class="warr" x1="14" y1="${y}" x2="${le}" y2="${y}" marker-end="url(#aw)"/><line class="warr" x1="226" y1="${y}" x2="${re}" y2="${y}" marker-end="url(#aw)"/>`;
+    else if(kind==="hyper") arrows+=`<line class="warr" x1="${le}" y1="${y}" x2="18" y2="${y}" marker-end="url(#aw)"/><line class="warr" x1="${re}" y1="${y}" x2="222" y2="${y}" marker-end="url(#aw)"/>`;
+    else arrows+=`<line class="warr" x1="18" y1="${y}" x2="${le}" y2="${y}" marker-start="url(#aw)" marker-end="url(#aw)"/><line class="warr" x1="222" y1="${y}" x2="${re}" y2="${y}" marker-start="url(#aw)" marker-end="url(#aw)"/>`;
+  });
+  const desc={iso:"A normal-shaped red blood cell. Solute amount looks about the same inside and outside. Water arrows point both ways.",
+              hypo:"A swollen, round red blood cell in a solution with very few solute particles. Water arrows point into the cell.",
+              hyper:"A shriveled, spiky red blood cell in a solution crowded with solute particles. Water arrows point out of the cell."}[kind];
+  return svg(`<rect class="soln" x="6" y="6" width="228" height="153" rx="10"/>`+dots(outPts,"sol",3.2)+cell+dots(inPts,"sol",3.2)+arrows,desc);
+}
+function band(){
+  const W=1200;let s=`<rect width="${W}" height="36" fill="#e1f1ef"/><rect y="36" width="${W}" height="36" fill="#f8eedc"/>`;
+  const ch=[[262,300],[706,744]];
+  for(let x=6;x<W;x+=11){
+    if(ch.some(([a,b])=>x>a-7&&x<b+7))continue;
+    s+=`<line class="tl" x1="${x-1.6}" y1="28" x2="${x-1.6}" y2="35"/><line class="tl" x1="${x+1.6}" y1="28" x2="${x+1.6}" y2="35"/><line class="tl" x1="${x-1.6}" y1="37" x2="${x-1.6}" y2="44"/><line class="tl" x1="${x+1.6}" y1="37" x2="${x+1.6}" y2="44"/><circle class="hd" cx="${x}" cy="24" r="4.6"/><circle class="hd" cx="${x}" cy="48" r="4.6"/>`;
+  }
+  ch.forEach(([a,b])=>{s+=`<rect class="prot" x="${a}" y="14" width="15" height="44" rx="6"/><rect class="prot" x="${b-15}" y="14" width="15" height="44" rx="6"/>`;});
+  s+=dots([[281,36],[140,9],[420,10],[560,8],[880,11],[1040,9],[725,60]],"mol",4.2)+dots([[200,63],[610,64],[980,62],[1130,64]],"sol",4.8);
+  return `<svg class="band" viewBox="0 0 ${W} 72" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${s}</svg>`;
+}
+const legendDot=(cls,r)=>`<svg viewBox="0 0 18 18"><circle class="${cls}" cx="9" cy="9" r="${r}"/></svg>`;
+
+/* ---------- content ---------- */
+const PARTS=[
+ {id:"p1",type:"drag",tab:"Label the pictures",title:"Label the pictures",
+  intro:"Put the correct word on each picture. One word will not be used.",
+  legend:`<div class="legend"><span>${legendDot("hd",6)} membrane</span><span>${legendDot("mol",5)} molecule</span><span>${legendDot("wat",4)} water</span><span>${legendDot("sol",7)} solute</span><span>${legendDot("prot",6)} protein</span></div>`,
+  words:["Active transport","Endocytosis","Equilibrium","Exocytosis","Facilitated diffusion","Osmosis","Simple diffusion"],
+  note:"“Equilibrium” was the extra word. It describes equal concentrations on both sides, not a way of crossing the membrane.",
+  items:[
+   {id:"osm",label:"Picture A",answer:"Osmosis",svg:picOsmosis(),explain:"Only water crosses. It moves toward the side with more solute (less free water). The large solute particles can’t get through."},
+   {id:"act",label:"Picture B",answer:"Active transport",svg:picActive(),explain:"Particles are pumped from low to high concentration, against the gradient. That uphill move needs energy from ATP."},
+   {id:"dif",label:"Picture C",answer:"Simple diffusion",svg:picDiffusion(),explain:"Particles slip straight through the lipid bilayer from high to low concentration. No protein and no energy are needed."},
+   {id:"exo",label:"Picture D",answer:"Exocytosis",svg:picExo(),explain:"A vesicle fuses with the membrane and releases its contents outside the cell. Exo- means out."},
+   {id:"fac",label:"Picture E",answer:"Facilitated diffusion",svg:picFacilitated(),explain:"A channel protein gives the particles a path, but they still move high to low, so no energy is needed."},
+   {id:"end",label:"Picture F",answer:"Endocytosis",svg:picEndo(),explain:"The membrane folds inward, wraps around a particle, and pinches off into a vesicle inside the cell. Endo- means in."}
+  ]},
+ {id:"p2",type:"drag",tab:"Cells in solution",title:"Cells in solution",
+  intro:"Each red blood cell is sitting in a different solution. Label the solution around each cell.",
+  legend:`<div class="legend"><span>${legendDot("sol",5)} solute particle</span><span><svg viewBox="0 0 18 18"><line class="warr" x1="2" y1="9" x2="14" y2="9" marker-end="url(#aw)"/></svg> water movement</span></div>`,
+  words:["Hypertonic","Hypotonic","Isotonic"],
+  items:[
+   {id:"hyper",label:"Cell 1",answer:"Hypertonic",svg:picTonic("hyper"),explain:"The solution has more solute than the cell, so water leaves the cell and it shrivels."},
+   {id:"iso",label:"Cell 2",answer:"Isotonic",svg:picTonic("iso"),explain:"Solute concentration is equal inside and out. Water moves both ways at the same rate, so the cell keeps its shape."},
+   {id:"hypo",label:"Cell 3",answer:"Hypotonic",svg:picTonic("hypo"),explain:"The solution has less solute than the cell, so water rushes in. The cell swells and can burst."}
+  ]},
+ {id:"p3",type:"match",tab:"Match the terms",title:"Match the terms",
+  intro:"Choose the letter of the definition that matches each term. Each letter is used once.",
+  defs:[
+   {l:"A",text:"The energy molecule that powers active transport."},
+   {l:"B",text:"A difference in the amount of a substance between two areas."},
+   {l:"C",text:"A small membrane sac that carries materials into or out of the cell."},
+   {l:"D",text:"Lets some substances cross while blocking others."},
+   {l:"E",text:"A substance that is dissolved in a solution."},
+   {l:"F",text:"Concentrations are equal, so there is no net movement."},
+   {l:"G",text:"Movement across a membrane that uses no energy from the cell."}
+  ],
+  items:[
+   {id:"t1",term:"Selectively permeable",answer:"D",explain:"The membrane lets small molecules like O₂ through but blocks most ions and large molecules."},
+   {id:"t2",term:"Concentration gradient",answer:"B",explain:"Substances naturally move down a gradient, from high to low concentration."},
+   {id:"t3",term:"Passive transport",answer:"G",explain:"Simple diffusion, facilitated diffusion, and osmosis are all passive."},
+   {id:"t4",term:"Equilibrium",answer:"F",explain:"Molecules keep moving at equilibrium, but the amount on each side stays the same."},
+   {id:"t5",term:"Solute",answer:"E",explain:"In salt water, salt is the solute and water is the solvent."},
+   {id:"t6",term:"Vesicle",answer:"C",explain:"Vesicles carry materials during endocytosis and exocytosis."},
+   {id:"t7",term:"ATP",answer:"A",explain:"Cells spend ATP to pump substances against their concentration gradient."}
+  ]},
+ {id:"p4",type:"choice",tab:"Which process?",title:"Which process?",
+  intro:"Read each situation and choose the transport process it describes. Some choices may be used more than once.",
+  options:["Active transport","Endocytosis","Exocytosis","Facilitated diffusion","Osmosis","Simple diffusion"],
+  items:[
+   {id:"s1",text:"Oxygen moves from the air in your lungs into your blood by passing straight through cell membranes.",answer:"Simple diffusion",explain:"O₂ is small and nonpolar, so it slips through the bilayer from high to low concentration."},
+   {id:"s2",text:"Glucose enters a muscle cell through a protein channel, moving from high to low concentration.",answer:"Facilitated diffusion",explain:"A protein is involved, but the movement is downhill, so no energy is needed."},
+   {id:"s3",text:"Root cells absorb minerals from the soil even though the minerals are already more concentrated inside the root.",answer:"Active transport",explain:"Moving from low to high concentration is against the gradient and requires ATP."},
+   {id:"s4",text:"A white blood cell surrounds and swallows a bacterium.",answer:"Endocytosis",explain:"Engulfing a large particle (phagocytosis) is a type of endocytosis."},
+   {id:"s5",text:"A pancreas cell packages insulin into vesicles and releases it into the blood.",answer:"Exocytosis",explain:"Vesicles fusing with the membrane to release contents outside is exocytosis."},
+   {id:"s6",text:"A wilted plant’s cells fill back up with water and become firm after the plant is watered.",answer:"Osmosis",explain:"Water moves into the cells, which have more solute than the surrounding water."}
+  ]}
+];
+PARTS.forEach(p=>p.items.forEach((it,i)=>{it.short=p.type==="match"?it.term:p.type==="choice"?"Situation "+(i+1):it.label;}));
+const getPart=id=>PARTS.find(p=>p.id===id);
+
+/* ---------- state ---------- */
+const state={ans:{},flags:new Set(),submitted:false,tab:"p1",sel:null};
+function resetState(){PARTS.forEach(p=>state.ans[p.id]={});state.flags=new Set();state.submitted=false;state.sel=null;}
+resetState();
+const answered=p=>p.items.filter(it=>state.ans[p.id][it.id]).length;
+const announce=msg=>{const l=$("#live");l.textContent="";setTimeout(()=>{l.textContent=msg;},30);};
+function focusFK(k){const el=document.querySelector(`[data-fk="${CSS.escape(k)}"]`);if(el)el.focus({preventScroll:true});}
+
+/* ---------- rendering ---------- */
+function flagBtn(p,it){const k=p.id+":"+it.id,on=state.flags.has(k);return `<button type="button" class="flag" data-flag="${k}" aria-pressed="${on}" aria-label="Flag ${esc(it.short)} to come back to">${on?"⚑ Flagged":"⚐ Flag"}</button>`;}
+function headHTML(p){return `<div class="part-head"><h2>${p.title}</h2><p class="intro">${p.intro}</p>${p.type==="drag"?'<p class="hint">Drag a word onto a picture, or tap a word and then tap the picture.</p>':""}${p.legend||""}</div>`;}
+
+function dragHTML(p){
+  const a=state.ans[p.id],placed=new Set(Object.values(a).filter(Boolean));
+  const sel=state.sel&&state.sel.sec===p.id?state.sel.word:null;
+  const chip=w=>`<button type="button" class="chip${sel===w?" selected":""}" data-sec="${p.id}" data-word="${esc(w)}" data-fk="chip:${esc(w)}" aria-pressed="${sel===w}">${esc(w)}</button>`;
+  const bank=p.words.filter(w=>!placed.has(w));
+  const cards=p.items.map(it=>{
+    const w=a[it.id];
+    const zoneAttrs=w?`aria-label="${it.label}: ${esc(w)}"`:`role="button" tabindex="0" data-fk="zone:${it.id}" aria-label="Place the selected word on ${it.label}"`;
+    return `<figure class="card" id="item-${p.id}-${it.id}"><div class="card-head"><figcaption class="pic-label">${it.label}</figcaption>${flagBtn(p,it)}</div>${it.svg}<div class="zone${w?" filled":""}${sel&&!w?" target":""}" data-zone="${it.id}" data-sec="${p.id}" ${zoneAttrs}>${w?chip(w):"<span>Drop a word here</span>"}</div></figure>`;
+  }).join("");
+  return headHTML(p)+`<div class="bank" data-bank="${p.id}" role="group" aria-label="Word bank">${bank.length?bank.map(chip).join(""):'<span class="bank-empty">Every word is placed. To move one, drag it or tap it, then tap a new spot. Tap here to send it back.</span>'}</div><div class="grid">${cards}</div>`;
+}
+function matchHTML(p){
+  const a=state.ans[p.id];
+  const used=new Set(Object.values(a).filter(Boolean));
+  const defs=`<ul class="defs" aria-label="Definitions"><h3>Definitions</h3>${p.defs.map(d=>`<li data-letter="${d.l}" class="${used.has(d.l)?"used":""}"><b>${d.l}</b><span>${d.text}</span></li>`).join("")}</ul>`;
+  const rows=p.items.map(it=>{
+    const v=a[it.id]||"";
+    const opts=`<option value="">Choose</option>`+p.defs.map(d=>`<option value="${d.l}"${v===d.l?" selected":""}>${d.l}</option>`).join("");
+    return `<div class="term-row" id="item-${p.id}-${it.id}"><label for="sel-${it.id}">${it.term}</label><select id="sel-${it.id}" class="${v?"has":""}" data-sec="${p.id}" data-item="${it.id}">${opts}</select>${flagBtn(p,it)}</div>`;
+  }).join("");
+  return headHTML(p)+`<div class="match"><div class="terms">${rows}</div>${defs}</div>`;
+}
+function choiceHTML(p){
+  const a=state.ans[p.id];
+  return headHTML(p)+`<div class="scen">${p.items.map((it,i)=>{
+    const v=a[it.id]||"";
+    const opts=`<option value="">Choose a process</option>`+p.options.map(o=>`<option${v===o?" selected":""}>${o}</option>`).join("");
+    return `<div class="scen-card" id="item-${p.id}-${it.id}"><div class="scen-top"><p id="q-${it.id}"><span class="n">${i+1}.</span>${it.text}</p>${flagBtn(p,it)}</div><select aria-labelledby="q-${it.id}" class="${v?"has":""}" data-sec="${p.id}" data-item="${it.id}">${opts}</select></div>`;
+  }).join("")}</div>`;
+}
+function renderPart(p){
+  const sec=$("#sec-"+p.id);
+  sec.innerHTML=p.type==="drag"?dragHTML(p):p.type==="match"?matchHTML(p):choiceHTML(p);
+}
+function renderTabs(){
+  $("#tabs").innerHTML=PARTS.map(p=>{const n=answered(p),t=p.items.length;
+    return `<button role="tab" class="tab${n===t?" done":""}" id="tab-${p.id}" aria-controls="sec-${p.id}" aria-selected="${state.tab===p.id}" data-tab="${p.id}">${p.tab}<span class="count" data-count="${p.id}">${n}/${t}</span></button>`;}).join("")+
+    `<button role="tab" class="tab" id="tab-review" aria-controls="sec-review" aria-selected="${state.tab==="review"}" data-tab="review">Review &amp; submit</button>`;
+}
+function updateCounts(){
+  PARTS.forEach(p=>{const n=answered(p),t=p.items.length,c=document.querySelector(`[data-count="${p.id}"]`);if(c){c.textContent=n+"/"+t;c.parentElement.classList.toggle("done",n===t);}});
+}
+function showTab(id){
+  state.tab=id;state.sel=null;renderTabs();
+  document.querySelectorAll(".part").forEach(s=>{s.hidden=s.dataset.part!==id;});
+  if(id==="review")renderReview();else renderPart(getPart(id));
+}
+function renderReview(){
+  const missing=[],flagged=[];let done=0,total=0;
+  PARTS.forEach(p=>p.items.forEach(it=>{total++;if(state.ans[p.id][it.id])done++;else missing.push([p,it]);if(state.flags.has(p.id+":"+it.id))flagged.push([p,it]);}));
+  const link=([p,it])=>`<li><button type="button" class="jump" data-jump="${p.id}:${it.id}">${p.tab}: ${esc(it.short)}</button></li>`;
+  $("#sec-review").innerHTML=`<div class="part-head"><h2>Review &amp; submit</h2><p class="intro">You’ve answered ${done} of ${total}. Check anything flagged or blank, then submit to see your score.</p></div>
+  <div class="review">
+    <table class="sum"><thead><tr><th>Part</th><th>Answered</th><th>Flagged</th></tr></thead><tbody>${PARTS.map(p=>`<tr><td>${p.tab}</td><td>${answered(p)} / ${p.items.length}</td><td>${p.items.filter(it=>state.flags.has(p.id+":"+it.id)).length}</td></tr>`).join("")}</tbody></table>
+    <h3>Not answered yet</h3>${missing.length?`<ul class="jumps">${missing.map(link).join("")}</ul>`:'<p class="muted">Everything has an answer.</p>'}
+    <h3>Flagged</h3>${flagged.length?`<ul class="jumps">${flagged.map(link).join("")}</ul>`:'<p class="muted">Nothing flagged.</p>'}
+    <div class="btn-row"><button type="button" class="btn" id="submit">Submit answers</button></div>
+    <div id="submit-err" class="err" role="alert"></div>
+  </div>`;
+}
+
+/* ---------- actions ---------- */
+function place(sec,zone,word){
+  const a=state.ans[sec];for(const k in a)if(a[k]===word)a[k]=null;
+  a[zone]=word;state.sel=null;renderPart(getPart(sec));updateCounts();
+  const it=getPart(sec).items.find(i=>i.id===zone);
+  announce(`${word} placed on ${it.label}.`);focusFK("chip:"+word);
+}
+function unplace(sec,word){
+  const a=state.ans[sec];for(const k in a)if(a[k]===word)a[k]=null;
+  state.sel=null;renderPart(getPart(sec));updateCounts();announce(`${word} returned to the word bank.`);focusFK("chip:"+word);
+}
+function activateZone(z){
+  if(state.submitted)return;
+  if(state.sel&&state.sel.sec===z.dataset.sec)place(z.dataset.sec,z.dataset.zone,state.sel.word);
+  else announce("Choose a word from the word bank first.");
+}
+function jumpTo(key){
+  const [pid,iid]=key.split(":");showTab(pid);
+  const el=$(`#item-${pid}-${iid}`);
+  if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");const f=el.querySelector("select,.zone[tabindex],.chip");if(f)f.focus({preventScroll:true});}
+}
+function submit(){
+  const nameEl=$("#name"),err=$("#submit-err");
+  if(!nameEl.value.trim()){nameEl.classList.add("error");err.textContent="Type your name at the top before submitting.";nameEl.focus();return;}
+  const blank=PARTS.reduce((s,p)=>s+p.items.length-answered(p),0);
+  if(blank&&!LOCKDOWN.confirm(`You have ${blank} unanswered question${blank>1?"s":""}. Submit anyway?`))return;
+  state.submitted=true;
+  LOCKDOWN.stop();
+  $("#tabs").hidden=true;$("#main").hidden=true;
+  $("#name").readOnly=true;$("#period").readOnly=true;
+  renderResults();$("#results").hidden=false;window.scrollTo({top:0,behavior:"smooth"});
+}
+function answerText(p,v){if(!v)return"No answer";if(p.type==="match"){const d=p.defs.find(x=>x.l===v);return `${v}. ${d.text}`;}return v;}
+function renderResults(){
+  let score=0,total=0;
+  const parts=PARTS.map(p=>{
+    let ps=0;
+    const rows=p.items.map((it,i)=>{
+      const v=state.ans[p.id][it.id],ok=v===it.answer;if(ok)ps++;
+      const cls=!v?"blank":ok?"ok":"bad";
+      const q=p.type==="drag"?`${it.label}${it.svg}`:p.type==="match"?it.term:`${i+1}. ${it.text}`;
+      return `<div class="res-row ${cls}"><div class="mark" aria-label="${ok?"Correct":v?"Incorrect":"Not answered"}">${ok?"✓":v?"✗":"–"}</div><div class="res-q">${q}</div><div class="res-a"><div class="yours${ok?"":" wrong"}">Your answer: <b>${esc(answerText(p,v))}</b></div>${ok?"":`<div>Correct answer: <b>${esc(answerText(p,it.answer))}</b></div>`}<p class="explain">${it.explain}</p></div></div>`;
+    }).join("");
+    score+=ps;total+=p.items.length;
+    return `<section class="res-part"><h3>${p.title}<span>${ps} / ${p.items.length}</span></h3>${rows}${p.note?`<p class="note">${p.note}</p>`:""}</section>`;
+  }).join("");
+  const name=$("#name").value.trim(),per=$("#period").value.trim();
+  const date=new Date().toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"});
+  $("#results").innerHTML=`<h2 style="font-size:28px;font-weight:800">Your results</h2>
+    <div class="res-top"><div class="score">${score}<small> / ${total}</small></div><div class="res-meta"><div><b>${esc(name)}</b>${per?` · Period ${esc(per)}`:""}</div><div>${date}</div><div>${Math.round(score/total*100)}% correct</div>${LOCKDOWN.enabled?(()=>{const L=LOCKDOWN.summary();return `<div>Left the warm-up: <b>${L.count}</b> time${L.count===1?"":"s"}${L.count?` (${L.away} seconds away)`:""}</div>`;})():""}</div></div>
+    <div class="btn-row no-print" style="margin:0 0 10px"><button type="button" class="btn" id="print">Print results</button><button type="button" class="btn secondary" id="restart">Start over</button></div>
+    ${parts}`;
+}
+function restart(){
+  if(!LOCKDOWN.confirm("Clear all answers and start over?"))return;
+  resetState();$("#results").hidden=true;$("#results").innerHTML="";
+  $("#tabs").hidden=false;$("#main").hidden=false;$("#name").readOnly=false;$("#period").readOnly=false;
+  showTab("p1");window.scrollTo({top:0});
+  LOCKDOWN.start();
+}
+
+/* ---------- drag and tap ---------- */
+let drag=null,suppress=0;
+function clearHover(){document.querySelectorAll(".zone.hover").forEach(el=>el.classList.remove("hover"));}
+document.addEventListener("pointerdown",e=>{
+  const chip=e.target.closest(".chip");
+  if(!chip||state.submitted||e.button!==0)return;
+  drag={chip,sec:chip.dataset.sec,word:chip.dataset.word,x:e.clientX,y:e.clientY,moved:false,ghost:null,id:e.pointerId};
+});
+document.addEventListener("pointermove",e=>{
+  if(!drag||e.pointerId!==drag.id)return;
+  if(!drag.moved){
+    if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;
+    drag.moved=true;
+    const g=drag.chip.cloneNode(true);g.classList.remove("selected");g.classList.add("ghost");g.removeAttribute("data-fk");
+    document.body.appendChild(g);drag.ghost=g;drag.chip.classList.add("lifted");
+  }
+  drag.ghost.style.left=e.clientX+"px";drag.ghost.style.top=e.clientY+"px";
+  const el=document.elementFromPoint(e.clientX,e.clientY),z=el&&el.closest(".zone");
+  clearHover();if(z&&z.dataset.sec===drag.sec)z.classList.add("hover");
+  e.preventDefault();
+},{passive:false});
+function endDrag(e,cancel){
+  if(!drag||e.pointerId!==drag.id)return;
+  const d=drag;drag=null;
+  if(!d.moved)return;
+  suppress=Date.now()+400;
+  d.ghost.remove();d.chip.classList.remove("lifted");clearHover();
+  if(cancel)return;
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  const z=el&&el.closest(".zone"),bank=el&&el.closest("[data-bank]");
+  if(z&&z.dataset.sec===d.sec)place(d.sec,z.dataset.zone,d.word);
+  else if(bank&&bank.dataset.bank===d.sec)unplace(d.sec,d.word);
+}
+document.addEventListener("pointerup",e=>endDrag(e,false));
+document.addEventListener("pointercancel",e=>endDrag(e,true));
+
+document.addEventListener("click",e=>{
+  const t=e.target;
+  if(Date.now()<suppress&&t.closest(".chip,.zone,[data-bank]"))return;
+  const tab=t.closest("[data-tab]");if(tab){showTab(tab.dataset.tab);return;}
+  const flag=t.closest("[data-flag]");
+  if(flag){const k=flag.dataset.flag,on=!state.flags.has(k);on?state.flags.add(k):state.flags.delete(k);flag.setAttribute("aria-pressed",on);flag.textContent=on?"⚑ Flagged":"⚐ Flag";return;}
+  const jump=t.closest("[data-jump]");if(jump){jumpTo(jump.dataset.jump);return;}
+  if(t.closest("#submit")){submit();return;}
+  if(t.closest("#print")){window.print();return;}
+  if(t.closest("#restart")){restart();return;}
+  if(state.submitted)return;
+  const chip=t.closest(".chip");
+  if(chip){
+    const sec=chip.dataset.sec,w=chip.dataset.word,zone=chip.closest(".zone");
+    if(zone&&state.sel&&state.sel.sec===sec&&state.sel.word!==w){place(sec,zone.dataset.zone,state.sel.word);return;}
+    state.sel=(state.sel&&state.sel.sec===sec&&state.sel.word===w)?null:{sec,word:w};
+    renderPart(getPart(sec));focusFK("chip:"+w);
+    announce(state.sel?`${w} selected. Now choose a picture.`:"Selection cleared.");
+    return;
+  }
+  const zone=t.closest(".zone");if(zone&&!zone.classList.contains("filled")){activateZone(zone);return;}
+  const bank=t.closest("[data-bank]");
+  if(bank&&state.sel&&state.sel.sec===bank.dataset.bank){
+    const placed=Object.values(state.ans[bank.dataset.bank]).includes(state.sel.word);
+    if(placed)unplace(bank.dataset.bank,state.sel.word);
+  }
+});
+document.addEventListener("keydown",e=>{
+  const z=e.target.closest&&e.target.closest(".zone");
+  if(z&&e.target===z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();activateZone(z);}
+  if(e.key==="Escape"&&state.sel){const sec=state.sel.sec;state.sel=null;renderPart(getPart(sec));announce("Selection cleared.");}
+});
+document.addEventListener("change",e=>{
+  const s=e.target.closest("select[data-item]");if(!s)return;
+  const p=getPart(s.dataset.sec);state.ans[p.id][s.dataset.item]=s.value;
+  s.classList.toggle("has",!!s.value);updateCounts();
+  if(p.type==="match"){const used=new Set(Object.values(state.ans[p.id]).filter(Boolean));document.querySelectorAll("#sec-p3 .defs li").forEach(li=>li.classList.toggle("used",used.has(li.dataset.letter)));}
+});
+$("#name").addEventListener("input",e=>e.target.classList.remove("error"));
+
+/* ---------- init ---------- */
+$("#band").innerHTML=band();
+$("#main").innerHTML=PARTS.map(p=>`<section class="part" id="sec-${p.id}" data-part="${p.id}" role="tabpanel" aria-labelledby="tab-${p.id}" hidden></section>`).join("")+
+  `<section class="part" id="sec-review" data-part="review" role="tabpanel" aria-labelledby="tab-review" hidden></section>`;
+showTab("p1");
+document.getElementById("ldStart").addEventListener("click",()=>{
+  const n=document.getElementById("name");if(!n.value.trim()){n.classList.add("error");document.getElementById("gateErr").textContent="Type your name at the top first.";n.focus();return;}
+  document.getElementById("gate").hidden=true;$("#tabs").hidden=false;$("#main").hidden=false;LOCKDOWN.start();window.scrollTo({top:0});
+});
+})();
+</script>
+</body>
+</html>

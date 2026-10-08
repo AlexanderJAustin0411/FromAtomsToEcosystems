@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ionic Bonding Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b36;--muted:#56666f;--paper:#f3f6f5;--line:#d3dedb;--accent:#5b3f8f;--accent-soft:#efe9f8;--ok:#2e7d4f;--ok-bg:#e7f4ec;--bad:#b8403a;--bad-bg:#f9e8e6;--night:#1f1733}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{border:0;border-radius:10px;padding:11px 22px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;font-size:17px}
+.btn.secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.err{color:var(--bad);font-weight:700;margin-top:10px}
+.hint{color:var(--muted);font-size:15px}
+.signin{max-width:640px;margin:28px auto;padding:0 16px}
+.ticket{background:#fff;border-radius:14px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(29,43,54,.07);overflow:hidden}
+.stub{background:var(--night);color:#fff;padding:22px 26px 24px;position:relative;overflow:hidden}
+.stub .unit{font-size:15px;opacity:.85}
+.stub h1{font-size:clamp(30px,6vw,42px);font-weight:800;letter-spacing:-.015em;margin-top:2px;position:relative}
+.stub .time{margin-top:6px;font-size:15px;opacity:.9;position:relative}
+.stub svg{position:absolute;right:8px;top:12px;width:210px;opacity:.95}
+.tbody{padding:22px 26px 28px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+.fields input,.fields select{border:2px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;font-weight:400;min-width:0}
+.fields .error{border-color:var(--bad);background:var(--bad-bg)}
+.bar{background:var(--night);color:#fff}
+.bar .inner{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.bar h1{font-size:21px;font-weight:800}
+.bar .who{font-size:15px;opacity:.85;margin-right:auto}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+.steps button{border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.steps button.done{background:rgba(255,255,255,.18)}
+.steps button.cur{background:#fff;color:var(--night);border-color:#fff}
+.steps button:disabled{opacity:.4;cursor:default}
+.progress{height:5px;background:rgba(255,255,255,.15)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#b8403a,#a23b72,#2f5d9b);transition:width .3s}
+main{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.kicker{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.step h2{font-size:clamp(26px,4vw,34px);font-weight:800;margin-bottom:10px}
+.step p{max-width:68ch;margin:0 0 12px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.figure svg{width:100%;height:auto;display:block}
+.cap{font-size:14px;color:var(--muted);margin-top:6px}
+textarea{width:100%;min-height:96px;border:2px solid #9fb4b0;border-radius:10px;padding:10px 12px;resize:vertical}
+.rule{border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 12px 12px 0;padding:12px 16px;margin:0 0 12px}
+.rule h3{font-size:18px;margin-bottom:6px}
+.rule ul,.rule ol{margin:0;padding-left:22px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+table.data{border-collapse:collapse;font-size:16px;margin:6px 0}
+table.data th,table.data td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+table.data th{background:#f4f8f7}
+table.data td:first-child{font-weight:700}
+.rxn{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:12px}
+.rxn .arrow{font-weight:700;color:var(--accent);text-align:center;font-size:15px}
+.rxn .arrow b{display:block;font-size:26px;line-height:1}
+.rxn svg{width:100%;height:auto;max-height:90px}
+.rxn .lbl{font-size:14px;color:var(--muted);text-align:center}
+/* four macromolecules */
+.mtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.mtab{border:2px solid var(--c);background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer;font-weight:700;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.mtab[aria-selected="true"]{background:var(--c);color:#fff}
+.mtab .seen{font-size:13px}
+.mcard{border:3px solid var(--c);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.mcard h3{font-size:24px;color:var(--c);margin-bottom:6px}
+.mcard .pic{background:#fafcfb;border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:10px}
+.mcard .pic svg{width:100%;height:auto;max-height:120px;display:block}
+.mcard .k{font-size:14px;font-weight:700;color:var(--muted);margin-top:4px}
+.mcard ul{margin:4px 0 10px;padding-left:20px}
+/* simulator */
+.sim{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pbtn{display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 8px;cursor:pointer;min-width:92px;font-weight:700;font-size:14px}
+.pbtn:hover{border-color:var(--accent)}
+.pbtn svg{height:44px;width:auto}
+.work{background:#fff;border:2px solid var(--line);border-radius:14px;min-height:220px;padding:10px;display:flex;align-items:center;justify-content:center}
+.work svg{width:100%;height:auto;max-height:300px}
+.work .empty{color:var(--muted);text-align:center}
+.toast{min-height:24px;color:var(--bad);font-weight:700;font-size:15px;margin-top:6px}
+.note{min-height:24px;color:var(--ok);font-weight:700;font-size:15px}
+.readout{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.readout .el{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;font-weight:800}
+.readout dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:8px 0 0}
+.readout dt{color:var(--muted)}.readout dd{margin:0;font-weight:700}
+.challenge{border:2px solid var(--accent);background:var(--accent-soft);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.challenge h3{font-size:20px}
+.feedback{margin-top:8px;font-weight:700}
+.feedback .good{color:var(--ok)}.feedback .warn{color:var(--bad)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chips span{border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;border:2px solid var(--line);background:#fff}
+.chips span.on{border-color:var(--accent);color:var(--accent)}
+.chips span.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+input.n{width:110px;border:2px solid #9fb4b0;border-radius:8px;padding:7px 10px}
+.q{border:0;margin:0 0 22px;padding:0}
+.q legend,.q .qp{font-weight:700;font-size:18px;margin:0 0 8px}
+.explain{background:#f7fbfa;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:16px}
+.score{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:56px;line-height:1}
+.score small{font-size:24px;color:var(--muted)}
+.sendbox{border-radius:10px;padding:10px 14px;margin:10px 0;font-weight:700}
+.sendbox.ok{background:var(--ok-bg);color:var(--ok)}.sendbox.wait{background:#eef3f2;color:var(--muted)}.sendbox.bad{background:var(--bad-bg);color:var(--bad)}
+.summary{border-collapse:collapse;margin:10px 0}
+.summary td{border:1px solid var(--line);padding:6px 12px}
+/* ---- drag-and-drop questions ---- */
+.dnd{margin-top:4px}
+.dbank{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:54px;padding:10px;border:2px dashed #b9c9c6;border-radius:10px;background:#f7fbfa;margin-bottom:12px}
+.dbank .dhint{color:var(--muted);font-size:14px}
+.dchip{touch-action:none;-webkit-user-select:none;user-select:none;border:2px solid var(--accent);background:#fff;color:var(--ink);font-weight:700;padding:6px 12px;border-radius:8px;cursor:grab;line-height:1.3;text-align:left;font-size:15px}
+.dchip:hover{background:var(--accent-soft)}
+.dchip.on{background:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+.dchip:disabled{cursor:default;opacity:1}
+.dchip.lift{opacity:.35}
+.dghost{position:fixed;left:0;top:0;z-index:1000;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);box-shadow:0 8px 18px rgba(0,0,0,.25);margin:0}
+.dzone{min-height:44px;border:2px dashed #9fb4b0;border-radius:8px;background:#fff;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 6px;cursor:pointer}
+.dzone .dph{color:#8a979c;font-size:14px;padding:0 4px}
+.dzone.target{border-color:var(--accent);background:#fdf7fa}
+.dzone.hover{border-color:var(--accent);border-style:solid;background:var(--accent-soft)}
+.dzone.filled{border-style:solid;border-color:#b7cfcb}
+.dzone.right{border-color:var(--ok);background:var(--ok-bg);border-style:solid}
+.dzone.wrong{border-color:var(--bad);background:var(--bad-bg);border-style:solid}
+.dchip.right{border-color:var(--ok);background:var(--ok-bg)}
+.dchip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.dlabel{position:relative}
+.dlabel .dfig svg{width:100%;height:auto;display:block}
+.dlabel .dzone{position:absolute;transform:translateY(-50%);min-height:38px;padding:2px 4px}
+.dlabel .dzone .dph{font-size:12px}
+.dlabel .dzone .dchip{font-size:13px;padding:4px 8px}
+.dfig2{margin:0 0 12px;max-width:560px}
+.dfig2 svg{width:100%;height:auto;display:block}
+.drows{display:flex;flex-direction:column;gap:8px}
+.drow{display:grid;grid-template-columns:minmax(110px,30%) 1fr;gap:12px;align-items:center}
+.drow>span{font-weight:700}
+.dorder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dorder li{display:flex;gap:10px;align-items:center}
+.dorder .onum{flex:0 0 32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.dorder .dzone{flex:1}
+.dbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.dbin{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.dbin .bt{background:var(--accent-soft);color:var(--ink);font-weight:700;padding:6px 10px;font-size:15px}
+.dbin .dzone{border:0;border-radius:0;min-height:120px;align-content:flex-start;padding:8px}
+.dbin .dzone.hover,.dbin .dzone.target{outline:2px dashed var(--accent);outline-offset:-4px}
+.dfill{line-height:2.6;margin:0;font-size:17px}
+.dfill .dzone{display:inline-flex;vertical-align:middle;min-width:120px;min-height:38px;margin:0 2px;padding:2px 4px}
+@media (max-width:520px){.dlabel .dzone .dchip{font-size:11px;padding:2px 5px}.dlabel .dzone .dph{font-size:10px}}
+
+/* enzyme lab */
+.simgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+.panelw{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px}
+.panelw svg{width:100%;height:auto;display:block}
+.log{list-style:none;margin:8px 0 0;padding:0;font-size:15px;max-height:190px;overflow:auto}
+.log li{padding:3px 0;border-top:1px solid #edf2f1}
+.log li b{color:var(--accent)}
+.toggle{display:flex;gap:8px;align-items:center;font-weight:700;margin-top:8px}
+.toggle input{width:20px;height:20px;accent-color:var(--accent)}
+.cast{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start;margin-top:12px}
+.stimpanel{position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+.phenbox{margin:12px 14px 0;padding:10px 12px;border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+.phenbox b{display:block;color:var(--accent);font-size:15px}
+.stabs{display:flex;gap:2px;padding:10px 10px 0;border-bottom:2px solid var(--line);overflow-x:auto}
+.stab{border:0;background:none;padding:7px 12px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;border-radius:6px 6px 0 0}
+.stab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-soft)}
+.stimbody{padding:12px 16px 16px}
+.stimbody p{margin:0 0 10px}
+.stimbody h3{font-size:17px;margin:2px 0 8px}
+.stimbody svg{width:100%;height:auto;display:block}
+.castq{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.usetab{border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;cursor:pointer}
+@media (max-width:900px){.simgrid,.cast{grid-template-columns:1fr}.stimpanel{position:static;max-height:none}}
+
+.lab{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.stage{background:#fbfaff;border:2px solid var(--line);border-radius:14px;padding:6px}
+.stage svg{width:100%;height:auto;display:block}
+.ctrlbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px}
+.seg{display:inline-flex;border:2px solid var(--accent);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:#fff;color:var(--accent);font-weight:700;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.slider{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-top:10px}
+.slider input{width:100%;accent-color:var(--accent)}
+.slider output{font-weight:700;min-width:64px;text-align:right}
+.shape{font-weight:700}.shape.ok{color:var(--ok)}.shape.mid{color:#a86a00}.shape.bad{color:var(--bad)}
+.graphs{display:grid;grid-template-columns:1fr;gap:10px}
+.graphs svg{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pair .panel2{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;text-align:center}
+.pair svg{width:100%;height:auto}
+.legend2{font-size:14px;color:var(--muted)}
+@media (max-width:900px){.lab,.pair{grid-template-columns:1fr}}
+
+@media (max-width:900px){.two,.sim,.mcard{grid-template-columns:1fr}.mtabs{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.fields{grid-template-columns:1fr}.tbody,.stub{padding-left:18px;padding-right:18px}.stub svg{display:none}.rxn{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.bar,.nav,.no-print{display:none!important}body{background:#fff}.card{border:0}}
+</style>
+</head>
+<body>
+<section class="signin" id="signin">
+ <div class="ticket">
+  <div class="stub"><svg viewBox="0 0 260 70" aria-hidden="true" id="stubart"></svg>
+   <div class="unit">Chemistry lesson</div><h1>Ionic Bonding</h1>
+   <div class="time">6 short steps with an electron transfer animation and compound builder. About 35 minutes.</div></div>
+  <div class="tbody"><div id="signform">
+   <div class="fields">
+    <label for="first">First name<input id="first" type="text" autocomplete="given-name"></label>
+    <label for="last">Last name<input id="last" type="text" autocomplete="family-name"></label>
+    <label for="sid">Student ID number<input id="sid" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="sid2">Type your ID again<input id="sid2" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="period">Period<select id="period"></select></label>
+    <span id="teacherslot"></span>
+   </div>
+   <div class="btn-row" style="margin-top:20px"><button class="btn" type="button" id="startbtn">Start the lesson</button></div>
+   <div class="err" id="signerr" role="alert"></div>
+  </div></div>
+ </div>
+</section>
+<section id="lesson" hidden>
+ <div class="bar"><div class="inner"><h1>Ionic Bonding</h1><span class="who" id="whoami"></span><nav class="steps" id="steps" aria-label="Lesson steps"></nav></div><div class="progress"><i id="prog" style="width:0"></i></div></div>
+ <main id="main"></main>
+</section>
+<div id="live" class="sr-only" aria-live="polite"></div>
+<script src="exit-ticket-config.js"></script>
+<script>window.LOCKDOWN_OVERRIDE={LOCK_ON_EXIT:false};</script>
+<script>
+/* ===== Lockdown mode: full screen + leave-the-page detection + teacher unlock code =====
+   Settings come from exit-ticket-config.js (LOCKDOWN, UNLOCK_CODE, LOCK_ON_EXIT). */
+(function(){
+  const C=Object.assign({LOCKDOWN:true,UNLOCK_CODE:"Austin",LOCK_ON_EXIT:true},window.EXIT_TICKET_CONFIG||{},window.LOCKDOWN_OVERRIDE||{});
+  const L={active:false,count:0,away:0,locked:false,fsOK:false,ignoreUntil:0,leftAt:null,log:[]};
+  window.LOCKDOWN=L;
+  L.enabled=!!C.LOCKDOWN;
+  L.summary=()=>({count:L.count,away:Math.round(L.away)});
+  L.confirm=msg=>{L.ignoreUntil=Date.now()+1500;const r=window.confirm(msg);L.ignoreUntil=Date.now()+800;return r;};
+  if(!L.enabled){L.start=()=>{};L.stop=()=>{};return;}
+  const css=document.createElement("style");
+  css.textContent=`#ldOverlay{position:fixed;inset:0;z-index:99999;background:rgba(21,27,51,.97);color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+#ldOverlay[hidden],#ldBadge[hidden]{display:none!important}
+#ldOverlay .box{max-width:520px;text-align:center}
+#ldOverlay h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:32px;margin:0 0 10px}
+#ldOverlay p{font-size:18px;line-height:1.5;margin:0 0 14px}
+#ldOverlay input{font:inherit;font-size:22px;padding:10px 12px;border-radius:10px;border:2px solid #9fb4b0;width:220px;text-align:center;letter-spacing:2px}
+#ldOverlay button{font:inherit;font-weight:700;font-size:18px;border:0;border-radius:10px;padding:11px 22px;margin:10px 6px 0;cursor:pointer;background:#ffd35c;color:#1d2b36}
+#ldOverlay .err{color:#ffb4a8;font-weight:700;min-height:24px;margin-top:8px}
+#ldBadge{position:fixed;right:10px;bottom:10px;z-index:9999;background:#151b33;color:#fff;border-radius:999px;padding:5px 12px;font:700 13px system-ui,sans-serif;opacity:.85}
+body.ld-active .tabpanel,body.ld-active .prompt,body.ld-active .opts,body.ld-active .dnd{-webkit-user-select:none;user-select:none}`;
+  document.head.appendChild(css);
+  const ov=document.createElement("div");ov.id="ldOverlay";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");document.body.appendChild(ov);
+  const badge=document.createElement("div");badge.id="ldBadge";badge.hidden=true;document.body.appendChild(badge);
+  const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+  function goFS(){const el=document.documentElement,fn=el.requestFullscreen||el.webkitRequestFullscreen;if(!fn)return;try{const p=fn.call(el);if(p&&p.then)p.then(()=>{L.fsOK=true;}).catch(()=>{});else L.fsOK=true;}catch(e){}}
+  function setBadge(){badge.hidden=!L.active;badge.textContent=`🔒 Lockdown on${L.count?` · left ${L.count}×`:""}`;}
+  function showLock(reason){
+    ov.hidden=false;
+    if(C.LOCK_ON_EXIT){L.locked=true;
+      ov.innerHTML=`<div class="box"><h2>🔒 Locked</h2><p>You ${reason}. Leaving is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><p>Raise your hand. Your teacher will type the unlock code.</p><input id="ldCode" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Teacher unlock code"><br><button type="button" id="ldUnlock">Unlock</button><div class="err" id="ldErr" role="alert"></div></div>`;
+      setTimeout(()=>{const i=document.getElementById("ldCode");if(i)i.focus();},50);}
+    else{ov.innerHTML=`<div class="box"><h2>⚠ Stay on this page</h2><p>You ${reason}. This is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><button type="button" id="ldBack">Go back</button></div>`;
+      setTimeout(()=>{const b=document.getElementById("ldBack");if(b)b.focus();},50);}
+  }
+  function violation(reason){
+    if(!L.active||Date.now()<L.ignoreUntil)return;
+    if(L.locked||!ov.hidden)return;           // already counted this exit
+    L.count++;L.log.push({t:new Date().toLocaleTimeString(),reason});setBadge();showLock(reason);
+  }
+  document.addEventListener("visibilitychange",()=>{if(!L.active)return;
+    if(document.hidden){L.leftAt=Date.now();violation("switched to another tab or app");}
+    else if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  window.addEventListener("blur",()=>{if(!L.active)return;setTimeout(()=>{if(!document.hasFocus()&&!document.hidden){L.leftAt=L.leftAt||Date.now();violation("clicked outside this page");}},150);});
+  window.addEventListener("focus",()=>{if(L.leftAt&&!document.hidden){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  const onFS=()=>{if(!L.active)return;if(fsEl()){L.fsOK=true;}else if(L.fsOK){violation("left full screen");}};
+  document.addEventListener("fullscreenchange",onFS);document.addEventListener("webkitfullscreenchange",onFS);
+  ov.addEventListener("click",e=>{
+    if(e.target.id==="ldUnlock"){const v=(document.getElementById("ldCode").value||"").trim();
+      if(v.toLowerCase()===String(C.UNLOCK_CODE).trim().toLowerCase()){L.locked=false;ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+      else{document.getElementById("ldErr").textContent="That code isn't right. Ask your teacher.";}}
+    if(e.target.id==="ldBack"){ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+  });
+  ov.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ldCode"){e.preventDefault();document.getElementById("ldUnlock").click();}});
+  // block copy, paste, right-click, and print shortcuts while the exit ticket is running
+  ["copy","cut","paste","contextmenu","dragstart"].forEach(ev=>document.addEventListener(ev,e=>{if(!L.active)return;if(ev==="dragstart"&&e.target.closest&&e.target.closest(".dchip"))return;e.preventDefault();},true));
+  document.addEventListener("keydown",e=>{if(!L.active)return;const k=(e.key||"").toLowerCase();if((e.ctrlKey||e.metaKey)&&["c","v","x","p","s","u"].includes(k)){e.preventDefault();}},true);
+  L.start=function(){L.active=true;document.body.classList.add("ld-active");setBadge();goFS();};
+  L.stop=function(){if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}L.active=false;L.locked=false;ov.hidden=true;badge.hidden=true;document.body.classList.remove("ld-active");if(fsEl()){const x=document.exitFullscreen||document.webkitExitFullscreen;try{const p=x.call(document);if(p&&p.catch)p.catch(()=>{});}catch(e){}}};
+})();
+</script>
+<script>
+(function(){
+"use strict";
+/* ===== Drag-and-drop question engine (drag, or tap a word then tap a spot) ===== */
+const DND=(function(){
+  const S={};let sel=null,drag=null,lastDrag=false,changeFn=null;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const plain=h=>String(h).replace(/<[^>]+>/g,"").trim();
+  const zoneById=(q,id)=>q.zones.find(z=>z.id===id);
+  function where(qid,ci){const P=S[qid].pl;for(const z in P)if(P[z].includes(ci))return z;return null;}
+  function chip(qid,ci,mark){const s=S[qid],on=sel&&sel.qid===qid&&sel.ci===ci;
+    return `<button type="button" class="dchip${on?" on":""}${mark?" "+mark:""}" data-dq="${qid}" data-ci="${ci}" aria-pressed="${on}"${s.locked?" disabled":""}>${s.q.chips[ci]}</button>`;}
+  function zone(qid,z,style){const s=S[qid],items=s.pl[z.id]||[],q=s.q;let mark="";
+    if(s.locked&&s.marks&&!z.multi)mark=items[0]===z.answer?" right":" wrong";
+    const tgt=sel&&sel.qid===qid&&!s.locked&&(z.multi||!items.length)?" target":"";
+    const inner=items.map(ci=>chip(qid,ci,s.locked&&s.marks&&z.multi?(z.answer.includes(ci)?"right":"wrong"):"")).join("")||`<span class="dph">${z.ph||"Drop here"}</span>`;
+    const name=z.name||z.label||"Drop spot";
+    return `<div class="dzone${z.multi?" multi":""}${items.length?" filled":""}${tgt}${mark}" data-dq="${qid}" data-dz="${z.id}"${s.locked?"":' tabindex="0" role="button"'} aria-label="${esc(plain(name))}: ${items.length?esc(items.map(ci=>plain(q.chips[ci])).join(", ")):"empty"}"${style?` style="${style}"`:""}>${inner}</div>`;}
+  function inner(qid){
+    const s=S[qid],q=s.q;
+    const placed=new Set(Object.values(s.pl).flat());
+    const bank=q.chips.map((c,ci)=>ci).filter(ci=>!placed.has(ci));
+    let h=s.locked?"":`<div class="dbank" data-dq="${qid}" data-dbank="1" aria-label="Word bank">${bank.map(ci=>chip(qid,ci)).join("")||'<span class="dhint">Every card is placed. Drag one back here to remove it.</span>'}</div>`;
+    if(q.figure&&q.layout!=="label")h+=`<div class="dfig2">${q.figure}</div>`;
+    if(q.layout==="label")h+=`<div class="dlabel"><div class="dfig">${q.figure}</div>${q.zones.map(z=>zone(qid,z,`left:${z.x}%;top:${z.y}%;width:${z.w}%`)).join("")}</div>`;
+    else if(q.layout==="rows")h+=`<div class="drows">${q.zones.map(z=>`<div class="drow"><span>${z.label}</span>${zone(qid,z)}</div>`).join("")}</div>`;
+    else if(q.layout==="order")h+=`<ol class="dorder">${q.zones.map((z,k)=>`<li><span class="onum" aria-hidden="true">${k+1}</span>${zone(qid,z)}</li>`).join("")}</ol>`;
+    else if(q.layout==="sort")h+=`<div class="dbins">${q.zones.map(z=>`<div class="dbin"><div class="bt">${z.label}</div>${zone(qid,{...z,multi:true})}</div>`).join("")}</div>`;
+    else if(q.layout==="fill")h+=`<div class="dfill">${q.sentence.map(p=>typeof p==="string"?p:zone(qid,zoneById(q,p.z))).join("")}</div>`;
+    if(!s.locked)h+=`<p class="dhow" style="font-size:14px;color:var(--muted);margin:8px 0 0">Drag a card to a spot, or tap a card and then tap the spot.</p>`;
+    return h;
+  }
+  function refresh(qid){const el=document.getElementById("dnd-"+qid);if(el)el.innerHTML=inner(qid);}
+  function focusChip(qid,ci){const b=document.querySelector(`.dchip[data-dq="${qid}"][data-ci="${ci}"]`);if(b)b.focus({preventScroll:true});}
+  function place(qid,ci,zid){
+    const s=S[qid],P=s.pl;for(const z in P)P[z]=P[z].filter(x=>x!==ci);
+    if(zid){const z=zoneById(s.q,zid);if(!(z.multi||s.q.layout==="sort"))P[zid]=[];P[zid]=(P[zid]||[]).concat(ci);}
+    sel=null;refresh(qid);if(changeFn)changeFn(qid);focusChip(qid,ci);
+  }
+  function mount(qid,q,pl,opts){
+    opts=opts||{};q.zones.forEach(z=>{if(!pl[z.id])pl[z.id]=[];});
+    S[qid]={q,pl,locked:!!opts.locked,marks:!!opts.marks};
+    return `<div class="dnd" id="dnd-${qid}">${inner(qid)}</div>`;
+  }
+  function lock(qid,marks){if(!S[qid])return;S[qid].locked=true;S[qid].marks=!!marks;if(sel&&sel.qid===qid)sel=null;refresh(qid);}
+  function complete(q,pl){if(q.layout==="sort")return Object.values(pl).flat().length===q.chips.length;return q.zones.every(z=>(pl[z.id]||[]).length>0);}
+  function grade(q,pl){
+    if(q.layout==="sort"){let pts=0;const lines=q.chips.map((c,ci)=>{const right=q.zones.find(z=>z.answer.includes(ci));const w=Object.keys(pl).find(z=>(pl[z]||[]).includes(ci));const ok=w===right.id;if(ok)pts++;return{label:c,ok,yours:w?zoneById(q,w).label:"not placed",right:right.label};});return{pts,max:q.chips.length,lines};}
+    let pts=0;const lines=q.zones.map(z=>{const got=(pl[z.id]||[])[0];const ok=got===z.answer;if(ok)pts++;return{label:z.name||z.label,ok,yours:got===undefined?"empty":q.chips[got],right:q.chips[z.answer]};});
+    return{pts,max:q.zones.length,lines};
+  }
+  function linesHTML(g){return `<ul>${g.lines.map(l=>`<li>${l.label}: <b class="${l.ok?"good":"wrong"}">${l.yours}</b>${l.ok?" ✓":` (correct: <b>${l.right}</b>)`}</li>`).join("")}</ul>`;}
+  /* ---- events ---- */
+  function clearHover(){document.querySelectorAll(".dzone.hover").forEach(e=>e.classList.remove("hover"));}
+  document.addEventListener("pointerdown",e=>{lastDrag=false;const c=e.target.closest(".dchip");if(!c||c.disabled||e.button!==0)return;drag={qid:c.dataset.dq,ci:+c.dataset.ci,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId,el:c,g:null};});
+  document.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;
+    if(!drag.moved){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;drag.moved=true;const g=drag.el.cloneNode(true);g.classList.remove("on");g.classList.add("dghost");document.body.appendChild(g);drag.g=g;drag.el.classList.add("lift");}
+    drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px";
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone");clearHover();if(z&&z.dataset.dq===drag.qid)z.classList.add("hover");e.preventDefault();},{passive:false});
+  function end(e,cancel){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(!d.moved)return;lastDrag=true;d.g.remove();d.el.classList.remove("lift");clearHover();if(cancel)return;
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone"),b=u&&u.closest("[data-dbank]");
+    if(z&&z.dataset.dq===d.qid)place(d.qid,d.ci,z.dataset.dz);else if(b&&b.dataset.dq===d.qid)place(d.qid,d.ci,null);}
+  document.addEventListener("pointerup",e=>end(e,false));document.addEventListener("pointercancel",e=>end(e,true));
+  document.addEventListener("click",e=>{
+    const t=e.target;if(!t.closest||!t.closest(".dnd"))return;
+    if(lastDrag){lastDrag=false;return;}
+    const c=t.closest(".dchip");
+    if(c){if(c.disabled)return;const qid=c.dataset.dq,ci=+c.dataset.ci,z=c.closest(".dzone");
+      if(z&&sel&&sel.qid===qid&&sel.ci!==ci){place(qid,sel.ci,z.dataset.dz);return;}
+      sel=(sel&&sel.qid===qid&&sel.ci===ci)?null:{qid,ci};refresh(qid);focusChip(qid,ci);return;}
+    const z=t.closest(".dzone");if(z&&sel&&sel.qid===z.dataset.dq&&!S[z.dataset.dq].locked){place(z.dataset.dq,sel.ci,z.dataset.dz);return;}
+    const b=t.closest("[data-dbank]");if(b&&sel&&sel.qid===b.dataset.dq){place(b.dataset.dq,sel.ci,null);}
+  });
+  document.addEventListener("keydown",e=>{
+    lastDrag=false;
+    const z=e.target.classList&&e.target.classList.contains("dzone")?e.target:null;
+    if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(sel&&sel.qid===z.dataset.dq)place(z.dataset.dq,sel.ci,z.dataset.dz);}
+    if(e.key==="Escape"&&sel){const q=sel.qid;sel=null;refresh(q);}
+  });
+  return{mount,lock,complete,grade,linesHTML,onChange:f=>{changeFn=f;}};
+})();
+
+/* ===== Homeostasis drawings, models, and graphs (shared by the lesson and the exit ticket) ===== */
+const HOM=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  /* ---- line graph with optional band, set-point line, and markers ---- */
+  function graph(o){
+    const W=o.W||520,H=o.H||300,x0=62,x1=W-18,y0=o.title?40:22,y1=H-52,[xa,xb]=o.x,[ya,yb]=o.y;
+    const X=v=>x0+(v-xa)/(xb-xa)*(x1-x0),Y=v=>y1-(v-ya)/(yb-ya)*(y1-y0);
+    let s=o.title?T(W/2,20,o.title,{size:14}):"";
+    if(o.band){const bt=Math.min(o.band[1],yb),bb=Math.max(o.band[0],ya);s+=`<rect x="${x0}" y="${f(Y(bt))}" width="${x1-x0}" height="${f(Y(bb)-Y(bt))}" fill="#e7f4ec"/>`;}if(o.band)s+=""+T(x1-4,Y(o.band[1])-4,o.bandLabel||"normal range",{a:"end",size:11,c:"#2e7d4f",w:400});
+    for(let v=ya;v<=yb+1e-9;v+=o.ystep){s+=`<line x1="${x0}" y1="${f(Y(v))}" x2="${x1}" y2="${f(Y(v))}" stroke="#d6e0de" opacity=".7"/>`+T(x0-8,Y(v)+4,+v.toFixed(2),{a:"end",size:11,w:400,c:"#56666f"});}
+    for(let v=xa;v<=xb+1e-9;v+=o.xstep){s+=`<line x1="${f(X(v))}" y1="${y1}" x2="${f(X(v))}" y2="${y1+5}" stroke="#1d2b36"/>`+T(X(v),y1+19,v,{size:11,w:400});}
+    if(o.setpoint!=null)s+=`<line x1="${x0}" y1="${f(Y(o.setpoint))}" x2="${x1}" y2="${f(Y(o.setpoint))}" stroke="#2e7d4f" stroke-width="2" stroke-dasharray="7 5"/>`+T(x0+6,Y(o.setpoint)+15,o.setLabel||"set point",{a:"start",size:11,c:"#2e7d4f"});
+    s+=`<line x1="${x0}" y1="${y0-6}" x2="${x0}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/><line x1="${x0}" y1="${y1}" x2="${x1}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/>`;
+    s+=`<text transform="translate(16 ${(y0+y1)/2}) rotate(-90)" font-size="12" text-anchor="middle" fill="#56666f" font-family="system-ui,sans-serif">${o.ylabel}</text>`+T((x0+x1)/2,H-10,o.xlabel,{w:400,c:"#56666f"});
+    (o.series||[]).forEach(se=>{if(se.points.length>1)s+=`<polyline points="${se.points.map(p=>f(X(p[0]))+","+f(Y(p[1]))).join(" ")}" fill="none" stroke="${se.color}" stroke-width="${se.width||3}"${se.dash?' stroke-dasharray="6 5"':""} stroke-linejoin="round"/>`;
+      if(se.label){const lp=se.labelAt;s+=T(X(lp[0]),Y(lp[1]),se.label,{c:se.color,size:12});}});
+    (o.markers||[]).forEach(m=>{const px=X(m.x),py=Y(m.y);s+=`<circle cx="${f(px)}" cy="${f(py)}" r="${m.r||7}" fill="${m.fill||"#ffd35c"}" stroke="#1d2b36" stroke-width="2"/>`;
+      if(m.label)s+=T(px+(m.dx||0),py+(m.dy==null?-13:m.dy),m.label,{size:m.size||13,a:m.a||"middle"});});
+    return{svg:`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||o.title||"graph"}">${s}</svg>`,X,Y};
+  }
+  /* ---- feedback loop diagram: nodes around a circle ---- */
+  function loop(o){
+    const W=o.W||520,H=o.H||330,cx=W/2,cy=H/2+4,rx=o.rx||175,ry=o.ry||112,n=o.nodes.length,bw=o.bw||150,bh=o.bh||58;
+    const pos=o.nodes.map((nd,k)=>{const a=-Math.PI/2+k*2*Math.PI/n;return[cx+rx*Math.cos(a),cy+ry*Math.sin(a)];});
+    let s=`<defs><marker id="${o.id||"lp"}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${o.arrow||"#56666f"}"/></marker></defs>`;
+    for(let k=0;k<n;k++){const a1=-Math.PI/2+k*2*Math.PI/n+0.42,a2=-Math.PI/2+(k+1)*2*Math.PI/n-0.42;
+      const p1=[cx+rx*Math.cos(a1),cy+ry*Math.sin(a1)],p2=[cx+rx*Math.cos(a2),cy+ry*Math.sin(a2)],am=(a1+a2)/2,c=[cx+rx*1.18*Math.cos(am),cy+ry*1.18*Math.sin(am)];
+      if(k===n-1&&o.open)continue;
+      s+=`<path d="M${f(p1[0])},${f(p1[1])} Q${f(c[0])},${f(c[1])} ${f(p2[0])},${f(p2[1])}" fill="none" stroke="${o.arrow||"#56666f"}" stroke-width="3" marker-end="url(#${o.id||"lp"}a)"/>`;}
+    if(o.center)s+=T(cx,cy-4,o.center[0],{size:16,c:o.centerColor||"#1d2b36"})+(o.center[1]?T(cx,cy+16,o.center[1],{size:12,w:400,c:"#56666f"}):"");
+    o.nodes.forEach((nd,k)=>{const[x,y]=pos[k],on=o.hi===k;
+      s+=`<rect x="${f(x-bw/2)}" y="${f(y-bh/2)}" width="${bw}" height="${bh}" rx="10" fill="${on?(nd.color||"#2f5d9b"):"#fff"}" stroke="${nd.color||"#2f5d9b"}" stroke-width="${on?3:2}"/>`;
+      if(nd.title)s+=T(x,y-(nd.lines&&nd.lines.length?8:-4),nd.title,{size:13,c:on?"#fff":(nd.color||"#2f5d9b")});
+      (nd.lines||[]).forEach((ln,j)=>{s+=T(x,y+(nd.lineY||8)+j*13,ln,{size:11,w:400,c:on?"#fff":"#1d2b36"});});});
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||"feedback loop"}">${s}</svg>`;
+  }
+  /* ---- models ---- */
+  // Body temperature with negative feedback. event: "hot" or "cold"; effectorOn: can the effector respond?
+  function tempRun(event,effectorOn,opts){opts=opts||{};const dt=0.1,end=opts.end||30,start=2,len=10,inp=event==="hot"?0.3:-0.3;
+    let Tb=37,k=0,detect=null,ctrl=null,eff=null,back=null,peak=null;const pts=[],ks=[];
+    for(let t=0;t<=end+1e-9;t+=dt){const ev=t>=start&&t<start+len?inp:0;const dev=Tb-37;
+      if(detect===null&&Math.abs(dev)>0.3)detect=+t.toFixed(1);
+      if(detect!==null&&ctrl===null&&t>=detect+0.8)ctrl=+t.toFixed(1);
+      if(ctrl!==null&&effectorOn)k=Math.min(1,k+dt/2.5);
+      if(eff===null&&k>=0.99)eff=+t.toFixed(1);
+      const dT=ev-k*1.4*dev-0.03*dev;Tb+=dT*dt;
+      if(peak===null||Math.abs(Tb-37)>Math.abs(peak[1]-37))peak=[+t.toFixed(1),Tb];
+      if(eff!==null&&back===null&&t>start+len&&Math.abs(Tb-37)<0.06)back=+t.toFixed(1);
+      pts.push([+t.toFixed(1),+Tb.toFixed(3)]);ks.push([+t.toFixed(1),k]);}
+    const at=tt=>{const p=pts.find(q=>q[0]>=tt);return p?p[1]:37;};
+    return{pts,ks,stim:[start,at(start)],detect:detect!=null?[detect,at(detect)]:null,ctrl:ctrl!=null?[ctrl,at(ctrl)]:null,eff:eff!=null?[eff,at(eff)]:null,back:back!=null?[back,at(back)]:null,peak,start,len};}
+  // Childbirth: positive feedback. Contraction strength 0-100.
+  function birthRun(opts){opts=opts||{};const dt=0.1,end=opts.end||30,start=2;let C=5,O=1,born=null,detect=null,eff=null;const pts=[];
+    for(let t=0;t<=end+1e-9;t+=dt){
+      if(t>=start&&born===null){if(detect===null&&t>=start+1)detect=+t.toFixed(1);O+=0.12*C*dt;C+=0.35*O*dt;if(eff===null&&t>=start+3)eff=+t.toFixed(1);if(C>=100){C=100;born=+t.toFixed(1);}}
+      else if(born!==null){C=Math.max(4,C-40*dt);}
+      pts.push([+t.toFixed(1),+C.toFixed(2)]);}
+    const at=tt=>{const p=pts.find(q=>q[0]>=tt);return p?p[1]:4;};
+    return{pts,stim:[start,at(start)],detect:[detect,at(detect)],eff:[eff,at(eff)],born:[born,100],start};}
+  return{graph,loop,tempRun,birthRun,T};
+})();
+
+
+/* ===== shared drawing helpers for biology lessons ===== */
+const U=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  function bars(o){const W=o.W||520,H=o.H||300,x0=70,x1=W-16,y0=o.title?44:24,y1=H-56;let s=o.title?T(W/2,20,o.title,{size:14}):"";
+    for(let v=0;v<=o.ymax+1e-9;v+=o.step){const y=y1-v/o.ymax*(y1-y0);s+=`<line x1="${x0}" y1="${f(y)}" x2="${x1}" y2="${f(y)}" stroke="#d6e0de"/>`+T(x0-8,y+4,o.fmt?o.fmt(v):v,{a:"end",size:11,w:400,c:"#56666f"});}
+    s+=`<line x1="${x0}" y1="${y0-6}" x2="${x0}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/><line x1="${x0}" y1="${y1}" x2="${x1}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/>`;
+    const n=o.cats.length,slot=(x1-x0)/n,bw=slot*.52;
+    o.cats.forEach((c,i)=>{const cx=x0+slot*(i+.5),h=Math.max(o.vals[i]/o.ymax*(y1-y0),1.5);s+=`<rect x="${f(cx-bw/2)}" y="${f(y1-h)}" width="${f(bw)}" height="${f(h)}" rx="2" fill="${o.color}"/>`+T(cx,y1-h-7,o.labels[i],{size:12})+c.split("\n").map((l,j)=>T(cx,y1+17+j*14,l,{size:12,w:400})).join("");});
+    s+=`<text transform="translate(16 ${(y0+y1)/2}) rotate(-90)" font-size="12" text-anchor="middle" fill="#56666f" font-family="system-ui,sans-serif">${o.ylabel}</text>`;
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||o.title}">${s}</svg>`;}
+  function table(cap,head,rows){return `<h3>${cap}</h3><table class="data"><thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;}
+  function lines(svgW,svgH,targets,boxX,boxW,ys){let s="";targets.forEach((p,k)=>{s+=`<line x1="${f(p[0])}" y1="${f(p[1])}" x2="${boxX}" y2="${ys[k]}" stroke="#1d2b36" stroke-width="1.5"/><circle cx="${f(p[0])}" cy="${f(p[1])}" r="3.2" fill="#1d2b36" stroke="#fff"/>`;});
+    const zones=ys.map(y=>({x:+((boxX+2)/svgW*100).toFixed(1),y:+(y/svgH*100).toFixed(1),w:+(boxW/svgW*100).toFixed(1)}));return{s,zones};}
+  return{f,T,bars,table,lines};
+})();
+
+/* ===== Ionic bonding: Lewis dots, electron transfer, lattice, compound builder ===== */
+const IB=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  const REDUCED=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const M={Li:{n:"Lithium",c:1},Na:{n:"Sodium",c:1},K:{n:"Potassium",c:1},Mg:{n:"Magnesium",c:2},Ca:{n:"Calcium",c:2},Al:{n:"Aluminum",c:3}};
+  const N={F:{n:"Fluorine",ide:"fluoride",c:-1,v:7},Cl:{n:"Chlorine",ide:"chloride",c:-1,v:7},O:{n:"Oxygen",ide:"oxide",c:-2,v:6},S:{n:"Sulfur",ide:"sulfide",c:-2,v:6},N:{n:"Nitrogen",ide:"nitride",c:-3,v:5}};
+  const SUB="₀₁₂₃₄₅₆₇₈₉",sub=n=>n===1?"":String(n).split("").map(d=>SUB[d]).join("");
+  const SUP=c=>(Math.abs(c)>1?"⁰¹²³⁴⁵⁶⁷⁸⁹"[Math.abs(c)]:"")+(c>0?"⁺":"⁻");
+  const gcd=(a,b)=>b?gcd(b,a%b):a;
+  function formula(m,x){const cm=M[m].c,cx=-N[x].c,l=cm*cx/gcd(cm,cx);return{m:l/cm,x:l/cx,text:m+sub(l/cm)+x+sub(l/cx)};}
+  const name=(m,x)=>`${M[m].n.toLowerCase()} ${N[x].ide}`;
+  /* Lewis symbol with n dots placed top, right, bottom, left, then paired; o.newDots: indices (1-based fill order) colored as gained */
+  function lewis(x,y,sym,n,o){o=o||{};let s=T(x,y+8,sym,{size:o.size||26,c:o.col||"#1d2b36"});const d=o.r||22,g=5;
+    const pos=[[0,-1],[1,0],[0,1],[-1,0]];for(let j=0;j<4;j++){const c=(j<n?1:0)+(j<n-4?1:0);const[px,py]=pos[j];const cx=x+px*d,cy=y+py*d;
+      const dots=c===2?[[-g,0],[g,0]]:c===1?[[0,0]]:[];dots.forEach(([ox,oy],k)=>{const num=k===0?j+1:j+5;const isNew=o.newFrom&&num>=o.newFrom;const rx=px?cx+oy:cx+ox,ry=px?cy+ox:cy+oy;s+=`<circle cx="${f(rx)}" cy="${f(ry)}" r="3.6" fill="${isNew?"#7a5ad0":"#1d2b36"}"/>`;});}
+    if(o.bracket){s+=`<path d="M${x-d-8},${y-d-6} h-6 v${2*d+12} h6 M${x+d+8},${y-d-6} h6 v${2*d+12} h-6" fill="none" stroke="#1d2b36" stroke-width="2"/>`+T(x+d+20,y-d-2,o.bracket,{size:16,c:o.bracket.includes("⁺")?"#b8403a":"#2f5d9b",a:"start"});}
+    return s;}
+  /* Na + Cl → Na+ Cl− picture */
+  function transferSVG(m,x,o){o=o||{};const f0=formula(m,x),cm=M[m].c,vx=N[x].v;let s=`<defs><marker id="ibA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7a5ad0"/></marker></defs>`;
+    const nm=f0.m,nx=f0.x;let x0=50;
+    const mx=[],xx=[];for(let k=0;k<nm;k++){mx.push(x0);s+=lewis(x0,70,m,cm,{});x0+=80;}
+    s+=T(x0-30,78,"+",{size:22});x0+=10;for(let k=0;k<nx;k++){xx.push(x0+10);s+=lewis(x0+10,70,x,vx,{});x0+=90;}
+    if(o.arrows!==false)mx.forEach((mx1,i)=>{for(let e=0;e<cm;e++){const tgt=xx[Math.min(xx.length-1,Math.floor((i*cm+e)/(-N[x].c)))];s+=`<path d="M${mx1+18},${58+e*6} Q${(mx1+tgt)/2},${18+e*8} ${tgt-26},${58+e*6}" fill="none" stroke="#7a5ad0" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#ibA)"/>`;}});
+    s+=T(270,128,"↓ electrons transfer",{size:13,c:"#7a5ad0"});let x1=50;
+    for(let k=0;k<nm;k++){s+=lewis(x1,186,m,0,{bracket:SUP(cm)});x1+=90;}for(let k=0;k<nx;k++){s+=lewis(x1+20,186,x,8,{bracket:SUP(N[x].c),newFrom:vx+1});x1+=110;}
+    s+=T(270,250,`${f0.text}: ${name(m,x)}`,{size:15,c:"#2e7d4f"});
+    return `<svg viewBox="0 0 560 262" role="img" aria-label="${nm} ${M[m].n.toLowerCase()} atom${nm>1?"s":""} each give ${cm} electron${cm>1?"s":""} to ${nx} ${N[x].n.toLowerCase()} atom${nx>1?"s":""}. They become ${M[m].n.toLowerCase()} ions with a ${SUP(cm)} charge and ${N[x].ide} ions with a ${SUP(N[x].c)} charge, forming ${f0.text}.">${s}</svg>`;}
+  function lattice(o){o=o||{};let s="";const n=o.n||6,sz=o.sz||46;for(let i=0;i<n;i++)for(let j=0;j<5;j++){const a=(i+j)%2===0,cx=40+i*sz,cy=36+j*sz;s+=a?`<circle cx="${cx}" cy="${cy}" r="${sz*0.42}" fill="#7fd67f" stroke="#2e7d4f" stroke-width="2"/>`+T(cx,cy+4,"Cl⁻",{size:11}):`<circle cx="${cx}" cy="${cy}" r="${sz*0.26}" fill="#b9a4e0" stroke="#5b3f8f" stroke-width="2"/>`+T(cx,cy+4,"Na⁺",{size:9});}
+    return `<svg viewBox="0 0 ${40+n*sz} ${36+5*sz}" role="img" aria-label="A crystal lattice: a repeating grid where every sodium ion is surrounded by chloride ions and every chloride ion is surrounded by sodium ions.">${s}</svg>`;}
+
+  /* ---- animated transfer and bonding ---- */
+  function dotXY(x,y,num,r){const g=5,pos=[[0,-1],[1,0],[0,1],[-1,0]];const j=(num-1)%4,second=num>4;const[px,py]=pos[j];const cx=x+px*r,cy=y+py*r;
+    const ofs=second?g:(num<=4&&false?0:0);
+    // singles sit in the middle; when a pair forms, the first shifts -g and the second +g
+    return{cx,cy,px,py,j,second};}
+  function dotPositions(x,y,n,r){const out=[];const pos=[[0,-1],[1,0],[0,1],[-1,0]],g=5;for(let num=1;num<=n;num++){const j=(num-1)%4,paired=(j<n-4)||num>4;const[px,py]=pos[j];const cx=x+px*r,cy=y+py*r;const k=num>4?1:0;const o=paired?(k?g:-g):0;out.push([px?cx:cx+o,px?cy+o:cy]);}return out;}
+  function slotXY(x,y,num,r){/* where electron number num sits once the shell has at least num electrons */const pos=[[0,-1],[1,0],[0,1],[-1,0]],g=5;const j=(num-1)%4;const[px,py]=pos[j];const cx=x+px*r,cy=y+py*r;if(num<=4)return[cx,cy];return[px?cx:cx+g,px?cy+g:cy];}
+  function animSVG(m,x,t,L){const cm=M[m].c,cx=-N[x].c,vx=N[x].v,fm=formula(m,x);const nm=fm.m,nx=fm.x,r=22;
+    const totalE=nm*cm,eDur=0.9,phase1=totalE*eDur,phase2=0.7,phase3=1.4;
+    const mS=[],xS=[];let xp=50;for(let i=0;i<nm;i++){mS.push([xp,80]);xp+=82;}xp+=30;for(let j=0;j<nx;j++){xS.push([xp+10,80]);xp+=104;}
+    // final arrangement: alternate ions in one row, centered
+    const seq=[];let a=nm,b=nx;const startX=nx>=nm?"x":"m";let turn=startX;while(a+b>0){if(turn==="x"&&b>0){seq.push(["x",nx-b]);b--;}else if(turn==="m"&&a>0){seq.push(["m",nm-a]);a--;}else if(b>0){seq.push(["x",nx-b]);b--;}else{seq.push(["m",nm-a]);a--;}turn=turn==="x"?"m":"x";}
+    const sp=112,x0=L/2-(seq.length-1)*sp/2,F={};seq.forEach(([k,i],q)=>{F[k+i]=[x0+q*sp,190];});
+    const ease=u=>u<0?0:u>1?1:u*u*(3-2*u);
+    let s="";const moved=Math.min(totalE,Math.floor(t/eDur)),frac=Math.min(1,(t%eDur)/eDur*1.15);
+    const t2=t-phase1,ions=t2>0,u3=ease((t-phase1-phase2)/phase3);
+    // electron assignment
+    const assign=[];for(let i=0;i<nm;i++)for(let e=0;e<cm;e++){const k=i*cm+e;assign.push({from:i,fromNum:cm-e,to:Math.floor(k/cx),toNum:vx+1+(k%cx)});}
+    const pos=(arr,i,key)=>{const S=arr[i],Fp=F[key+i];return[S[0]+(Fp[0]-S[0])*u3,S[1]+(Fp[1]-S[1])*u3];};
+    // metals
+    for(let i=0;i<nm;i++){const[px,py]=pos(mS,i,"m");const left=cm-assign.filter((a,k)=>a.from===i&&k<moved+(t<phase1&&frac>=1?1:0)).length;
+      s+=T(px,py+8,m,{size:26,c:ions?"#b8403a":"#1d2b36"});const ds=dotPositions(px,py,Math.max(0,left),r);ds.forEach(([dx,dy])=>{s+=`<circle cx="${f(dx)}" cy="${f(dy)}" r="3.6" fill="#1d2b36"/>`;});
+      if(ions){const o=Math.min(1,t2/phase2);s+=`<g opacity="${f(o)}"><path d="M${px-r-8},${py-r-6} h-6 v${2*r+12} h6 M${px+r+8},${py-r-6} h6 v${2*r+12} h-6" fill="none" stroke="#1d2b36" stroke-width="2"/>`+T(px+r+20,py-r-2,SUP(cm),{size:16,c:"#b8403a",a:"start"})+`</g>`;}}
+    // nonmetals
+    for(let j=0;j<nx;j++){const[px,py]=pos(xS,j,"x");s+=T(px,py+8,x,{size:26,c:ions?"#2f5d9b":"#1d2b36"});
+      const got=assign.filter((a,k)=>a.to===j&&k<moved).length;const n=vx+got;
+      for(let num=1;num<=n;num++){const pp=dotPositions(px,py,n,r)[num-1];s+=`<circle cx="${f(pp[0])}" cy="${f(pp[1])}" r="3.6" fill="${num>vx?"#7a5ad0":"#1d2b36"}"/>`;}
+      if(ions){const o=Math.min(1,t2/phase2);s+=`<g opacity="${f(o)}"><path d="M${px-r-8},${py-r-6} h-6 v${2*r+12} h6 M${px+r+8},${py-r-6} h6 v${2*r+12} h-6" fill="none" stroke="#1d2b36" stroke-width="2"/>`+T(px+r+20,py-r-2,SUP(-cx),{size:16,c:"#2f5d9b",a:"start"})+`</g>`;}}
+    // flying electron
+    if(t<phase1&&moved<totalE){const a=assign[moved];const[sx,sy]=dotPositions(mS[a.from][0],80,cm-assign.filter((q,k)=>q.from===a.from&&k<moved).length,r).slice(-1)[0]||[mS[a.from][0]+r,80];
+      const[ex,ey]=slotXY(xS[a.to][0],80,a.toNum,r);const u=ease(frac);const mx=(sx+ex)/2,my=Math.min(sy,ey)-60;const bx=(1-u)*(1-u)*sx+2*(1-u)*u*mx+u*u*ex,by=(1-u)*(1-u)*sy+2*(1-u)*u*my+u*u*ey;
+      s+=`<path d="M${f(sx)},${f(sy)} Q${f(mx)},${f(my)} ${f(ex)},${f(ey)}" fill="none" stroke="#c7b8ea" stroke-width="2" stroke-dasharray="4 4"/><circle cx="${f(bx)}" cy="${f(by)}" r="6" fill="#7a5ad0" stroke="#fff" stroke-width="2"/>`+T(bx,by-12,"e⁻",{size:12,c:"#7a5ad0"});}
+    // bonds
+    if(u3>=1){seq.forEach((q,k)=>{if(k<seq.length-1){const A=F[q[0]+q[1]],B=F[seq[k+1][0]+seq[k+1][1]];s+=`<line x1="${f(A[0]+44)}" y1="${f(A[1]+6)}" x2="${f(B[0]-44)}" y2="${f(B[1]+6)}" stroke="#2e7d4f" stroke-width="4" stroke-dasharray="2 5" stroke-linecap="round"/>`;}});
+      s+=T(L/2,248,`Ionic bonds: ${fm.text} (${name(m,x)})`,{size:15,c:"#2e7d4f"});}
+    else if(t<phase1)s+=T(L/2,248,`Electron ${Math.min(totalE,moved+1)} of ${totalE} moving from ${M[m].n.toLowerCase()} to ${N[x].n.toLowerCase()}`,{size:13,c:"#7a5ad0"});
+    else s+=T(L/2,248,"Opposite charges attract: the ions pull together",{size:13,c:"#2e7d4f"});
+    return{svg:`<svg viewBox="0 0 ${L} 262" style="width:100%;max-width:${L+20}px;display:block" role="img" aria-label="${u3>=1?`${nm} ${M[m].n.toLowerCase()} ion${nm>1?"s":""} and ${nx} ${N[x].ide} ion${nx>1?"s":""} held together by ionic bonds: ${fm.text}`:`Electrons moving from ${M[m].n.toLowerCase()} to ${N[x].n.toLowerCase()}`}">${s}</svg>`,end:phase1+phase2+phase3+0.2};}
+  function animate(el,m,x,done){const L=Math.max(560,120+(formula(m,x).m+formula(m,x).x)*112);let t0=null,raf=null;
+    const run=now=>{if(!t0)t0=now;const t=(now-t0)/1000;const fr=animSVG(m,x,t,L);el.innerHTML=fr.svg;if(t<fr.end&&document.body.contains(el))raf=requestAnimationFrame(run);else if(done)done();};
+    if(REDUCED){el.innerHTML=animSVG(m,x,999,L).svg;if(done)done();return;}
+    raf=requestAnimationFrame(run);return()=>cancelAnimationFrame(raf);}
+  /* ---- compound builder ---- */
+  function builder(el,opt){opt=opt||{};const st={m:opt.m||"Na",x:opt.x||"Cl",nm:1,nx:1,made:{}};const targets=opt.targets||null;
+    function draw(){const cm=M[st.m].c,cx=N[st.x].c,pos=st.nm*cm,neg=st.nx*cx,bal=pos+neg===0;let s="";
+      for(let k=0;k<st.nm;k++){const x=50+k*70;s+=`<circle cx="${x}" cy="80" r="24" fill="#f6b8ab" stroke="#b8403a" stroke-width="2"/>`+T(x,78,st.m,{size:13})+T(x,94,SUP(cm),{size:12,c:"#b8403a"});}
+      for(let k=0;k<st.nx;k++){const x=50+k*70;s+=`<circle cx="${x}" cy="170" r="30" fill="#b3d1ef" stroke="#2f5d9b" stroke-width="2"/>`+T(x,168,st.x,{size:13})+T(x,184,SUP(cx),{size:12,c:"#2f5d9b"});}
+      s+=T(380,60,`Positive: ${st.nm} × (+${cm}) = +${pos}`,{size:14,a:"start",c:"#b8403a"})+T(380,86,`Negative: ${st.nx} × (${cx}) = ${neg}`,{size:14,a:"start",c:"#2f5d9b"})+T(380,116,`Total charge: ${pos+neg>0?"+":""}${pos+neg}`,{size:15,a:"start",c:bal?"#2e7d4f":"#b8403a"});
+      if(bal){const g=gcd(st.nm,st.nx);s+=T(380,152,`${st.m}${sub(st.nm/g)}${st.x}${sub(st.nx/g)}`,{size:26,a:"start",c:"#2e7d4f"})+T(380,176,name(st.m,st.x),{size:13,a:"start",w:400});}
+      return `<svg viewBox="0 0 600 220" style="width:100%;max-width:600px;display:block" role="img" aria-label="${st.nm} ${M[st.m].n} ions and ${st.nx} ${N[st.x].ide} ions, total charge ${pos+neg}${bal?", balanced":""}">${s}</svg>`;}
+    const opts=(obj,key,sel)=>Object.keys(obj).map(k=>`<button type="button" class="btn secondary" style="padding:4px 10px;font-size:15px;${k===sel?"background:var(--accent-soft)":""}" data-ib${key}="${k}" aria-pressed="${k===sel}">${k}</button>`).join("");
+    el.innerHTML=`${targets?`<div class="ibt" style="margin-bottom:6px"></div>`:""}<div class="ibpick"></div><div class="ibscene"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:18px;margin-top:4px"><div style="display:flex;align-items:center;gap:6px"><b>Metal ions</b><button type="button" class="btn secondary" style="padding:3px 12px" data-ibn="m:-1" aria-label="Remove a metal ion">−</button><span class="ibnm" style="font-weight:700;min-width:20px;text-align:center"></span><button type="button" class="btn secondary" style="padding:3px 12px" data-ibn="m:1" aria-label="Add a metal ion">+</button></div>
+      <div style="display:flex;align-items:center;gap:6px"><b>Nonmetal ions</b><button type="button" class="btn secondary" style="padding:3px 12px" data-ibn="x:-1" aria-label="Remove a nonmetal ion">−</button><span class="ibnx" style="font-weight:700;min-width:20px;text-align:center"></span><button type="button" class="btn secondary" style="padding:3px 12px" data-ibn="x:1" aria-label="Add a nonmetal ion">+</button></div></div>
+      <div class="btn-row" style="margin:8px 0 0"><button type="button" class="btn" data-ibbond="1">Bond them!</button></div><p class="ibmsg" aria-live="polite" style="margin:6px 0 0"></p><div class="iban" style="margin-top:8px"></div>`;
+    const pk=el.querySelector(".ibpick"),sc=el.querySelector(".ibscene"),m=el.querySelector(".ibmsg"),tg=el.querySelector(".ibt"),an=el.querySelector(".iban");let stop=null;
+    function curT(){return targets?targets.find(t=>!st.made[t])||null:null;}
+    function redraw(){pk.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:4px"><b style="min-width:84px">Metal:</b>${opts(M,"m",st.m)}</div><div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><b style="min-width:84px">Nonmetal:</b>${opts(N,"x",st.x)}</div>`;
+      sc.innerHTML=draw();el.querySelector(".ibnm").textContent=st.nm;el.querySelector(".ibnx").textContent=st.nx;
+      if(tg){const ct=curT();tg.innerHTML=targets.map(t=>`<span style="display:inline-block;margin:2px 6px 2px 0;padding:3px 10px;border-radius:999px;border:2px solid ${st.made[t]?"#2e7d4f":t===ct?"var(--accent)":"#d3dedb"};${st.made[t]?"color:#2e7d4f;":""}font-weight:700">${st.made[t]?"✓ ":""}${t}</span>`).join("")+(ct?`<p style="margin:6px 0 0"><b>Make: ${ct}</b></p>`:`<p style="margin:6px 0 0;color:#2e7d4f;font-weight:700">All compounds made!</p>`);}}
+    el.addEventListener("click",e=>{const a=e.target.closest("[data-ibm]");if(a){st.m=a.dataset.ibm;st.nm=1;st.nx=1;m.textContent="";redraw();return;}
+      const b=e.target.closest("[data-ibx]");if(b){st.x=b.dataset.ibx;st.nm=1;st.nx=1;m.textContent="";redraw();return;}
+      const c=e.target.closest("[data-ibn]");if(c){const[k,d]=c.dataset.ibn.split(":");const key=k==="m"?"nm":"nx";st[key]=Math.max(1,Math.min(6,st[key]+(+d)));m.textContent="";redraw();return;}
+      if(e.target.closest("[data-ibbond]")){const cm=M[st.m].c,cx=N[st.x].c,tot=st.nm*cm+st.nx*cx;
+        if(tot!==0){m.innerHTML=`<b style="color:#b8403a">The charges don't balance yet</b> (total ${tot>0?"+":""}${tot}). Add more ${tot>0?"nonmetal":"metal"} ions.`;return;}
+        const g=gcd(st.nm,st.nx);if(g>1){m.innerHTML=`Balanced, but use the <b>smallest</b> whole-number ratio. Try ${st.nm/g} : ${st.nx/g}.`;return;}
+        const fm=formula(st.m,st.x).text,mm=st.m,xx=st.x,ne=st.nm*cm;m.innerHTML=`Watch: ${ne} electron${ne>1?"s":""} move from ${M[mm].n.toLowerCase()} to ${N[xx].n.toLowerCase()}…`;
+        if(stop)stop();stop=animate(an,mm,xx,()=>{st.made[fm]=true;m.innerHTML=`<b style="color:#2e7d4f">Bonded!</b> ${ne} electron${ne>1?"s":""} moved from ${M[mm].n.toLowerCase()} to ${N[xx].n.toLowerCase()}, and the opposite charges pulled the ions together. The compound is <b>${fm}</b>, ${name(mm,xx)}.`;if(opt.onMake)opt.onMake(fm,st.made);redraw();});}});
+    redraw();return st;}
+  /* ---- electron transfer animation ---- */
+  function transfer(el,opt){opt=opt||{};const pairs=opt.pairs||[["Na","Cl"],["Mg","O"],["Mg","Cl"],["Ca","F"],["Al","O"]];const st={k:0,shown:false,seen:{}};
+    function draw(){const[m,x]=pairs[st.k];return st.shown?transferSVG(m,x):transferSVG(m,x,{arrows:false}).replace(/<text[^>]*>↓ electrons transfer<\/text>[\s\S]*<\/svg>$/,"</svg>");}
+    el.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px" role="group" aria-label="Pick a pair">${pairs.map(([m,x],k)=>`<button type="button" class="btn secondary" style="padding:5px 12px;font-size:15px" data-trk="${k}">${M[m].n} + ${N[x].n}</button>`).join("")}</div><div class="trscene" style="max-width:580px"></div><div class="btn-row" style="margin:6px 0 0"><button type="button" class="btn" data-trgo="1">Transfer the electrons</button></div><p class="trmsg" aria-live="polite" style="margin:6px 0 0"></p>`;
+    const sc=el.querySelector(".trscene"),mm=el.querySelector(".trmsg");
+    const redraw=()=>{sc.innerHTML=draw();el.querySelectorAll("[data-trk]").forEach(b=>{b.style.background=+b.dataset.trk===st.k?"var(--accent-soft)":"";b.setAttribute("aria-pressed",+b.dataset.trk===st.k);});};redraw();
+    el.addEventListener("click",e=>{const b=e.target.closest("[data-trk]");if(b){if(st.stop)st.stop();st.k=+b.dataset.trk;st.shown=false;mm.textContent="";redraw();return;}
+      if(e.target.closest("[data-trgo]")){const[m,x]=pairs[st.k],fm=formula(m,x),k=st.k;mm.textContent="Watch the electrons move…";if(st.stop)st.stop();
+        st.stop=animate(sc,m,x,()=>{st.seen[k]=true;mm.innerHTML=`Each ${M[m].n.toLowerCase()} atom gave away ${M[m].c} electron${M[m].c>1?"s":""} and each ${N[x].n.toLowerCase()} atom took ${-N[x].c}. To balance, it takes ${fm.m} ${M[m].n.toLowerCase()} and ${fm.x} ${N[x].n.toLowerCase()}: <b>${fm.text}</b>. The opposite charges attract and hold the ions together: those are <b>ionic bonds</b>.`;if(opt.onSee)opt.onSee(Object.keys(st.seen).length);});}});
+    return st;}
+  return{lewis,transferSVG,lattice,builder,transfer,animate,animSVG,formula,name,M,N,sub,T};
+})();
+
+
+/* ===== Lesson: Ionic bonding ===== */
+const PUR="#5b3f8f",RED="#b8403a",BLU="#2f5d9b",GRN="#2e7d4f";
+const f=U.f,TT=U.T;
+function attract(){return `<svg viewBox="0 0 520 220" role="img" aria-label="A positive sodium ion and a negative chloride ion pulled toward each other by attraction arrows"><defs><marker id="atA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e7d4f"/></marker></defs><circle cx="170" cy="100" r="40" fill="#b9a4e0" stroke="${PUR}" stroke-width="3"/>${TT(170,108,"Na⁺",{size:22})}<circle cx="350" cy="100" r="58" fill="#7fd67f" stroke="${GRN}" stroke-width="3"/>${TT(350,108,"Cl⁻",{size:24})}<path d="M216,100 L286,100" stroke="${GRN}" stroke-width="4" marker-end="url(#atA)"/><path d="M286,116 L216,116" stroke="${GRN}" stroke-width="4" marker-end="url(#atA)"/>${TT(260,190,"Opposite charges attract: an ionic bond",{size:16,c:GRN})}</svg>`;}
+const FR=[
+ {tag:"1. Ions recap",say:"Metals have few valence electrons, so they <b>lose</b> them and become <b>positive</b> ions. Nonmetals have nearly full shells, so they <b>gain</b> electrons and become <b>negative</b> ions.",svg:()=>`<svg viewBox="0 0 520 200" role="img" aria-label="A sodium atom with 1 valence electron and a chlorine atom with 7 valence electrons">${IB.lewis(150,90,"Na",1,{size:34,r:28})}${IB.lewis(370,90,"Cl",7,{size:34,r:28})}${TT(150,170,"1 valence electron",{size:14})}${TT(370,170,"7 valence electrons",{size:14})}</svg>`},
+ {tag:"2. Transfer",say:"When sodium meets chlorine, sodium <b>transfers</b> its one valence electron to chlorine. Now sodium is <b>Na⁺</b> and chlorine is <b>Cl⁻</b>, and both have full outer shells.",svg:()=>IB.transferSVG("Na","Cl")},
+ {tag:"3. Ionic bond",say:"Opposite charges <b>attract</b>. This strong attraction between a positive ion and a negative ion is an <b>ionic bond</b>. Ionic bonds form between a <b>metal and a nonmetal</b>.",svg:attract},
+ {tag:"4. Crystal lattice",say:"In a real grain of salt, trillions of ions stack in a repeating pattern called a <b>crystal lattice</b>. Each ion is surrounded by ions of the opposite charge, which is why salt crystals are hard and have high melting points.",svg:()=>IB.lattice({n:6,sz:40})},
+ {tag:"5. Balancing charges",say:"The total charge of an ionic compound is always <b>zero</b>. Magnesium gives away 2 electrons, but each chlorine only takes 1, so it takes <b>two chlorines</b>: <b>MgCl₂</b>. The small number is a <b>subscript</b> showing how many of that ion.",svg:()=>IB.transferSVG("Mg","Cl")}];
+const MELT=U.bars({title:"Melting points",cats:["NaCl","MgO","KBr","CaF₂","Sugar","Wax"],vals:[801,2852,734,1418,186,60],labels:["801","2,852","734","1,418","186","60"],ymax:3000,step:500,ylabel:"Melting point (°C)",color:"#7a5ad0",aria:"Melting points: NaCl 801, MgO 2852, KBr 734, CaF2 1418, sugar 186, and wax 60 degrees Celsius."});
+const TGT=["NaF","MgO","CaCl₂","Na₂S","Al₂O₃"];
+const LAB={made:{},seen:0};
+const LESSON={title:"Ionic Bonding",short:"Ionic Bonding Lesson",
+ stub:()=>`<g transform="translate(0,-4) scale(.5)">${IB.lattice({n:9,sz:30}).replace(/^<svg[^>]*>|<\/svg>$/g,"")}</g>`,
+ phen:{title:"How do an explosive metal and a poison gas make table salt?",
+  left:`<div class="figure" style="max-width:320px"><svg viewBox="0 0 300 200" role="img" aria-label="A chunk of shiny sodium plus a flask of green chlorine gas makes a pile of white salt crystals"><rect x="20" y="80" width="56" height="40" rx="6" fill="#d8dde0" stroke="#8a959a" stroke-width="2"/>${TT(48,140,"sodium",{size:12})}${TT(96,106,"+",{size:24})}<path d="M120,60 h40 v20 l20,40 q4,14 -10,14 h-60 q-14,0 -10,-14 l20,-40 z" fill="#d6f3a3" stroke="#8aa1b1" stroke-width="2"/>${TT(140,160,"chlorine",{size:12})}${TT(206,106,"→",{size:24})}${[0,1,2,3,4,5].map(k=>`<rect x="${226+(k%3)*18}" y="${92+Math.floor(k/3)*18}" width="15" height="15" fill="#fff" stroke="#8aa1b1"/>`).join("")}${TT(254,160,"table salt",{size:12})}</svg></div>
+  <p>Sodium is a soft, shiny metal so reactive that it explodes in water. Chlorine is a green gas so poisonous it was used as a weapon in World War I.</p>
+  <p>Put them together and they react with a bright flash. What's left is sodium chloride, ordinary table salt: white crystals that are safe to eat and only melt at 801 °C.</p>`,
+  right:U.table("Before and after",["Substance","Properties"],[["Sodium (Na)","Soft metal, explodes in water"],["Chlorine (Cl₂)","Green, poisonous gas"],["Sodium chloride","White crystals, safe to eat"]]),
+  prompt:"How could two dangerous elements turn into something safe? What might happen to their electrons?"},
+ wrap:{title:"Back to sodium and chlorine",words:"<i>transfer</i>, <i>ion</i>, <i>ionic bond</i>, and <i>crystal lattice</i>",
+  html:`<p>When sodium and chlorine react, sodium <b>transfers</b> its one valence electron to chlorine. Sodium becomes Na⁺ and chlorine becomes Cl⁻. Both <b>ions</b> now have full outer shells, so they're stable and much less reactive than the elements they came from.</p>
+  <p>The opposite charges attract, forming <b>ionic bonds</b>. Trillions of ions lock into a <b>crystal lattice</b>, which is why salt forms hard cubes with a high melting point.</p>
+  <p>So the danger came from the unstable electron arrangements. Once the electrons are transferred, the new compound has completely different properties.</p>`},
+ clusters:[
+  {title:"Investigation: Inside ionic compounds",phen:"Magnesium oxide (MgO) melts at 2,852 °C, hot enough that it's used to line furnaces. Table salt melts at 801 °C. Both are ionic compounds.",
+   stim:[{name:"Passage",html:`<h3>Built from ions</h3>
+<p>An ionic bond forms when a metal transfers electrons to a nonmetal. The metal becomes a positive ion, the nonmetal becomes a negative ion, and the opposite charges attract. The ions pack into a crystal lattice.</p>
+<p>The formula of an ionic compound shows the smallest whole-number ratio of ions that makes the total charge zero. For example, Ca²⁺ and Cl⁻ make CaCl₂. The name lists the metal first, then the nonmetal with its ending changed to -ide, like calcium chloride.</p>
+<p>Ionic compounds have high melting points because it takes a lot of energy to pull apart all those attractions. Ions with bigger charges, like Mg²⁺ and O²⁻, attract even more strongly. Ionic solids are brittle and don't conduct electricity, but they do conduct when melted or dissolved, because the ions can move.</p>`},
+    {name:"Diagram",html:`<h3>Magnesium + oxygen → magnesium oxide</h3>${IB.transferSVG("Mg","O")}<h3 style="margin-top:10px">Inside a salt crystal</h3>${IB.lattice({n:6,sz:40})}`},
+    {name:"Graph",html:MELT+`<p class="cap">NaCl, MgO, KBr, and CaF₂ are ionic. Sugar and wax are not.</p>`},
+    {name:"Data",html:U.table("Does it conduct electricity?",["Sample","Bulb"],[["Solid salt crystal","Off"],["Melted salt","Bright"],["Salt water","Bright"],["Sugar water","Off"]])}],
+   items:[
+    {type:"drag",layout:"rows",uses:["Passage"],q:"Drag the correct formula for the compound each pair makes.",chips:["CaCl₂","K₂O","AlCl₃","MgS","CaCl","KO₂"],
+     zones:[{id:"a",label:"Calcium + chlorine",answer:0},{id:"b",label:"Potassium + oxygen",answer:1},{id:"c",label:"Aluminum + chlorine",answer:2},{id:"d",label:"Magnesium + sulfur",answer:3}],
+     x:"Ca²⁺ needs two Cl⁻ (CaCl₂). O²⁻ needs two K⁺ (K₂O). Al³⁺ needs three Cl⁻ (AlCl₃). Mg²⁺ and S²⁻ balance one to one (MgS)."},
+    {type:"match",uses:["Passage"],q:"Choose the name of each ionic compound.",choices:["Sodium chloride","Magnesium oxide","Calcium fluoride","Potassium sulfide","Sodium chlorine","Magnesium oxygen"],
+     rows:[{label:"NaCl",answer:"Sodium chloride"},{label:"MgO",answer:"Magnesium oxide"},{label:"CaF₂",answer:"Calcium fluoride"},{label:"K₂S",answer:"Potassium sulfide"}],
+     x:"Name the metal, then the nonmetal with an -ide ending: chloride, oxide, fluoride, sulfide. Subscripts aren't part of the name."},
+    {type:"drag",layout:"sort",uses:["Graph","Data"],q:"Sort each property: is it typical of ionic compounds?",chips:["High melting point","Hard, brittle crystals","Conducts when melted or dissolved","Melts at a low temperature","Conducts as a solid","Bends without breaking"],
+     zones:[{id:"y",label:"Typical of ionic compounds",answer:[0,1,2]},{id:"n",label:"Not typical",answer:[3,4,5]}],
+     x:"Ionic compounds have high melting points and brittle crystals, and they conduct only when the ions can move (melted or dissolved)."},
+    {type:"num",q:"How many of each ion are in one formula unit?",fields:[{label:"Cl⁻ ions in CaCl₂",answer:2,tol:0},{label:"Cl⁻ ions in AlCl₃",answer:3,tol:0}],
+     x:"The subscripts tell you: CaCl₂ has 2 chloride ions for each Ca²⁺, and AlCl₃ has 3 for each Al³⁺. That balances the charges."},
+    {type:"drag",layout:"order",uses:["Diagram"],q:"Put the steps of forming sodium chloride in order.",chips:["Chlorine gains that electron","Sodium loses its 1 valence electron","The ions stack into a crystal lattice","Na⁺ and Cl⁻ attract each other"],
+     zones:[{id:"o1",name:"Step 1",answer:1},{id:"o2",name:"Step 2",answer:0},{id:"o3",name:"Step 3",answer:3},{id:"o4",name:"Step 4",answer:2}],
+     x:"Sodium loses an electron, chlorine gains it, the opposite charges attract, and the ions build a crystal lattice."},
+    {type:"ab",uses:["Graph","Passage"],q:"This question has two parts.",
+     a:{q:"<b>Part A:</b> Why do ionic compounds have such high melting points?",o:["It takes a lot of energy to break the strong attractions between ions","Ionic compounds are made of metals only","Ionic compounds have no bonds","Ionic compounds are gases"],ans:0},
+     b:{q:"<b>Part B:</b> Which evidence best supports your answer to Part A?",o:["NaCl, MgO, KBr, and CaF₂ all melt at hundreds or thousands of degrees, but sugar and wax melt below 200 °C","Wax melts at 60 °C","MgO is used in furnaces","Sugar is not ionic"],ans:0},
+     x:"Every ionic compound on the graph melts above 700 °C. The strong attractions between ions take a lot of energy to overcome. MgO is highest because its ions have larger charges (2+ and 2−)."},
+    {type:"ab",uses:["Data"],q:"This question has two parts.",
+     a:{q:"<b>Part A:</b> Why does salt water conduct electricity?",o:["Dissolving frees the ions so they can move and carry charge","Water by itself is a great conductor","Salt turns into a metal in water","Salt water has extra electrons"],ans:0},
+     b:{q:"<b>Part B:</b> Which evidence best supports your answer to Part A?",o:["Solid salt doesn't light the bulb, but melted salt and salt water do","Sugar water doesn't light the bulb","Salt melts at 801 °C","The bulb is bright"],ans:0},
+     x:"The same ions are in solid salt, but they're locked in the lattice. When salt melts or dissolves, the ions are free to move, so electricity can flow."},
+    {type:"drag",layout:"fill",q:"Drag words into the blanks.",chips:["metal","nonmetal","positive","attract","repel","noble gas"],
+     sentence:["In an ionic bond, a ",{z:"f1"}," transfers electrons to a ",{z:"f2"},". The ",{z:"f3"}," and negative ions ",{z:"f4"}," each other."],
+     zones:[{id:"f1",name:"Blank 1",answer:0},{id:"f2",name:"Blank 2",answer:1},{id:"f3",name:"Blank 3",answer:2},{id:"f4",name:"Blank 4",answer:3}],
+     x:"A metal gives electrons to a nonmetal, and the positive and negative ions attract."}]}],
+ steps:[
+  {name:"Phenomenon",type:"phen"},
+  {name:"How ionic bonds form",type:"custom",html:()=>`<div class="card step">${kick()}<h2>How ionic bonds form</h2>${stepper("ib",FR)}<div class="rule" style="margin-top:14px"><h3>Key words</h3><ul><li><b>Ionic bond:</b> the attraction between oppositely charged ions</li><li><b>Crystal lattice:</b> the repeating pattern of ions in an ionic solid</li><li><b>Formula unit:</b> the smallest ratio of ions, like NaCl or MgCl₂</li></ul></div>${nav()}</div>`},
+  {name:"Electron transfer",type:"custom",html:()=>`<div class="card step">${kick()}<h2>Watch the electrons move</h2><p>Pick a metal and nonmetal pair, then transfer the electrons. Notice how many of each atom it takes to balance the charges. Try at least three pairs.</p><div id="trw" class="ctrlbox"></div>${nav()}</div>`,
+   enter:()=>{IB.transfer($("#trw"),{onSee:n=>{LAB.seen=n;if(n>=3){const m=$("#stepMsg");if(m)m.textContent="";}}});},
+   leave:()=>LAB.seen>=3?null:`Transfer electrons for at least 3 pairs first (you've done ${LAB.seen}).`},
+  {name:"Build compounds",type:"custom",html:()=>`<div class="card step">${kick()}<h2>Build ionic compounds</h2><p>Pick a metal and a nonmetal, add ions until the charges balance, then press <b>Bond them!</b> Make at least four of the target compounds.</p><div id="ibw" class="ctrlbox"></div>${nav()}</div>`,
+   enter:()=>{IB.builder($("#ibw"),{m:"Na",x:"F",targets:TGT,onMake:(fm,made)=>{LAB.made=made;const n=TGT.filter(t=>made[t]).length;if(n>=4){const m=$("#stepMsg");if(m)m.textContent="";}}});},
+   leave:()=>TGT.filter(t=>LAB.made[t]).length>=4?null:`Make at least 4 of the target compounds first (you've made ${TGT.filter(t=>LAB.made[t]).length}).`},
+  {name:"Investigation",type:"cluster",c:0},
+  {name:"Wrap-up",type:"wrap"}]
+};
+
+/* ===== Lesson core: sign-in, steps, CAST investigations, scoring, Sheet export ===== */
+const CFG=Object.assign({SHEET_URL:"",TEACHERS:[],PERIODS:[1,2,3,4,5,6,7]},window.EXIT_TICKET_CONFIG||{});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const announce=m=>{const l=$("#live");l.textContent="";setTimeout(()=>l.textContent=m,30);};
+const REDUCED=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const S={stu:null,step:0,maxStep:0,wonder:"",reflect:"",done:false,cl:[],tab:[],ex:{},v:{}};
+const STEPS=LESSON.steps.map(s=>s.name);const NS=STEPS.length;
+LESSON.clusters.forEach((c,k)=>{S.cl[k]=[];S.tab[k]=0;});
+document.title=LESSON.title+" Lesson";
+$("#stubart").innerHTML=LESSON.stub?LESSON.stub():"";
+
+/* ---- sign in ---- */
+$("#period").innerHTML=`<option value="">Choose</option>`+CFG.PERIODS.map(p=>`<option>${esc(p)}</option>`).join("");
+$("#teacherslot").outerHTML=CFG.TEACHERS.length?`<label for="teacher">Teacher<select id="teacher"><option value="">Choose your teacher</option>${CFG.TEACHERS.map(t=>`<option>${esc(t)}</option>`).join("")}</select></label>`:`<label for="teacher">Teacher<input id="teacher" type="text" autocomplete="off"></label>`;
+function start(){
+  const f={first:$("#first"),last:$("#last"),sid:$("#sid"),sid2:$("#sid2"),period:$("#period"),teacher:$("#teacher")};
+  Object.values(f).forEach(el=>el.classList.remove("error"));
+  const v=k=>f[k].value.trim();let msg="";
+  for(const k of Object.keys(f))if(!v(k)){f[k].classList.add("error");msg=msg||"Fill in every box before you start.";}
+  const sid=v("sid").replace(/\s+/g,""),sid2=v("sid2").replace(/\s+/g,"");
+  if(!msg&&!/^\d+$/.test(sid)){f.sid.classList.add("error");msg="Use only numbers in your student ID. No letters, dashes, or other symbols.";}
+  if(!msg&&sid.length>15){f.sid.classList.add("error");msg="That student ID is too long. Check your ID number.";}
+  if(!msg&&sid!==sid2){f.sid2.classList.add("error");msg="The two student ID boxes don't match. Check your ID number.";}
+  if(msg){$("#signerr").textContent=msg;const b=document.querySelector(".fields .error");if(b)b.focus();return;}
+  S.stu={first:v("first"),last:v("last"),id:sid,period:v("period"),teacher:v("teacher")};
+  $("#whoami").textContent=`${S.stu.first} ${S.stu.last}, Period ${S.stu.period}`;
+  $("#signin").hidden=true;$("#lesson").hidden=false;if(window.LOCKDOWN)LOCKDOWN.start();go(0);
+}
+$("#startbtn").addEventListener("click",start);
+$("#signform").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();start();}});
+
+/* ---- navigation ---- */
+function curDef(){return LESSON.steps[S.step];}
+function canLeave(){
+  const d=curDef(),m=t=>{const el=$("#stepMsg");if(el)el.textContent=t;announce(t);return false;};
+  if(d.type==="phen"&&S.wonder.trim().length<5)return m("Write your first idea before you move on. There's no wrong answer yet.");
+  if(d.type==="cluster"&&LESSON.clusters[d.c].items.some((it,k)=>!itemState(d.c,k).done))return m("Check every question in this investigation first.");
+  if(d.leave){const r=d.leave();if(r)return m(r);}
+  return true;
+}
+function go(i){
+  if(i>S.step&&!canLeave())return;
+  const old=curDef();if(old&&old.exit)old.exit();
+  S.step=i;S.maxStep=Math.max(S.maxStep,i);const d=curDef();
+  $("#steps").innerHTML=STEPS.map((n,k)=>`<button type="button" data-step="${k}" class="${k===i?"cur":k<=S.maxStep?"done":""}"${k>S.maxStep||S.done?" disabled":""}${k===i?' aria-current="step"':""}>${k+1}. ${n}</button>`).join("");
+  $("#prog").style.width=`${(i/(NS-1))*100}%`;
+  $("#main").innerHTML=d.type==="phen"?phenHTML():d.type==="cluster"?clusterHTML(d.c,i):d.type==="wrap"?wrapHTML():d.html();
+  if(d.enter)d.enter();
+  window.scrollTo({top:0});
+  const h=$("#main h2");if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+}
+const nav=()=>{const i=S.step;return `<div class="err" id="stepMsg" role="alert"></div><div class="nav no-print">${i>0?`<button class="btn secondary" type="button" data-go="${i-1}">Back</button>`:"<span></span>"}${i<NS-1?`<button class="btn" type="button" data-go="${i+1}">Next</button>`:""}</div>`;};
+const kick=()=>`<div class="kicker">Step ${S.step+1} of ${NS}: ${STEPS[S.step]}</div>`;
+
+/* ---- reusable stepper (click through pictures) ---- */
+function stepper(id,frames){const k=S.ex[id]||0,f=frames[k];
+  return `<div class="two"><div class="panelw">${f.svg()}</div><div><p class="say" style="font-size:18px" aria-live="polite"><b style="background:${f.color||"var(--accent)"};color:#fff;border-radius:6px;padding:0 8px;margin-right:6px">${f.tag||`Step ${k+1} of ${frames.length}`}</b>${f.say}</p>
+   <div class="btn-row"><button class="btn secondary" type="button" data-exn="${id}:-1"${k===0?" disabled":""}>Previous</button><button class="btn" type="button" data-exn="${id}:1"${k===frames.length-1?" disabled":""}>Next picture</button></div>${f.side||""}</div></div>`;}
+
+/* ---- phenomenon and wrap-up ---- */
+function phenHTML(){const P=LESSON.phen;return `<div class="card step">${kick()}<h2>${P.title}</h2><div class="two"><div>${P.left}</div>
+ <div>${P.right||""}<label for="wonder" style="display:block;margin-top:14px"><b>Your first idea:</b> ${P.prompt}</label>
+ <textarea id="wonder" style="margin-top:6px">${esc(S.wonder)}</textarea><p class="hint">Just write your best guess. You'll come back to it at the end.</p></div></div>${nav()}</div>`;}
+function wrapHTML(){if(S.done)return resultsHTML();const W=LESSON.wrap;
+ return `<div class="card step">${kick()}<h2>${W.title}</h2><div class="two"><div>${W.html}
+ <div class="rule" style="margin-top:12px"><h3>Your first idea was</h3><p style="margin:0;white-space:pre-wrap">${esc(S.wonder)||"<i>(blank)</i>"}</p></div></div>
+ <div><label for="reflect"><b>Look back at your first idea.</b> What would you change or add now? Use the words ${W.words}.</label>
+ <textarea id="reflect" style="margin-top:6px;min-height:140px">${esc(S.reflect)}</textarea>
+ <div class="btn-row"><button class="btn" type="button" id="finish">Finish lesson</button></div><div class="err" id="finMsg" role="alert"></div></div></div>
+ <div class="nav no-print"><button class="btn secondary" type="button" data-go="${S.step-1}">Back</button><span></span></div></div>`;}
+
+/* ---- CAST-style investigations ---- */
+const CL=LESSON.clusters;
+const itemMax=it=>it.type==="ab"||it.type==="bohr"?2:it.type==="num"?it.fields.length:it.type==="match"?it.rows.length:(it.layout==="sort"?it.chips.length:it.zones.length);
+function itemState(c,k){if(!S.cl[c][k])S.cl[c][k]={pts:null,pl:{},a:null,b:null,vals:CL[c].items[k].fields?CL[c].items[k].fields.map(()=>""):[],msel:CL[c].items[k].rows?CL[c].items[k].rows.map(()=>""):[],sh:[0,0,0,0]};const st=S.cl[c][k];st.done=st.pts!==null;return st;}
+function itemHTML(c,k){const it=CL[c].items[k],st=itemState(c,k),done=st.done,mx=itemMax(it),id=`c${c}i${k}`;
+  const uses=it.uses?`<div class="chips" style="margin:-4px 0 8px">${it.uses.map(u=>`<button type="button" class="usetab" data-usetab="${c}:${u}">Use the ${u} tab</button>`).join("")}</div>`:"";
+  let body="";
+  if(it.type==="drag")body=DND.mount("K"+c+"_"+k,it,st.pl,{locked:done,marks:true});
+  if(it.type==="ab")body=["a","b"].map(p=>{const P=it[p],sel=st[p];return `<fieldset class="q" style="margin:0 0 12px"><legend style="font-size:17px;font-weight:400">${P.q}</legend><div style="display:flex;flex-direction:column;gap:8px">${P.o.map((o,j)=>{const good=done&&j===P.ans,bad=done&&sel===j&&j!==P.ans;return `<label style="display:flex;gap:10px;align-items:center;border:2px solid ${good?"var(--ok)":bad?"var(--bad)":"var(--line)"};background:${good?"var(--ok-bg)":bad?"var(--bad-bg)":"#fff"};border-radius:10px;padding:8px 12px;cursor:pointer"><input type="radio" name="${id}${p}" data-ab="${c}:${k}:${p}" value="${j}"${sel===j?" checked":""}${done?" disabled":""}><span>${o}</span></label>`;}).join("")}</div></fieldset>`;}).join("");
+  if(it.type==="bohr"){const done2=done;const svg=(typeof BOHR!=="undefined")?`<svg viewBox="0 0 260 250" style="width:100%;max-width:280px;display:block" role="img" aria-label="Your Bohr model: shells ${st.sh.join(", ")}">${BOHR.atom(130,125,it.p,it.n,st.sh,{rings:4})}</svg>`:"";
+    body=`<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">${svg}<div style="display:flex;flex-direction:column;gap:6px">${[0,1,2,3].map(j=>`<div style="display:flex;align-items:center;gap:6px"><span style="min-width:64px;font-weight:700">Shell ${j+1}</span><button type="button" class="btn secondary" style="padding:3px 12px" data-bsh="${c}:${k}:${j}:-1"${done2?" disabled":""} aria-label="Remove an electron from shell ${j+1}">−</button><span style="min-width:22px;text-align:center;font-weight:700">${st.sh[j]}</span><button type="button" class="btn secondary" style="padding:3px 12px" data-bsh="${c}:${k}:${j}:1"${done2?" disabled":""} aria-label="Add an electron to shell ${j+1}">+</button></div>`).join("")}<p class="hint" style="margin:4px 0 0">Total electrons: ${st.sh.reduce((a,b)=>a+b,0)}</p></div></div>${done?`<p class="hint">Correct model: ${it.answer.filter(v=>v).join(", ")}</p>`:""}`;}
+  if(it.type==="match")body=`<div style="display:flex;flex-direction:column;gap:8px">${it.rows.map((r,j)=>{const v=st.msel[j],good=done&&v===r.answer,bad=done&&v!==r.answer;return `<div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:${done?2:1}px solid ${good?"var(--ok)":bad?"var(--bad)":"var(--line)"};background:${good?"var(--ok-bg)":bad?"var(--bad-bg)":"#fff"};border-radius:10px;padding:6px 12px"><span id="${id}r${j}"><b>${j+1}.</b> ${r.label}${bad?` <span class="hint">(correct: ${r.answer})</span>`:""}</span><select aria-labelledby="${id}r${j}" data-msel="${c}:${k}:${j}" style="border:2px solid #9fb4b0;border-radius:8px;padding:6px 10px;min-width:90px"${done?" disabled":""}><option value="">Choose</option>${it.choices.map(ch=>`<option${v===ch?" selected":""}>${esc(ch)}</option>`).join("")}</select></div>`;}).join("")}</div>`;
+  if(it.type==="num")body=`<div style="display:flex;flex-wrap:wrap;gap:14px">${it.fields.map((f,j)=>`<label style="display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:15px">${f.label}<span style="display:flex;align-items:center;gap:6px;font-weight:400"><input class="n" type="text" inputmode="decimal" data-numf="${c}:${k}:${j}" value="${esc(st.vals[j])}"${done?" disabled":""}> ${f.unit||""}</span></label>`).join("")}</div>${done?`<p class="hint">Correct answers: ${it.fields.map(f=>`${f.label}: ${f.answer} ${f.unit||""}`).join("; ")}</p>`:""}`;
+  return `<div class="q castq" id="${id}"><p class="qp">${k+1}. ${it.q}</p>${uses}${body}
+   ${done?`<div class="explain"><b>${st.pts===mx?"All correct!":`${st.pts} of ${mx} correct.`}</b> ${it.x}</div>`:`<div class="btn-row"><button class="btn secondary" type="button" data-icheck="${c}:${k}">Check</button></div><div class="err" id="${id}err" role="alert"></div>`}</div>`;}
+function checkItem(c,k){const it=CL[c].items[k],st=itemState(c,k),id=`c${c}i${k}`;let pts=0;
+  if(it.type==="drag"){if(!DND.complete(it,st.pl)){$("#"+id+"err").textContent="Place every card before you check.";return;}pts=DND.grade(it,st.pl).pts;}
+  if(it.type==="ab"){if(st.a===null||st.b===null){$("#"+id+"err").textContent="Answer both Part A and Part B before you check.";return;}pts=(st.a===it.a.ans?1:0)+(st.b===it.b.ans?1:0);}
+  if(it.type==="bohr"){const tot=st.sh.reduce((a,b)=>a+b,0);if(!tot){$("#"+id+"err").textContent="Add electrons to your model before you check.";return;}pts=(tot===it.answer.reduce((a,b)=>a+b,0)?1:0)+(st.sh.join()===it.answer.join()?1:0);}
+  if(it.type==="match"){if(st.msel.some(v=>!v)){$("#"+id+"err").textContent="Choose an answer for every row before you check.";return;}pts=it.rows.filter((r,j)=>st.msel[j]===r.answer).length;}
+  if(it.type==="num"){if(st.vals.some(v=>!String(v).trim())){$("#"+id+"err").textContent="Fill in every box before you check.";return;}
+    pts=it.fields.filter((f,j)=>{const v=parseFloat(String(st.vals[j]).replace(/,/g,""));return !isNaN(v)&&Math.abs(v-f.answer)<=(f.tol||0)+1e-9;}).length;}
+  st.pts=pts;const y=window.scrollY;go(S.step);window.scrollTo({top:y});const mx=itemMax(it);announce(pts===mx?"All correct!":`${pts} of ${mx} correct.`);}
+function clusterHTML(c){const C=CL[c],tab=S.tab[c];
+  return `<div class="card step">${kick()}<h2>${C.title}</h2><p>Read the stimulus on the left, then answer the questions. Your first answer to each question counts, so check your work before you press <b>Check</b>.</p>
+  <div class="cast"><div class="stimpanel"><div class="phenbox"><b>Phenomenon</b>${C.phen}</div>
+   <div class="stabs" role="tablist">${C.stim.map((s,k)=>`<button type="button" role="tab" class="stab" aria-selected="${k===tab}" data-stab="${c}:${k}">${s.name}</button>`).join("")}</div>
+   <div class="stimbody" role="tabpanel">${C.stim[tab].html}</div></div>
+  <div class="qcol">${C.items.map((it,k)=>itemHTML(c,k)).join("")}</div></div>${nav()}</div>`;}
+
+/* ---- finish, results, export ---- */
+let RESULT=null;
+function finish(){if(S.reflect.trim().length<10){$("#finMsg").textContent="Write your updated idea before you finish.";return;}
+  if(window.LOCKDOWN)LOCKDOWN.stop();const LD=window.LOCKDOWN&&LOCKDOWN.enabled?LOCKDOWN.summary():null;
+  const allPts=[],labels=[];CL.forEach((C,c)=>C.items.forEach((it,k)=>{allPts.push(itemState(c,k).pts||0);labels.push(`Inv${c+1} Q${k+1}`);}));
+  const pts=allPts.reduce((a,b)=>a+b,0),max=CL.flatMap(C=>C.items.map(itemMax)).reduce((a,b)=>a+b,0);
+  const s=S.stu,now=new Date();
+  const header=["Student ID","# Correct","Last Name","First Name","Period","Teacher","Points Possible","Percent","Lesson","Submitted"].concat(labels,["First Idea","Updated Idea"]).concat(LD?["Times Left Page","Seconds Away"]:[]);
+  const row=[s.id,pts,s.last,s.first,s.period,s.teacher,max,Math.round(pts/max*1000)/10,LESSON.title,now.toLocaleString()].concat(allPts,[S.wonder.trim(),S.reflect.trim()]).concat(LD?[LD.count,LD.away]:[]);
+  RESULT={header,row,tab:`${LESSON.short}${CFG.TEACHERS.length>1?" "+s.teacher.split(/\s+/).pop():""} P${s.period}`,pts,max,now,LD};S.done=true;go(S.step);send();}
+function resultsHTML(){const R=RESULT,s=S.stu;return `<div class="card step"><div class="kicker">Lesson complete</div><h2>Nice work, ${esc(s.first)}!</h2><div class="score">${R.pts}<small> / ${R.max}</small></div>
+  <div class="hint" style="margin-top:6px">${esc(s.first)} ${esc(s.last)}, ID ${esc(s.id)}, Period ${esc(s.period)}, ${esc(s.teacher)}. ${R.now.toLocaleString()}${R.LD?`. Left the lesson: ${R.LD.count} time${R.LD.count===1?"":"s"}`:""}</div>
+  <div id="sendbox" class="sendbox wait no-print">Sending your score to your teacher…</div>
+  <table class="summary"><tbody>${CL.map((C,c)=>C.items.map((it,k)=>`<tr><td>Investigation ${c+1}, question ${k+1}</td><td>${itemState(c,k).pts||0} / ${itemMax(it)}</td></tr>`).join("")).join("")}</tbody></table>
+  <div class="rule"><h3>Your updated idea</h3><p style="margin:0;white-space:pre-wrap">${esc(S.reflect)}</p></div>
+  <div class="btn-row no-print"><button class="btn" type="button" id="print">Print</button><button class="btn secondary" type="button" id="dlcsv">Download my results (CSV)</button></div></div>`;}
+function send(){const box=$("#sendbox");if(!box)return;
+  if(!CFG.SHEET_URL){box.className="sendbox bad no-print";box.innerHTML="This lesson isn't connected to your teacher's gradebook yet. Click <b>Download my results (CSV)</b> and turn in the file the way your teacher asks.";return;}
+  box.className="sendbox wait no-print";box.textContent="Sending your score to your teacher…";
+  fetch(CFG.SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({header:RESULT.header,row:RESULT.row,tab:RESULT.tab})})
+   .then(()=>{box.className="sendbox ok no-print";box.textContent="✓ Your score was sent to your teacher.";})
+   .catch(()=>{box.className="sendbox bad no-print";box.innerHTML=`Your score didn't send. Check your internet, then <button type="button" class="btn secondary" id="resend" style="padding:4px 12px;font-size:15px">try again</button>. If it still won't send, download your results.`;});}
+function csvCell(v){v=String(v);return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v;}
+function downloadCSV(){const csv=[RESULT.header,RESULT.row].map(r=>r.map(csvCell).join(",")).join("\r\n");const u=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));const a=document.createElement("a");a.href=u;a.download=`${LESSON.short.replace(/\s+/g,"-")}_${S.stu.last}_${S.stu.first}_${S.stu.id}.csv`.replace(/[^\w.-]/g,"");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+
+/* ---- events ---- */
+document.addEventListener("click",e=>{const t=e.target;
+  const g=t.closest("[data-go]");if(g){go(+g.dataset.go);return;}
+  const sp=t.closest("[data-step]");if(sp&&!sp.disabled){const k=+sp.dataset.step;if(k<=S.maxStep)go(k);return;}
+  const ex=t.closest("[data-exn]");if(ex&&!ex.disabled){const[id,d]=ex.dataset.exn.split(":");S.ex[id]=(S.ex[id]||0)+(+d);go(S.step);const b=document.querySelector(`[data-exn="${id}:${d}"]`);(b&&!b.disabled?b:document.querySelector(`[data-exn="${id}:${-d}"]`)).focus();return;}
+  const bs=t.closest("[data-bsh]");if(bs&&!bs.disabled){const[c,k,j,d]=bs.dataset.bsh.split(":").map(Number);const st=itemState(c,k);st.sh[j]=Math.max(0,Math.min(8,st.sh[j]+d));const y=window.scrollY;go(S.step);window.scrollTo({top:y});const nb=document.querySelector(`[data-bsh="${c}:${k}:${j}:${d}"]`);if(nb)nb.focus();return;}
+  const ic=t.closest("[data-icheck]");if(ic){const[c,k]=ic.dataset.icheck.split(":").map(Number);checkItem(c,k);return;}
+  const stb=t.closest("[data-stab]");if(stb){const[c,k]=stb.dataset.stab.split(":").map(Number);S.tab[c]=k;const p=document.querySelector(".stimpanel");p.querySelector(".stabs").innerHTML=CL[c].stim.map((s,j)=>`<button type="button" role="tab" class="stab" aria-selected="${j===k}" data-stab="${c}:${j}">${s.name}</button>`).join("");p.querySelector(".stimbody").innerHTML=CL[c].stim[k].html;document.querySelector(`[data-stab="${c}:${k}"]`).focus();return;}
+  const ut=t.closest("[data-usetab]");if(ut){const[c,name]=ut.dataset.usetab.split(":");const k=CL[+c].stim.findIndex(s=>s.name===name);const btn=document.querySelector(`[data-stab="${c}:${k}"]`);if(btn){btn.click();if(window.innerWidth<900)document.querySelector(".stimpanel").scrollIntoView({block:"start"});}return;}
+  if(t.closest("#finish")){finish();return;}
+  if(t.closest("#print")){window.print();return;}
+  if(t.closest("#dlcsv")){downloadCSV();return;}
+  if(t.closest("#resend")){send();return;}
+  if(LESSON.onClick){const m=$("#stepMsg");if(m&&t.closest("button,input,label"))m.textContent="";LESSON.onClick(e);}
+});
+document.addEventListener("change",e=>{const ab=e.target.dataset&&e.target.dataset.ab;if(ab){const[c,k,p]=ab.split(":");itemState(+c,+k)[p]=+e.target.value;return;}const ms=e.target.dataset&&e.target.dataset.msel;if(ms){const[c,k,j]=ms.split(":").map(Number);itemState(c,k).msel[j]=e.target.value;return;}if(LESSON.onChange)LESSON.onChange(e);});
+document.addEventListener("input",e=>{const t=e.target;
+  if(t.id==="wonder"){S.wonder=t.value;const m=$("#stepMsg");if(m)m.textContent="";}
+  if(t.id==="reflect")S.reflect=t.value;
+  if(t.dataset&&t.dataset.numf){const[c,k,j]=t.dataset.numf.split(":").map(Number);itemState(c,k).vals[j]=t.value;}
+  if(t.classList)t.classList.remove("error");
+  if(LESSON.onInput){const m=$("#stepMsg");if(m&&t.id!=="wonder"&&t.id!=="reflect")m.textContent="";LESSON.onInput(e);}});
+window.addEventListener("beforeunload",e=>{if(S.stu&&!S.done){e.preventDefault();e.returnValue="";}});
+if(location.hash==="#selftest")window.__L={LESSON,S,CL};
+
+})();
+</script>
+</body>
+</html>

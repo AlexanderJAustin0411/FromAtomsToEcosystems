@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ions Exit Ticket</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b36;--muted:#56666f;--paper:#f3f6f5;--line:#d3dedb;--accent:#b8403a;--accent-soft:#fbe9e7;--ok:#2e7d4f;--ok-bg:#e7f4ec;--bad:#b8403a;--bad-bg:#f9e8e6;--flag:#a86a00;--flag-bg:#fff3dc}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{border:0;border-radius:10px;padding:11px 22px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;font-size:17px}
+.btn.secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn:disabled{opacity:.5;cursor:default}
+.err{color:var(--bad);font-weight:700;margin-top:10px}
+
+/* sign-in ticket */
+.signin{max-width:640px;margin:28px auto;padding:0 16px}
+.ticket{background:#fff;border-radius:14px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(29,43,54,.07);overflow:hidden}
+.stub{background:var(--accent);color:#fff;padding:22px 26px 24px}
+.stub .unit{font-size:15px;opacity:.9}
+.stub h1{font-size:clamp(30px,6vw,42px);font-weight:800;letter-spacing:-.015em;margin-top:2px}
+.stub .time{margin-top:6px;font-size:15px;opacity:.92}
+.perf{position:relative;height:0;border-top:3px dashed var(--line)}
+.perf::before,.perf::after{content:"";position:absolute;top:-13px;width:24px;height:24px;border-radius:50%;background:var(--paper)}
+.perf::before{left:-12px}.perf::after{right:-12px}
+.tbody{padding:22px 26px 28px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+.fields input,.fields select{border:2px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;font-weight:400;min-width:0}
+.fields input.error,.fields select.error{border-color:var(--bad);background:var(--bad-bg)}
+.fields .full{grid-column:1/-1}
+.phen{margin:0 0 18px;padding:12px 14px;border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+.phen b{display:block;font-size:15px;color:var(--accent)}
+
+/* test layout */
+.bar{background:var(--accent);color:#fff}
+.bar .inner{max-width:1280px;margin:0 auto;padding:10px 18px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.bar h1{font-size:22px;font-weight:800}
+.bar .who{font-size:15px;opacity:.92;margin-right:auto}
+.navq{display:flex;flex-wrap:wrap;gap:6px}
+.navq button{min-width:38px;height:36px;border-radius:8px;border:2px solid rgba(255,255,255,.55);background:transparent;color:#fff;font-weight:700;cursor:pointer;position:relative;padding:0 8px}
+.navq button.done{background:rgba(255,255,255,.22)}
+.navq button.cur{background:#fff;color:var(--accent);border-color:#fff}
+.navq button.flagged::after{content:"⚑";position:absolute;top:-9px;right:-6px;font-size:13px;background:var(--flag-bg);color:var(--flag);border-radius:50%;width:18px;height:18px;line-height:18px;border:1px solid var(--flag)}
+.main{max-width:1280px;margin:0 auto;padding:18px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px}
+.stim{position:sticky;top:12px;max-height:calc(100vh - 24px);display:flex;flex-direction:column}
+.stim .phen{margin:14px 16px 0}
+.tabs{display:flex;gap:2px;padding:12px 12px 0;border-bottom:2px solid var(--line);overflow-x:auto}
+.tab{appearance:none;border:0;background:none;padding:8px 14px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;white-space:nowrap;border-radius:6px 6px 0 0}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-soft)}
+.tabpanel{padding:14px 18px 18px;overflow:auto}
+.tabpanel p{margin:0 0 10px;max-width:62ch}
+.tabpanel h3{font-size:17px;margin:4px 0 8px}
+.tabpanel svg{width:100%;height:auto;display:block}
+.cap{font-size:14px;color:var(--muted);margin-top:6px}
+table.data{border-collapse:collapse;margin:4px 0 16px;font-size:16px}
+table.data th,table.data td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+table.data th{background:#f4f8f7}
+table.data td:first-child{font-weight:700;text-align:left}
+.qpane{padding:18px 20px 20px;min-height:420px}
+.qmeta{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:15px;margin-bottom:8px}
+.flag{border:1px solid var(--line);background:#fff;border-radius:6px;font-size:14px;padding:4px 10px;color:var(--muted);cursor:pointer}
+.flag[aria-pressed="true"]{background:var(--flag-bg);border-color:var(--flag);color:var(--flag);font-weight:700}
+.prompt{font-weight:700;font-size:18px;margin:0 0 8px}
+.uses{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.uses button{border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.hint{color:var(--muted);font-size:15px;margin:-4px 0 10px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:10px;align-items:center;border:2px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt input{accent-color:var(--accent);width:18px;height:18px;margin:0;flex:0 0 auto}
+.opt .nuc{font-size:20px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+select.pick{border:2px solid #9fb4b0;border-radius:8px;padding:6px 10px;background:#fff;cursor:pointer;min-width:120px}
+select.pick.has{border-color:var(--accent);background:var(--accent-soft);font-weight:700}
+.nums{display:flex;flex-wrap:wrap;gap:12px}
+.nums label{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+.unitwrap{display:flex;align-items:center;gap:6px;font-weight:400}
+input.n{width:110px;border:2px solid #9fb4b0;border-radius:8px;padding:7px 10px}
+table.grid{border-collapse:collapse}
+table.grid th,table.grid td{border:1px solid var(--line);padding:7px 9px;text-align:center}
+table.grid th{background:#f7fbfa;font-size:15px}
+table.grid td:first-child{text-align:left;font-weight:700}
+table.grid input.n{width:66px;text-align:center}
+.cer{display:flex;flex-direction:column;gap:10px}
+.cer-part{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.cer-part label{display:flex;gap:8px;align-items:baseline;font-weight:700;flex-wrap:wrap}
+.tag{background:var(--accent);color:#fff;border-radius:6px;padding:1px 8px;font-size:14px}
+.guide{font-weight:400;color:var(--muted);font-size:15px}
+.cer-part textarea{width:100%;margin-top:8px;min-height:72px;border:2px solid #9fb4b0;border-radius:10px;padding:9px 11px;resize:vertical}
+.pt{display:grid;grid-template-columns:20px repeat(18,minmax(0,1fr));gap:0;max-width:560px;font-size:12px}
+.pt .gh,.pt .ph{color:var(--muted);font-size:10px;display:flex;align-items:center;justify-content:center}
+.pt .cell{aspect-ratio:1;border:1px solid #c7d3d0;margin:0 -1px -1px 0;background:#fff;border-radius:0;padding:0;font-weight:700;font-size:clamp(9px,1.6vw,12px);cursor:pointer;color:var(--ink)}
+.pt .cell:hover{border-color:var(--accent);background:var(--accent-soft)}
+.pt .cell.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pt .sl{box-shadow:inset 4px 0 0 #1d2b36}.pt .sb{box-shadow:inset 0 -4px 0 #1d2b36}.pt .sl.sb{box-shadow:inset 4px 0 0 #1d2b36,inset 0 -4px 0 #1d2b36}
+.pt .cell:focus-visible{position:relative;z-index:1}
+.ptkey{font-size:14px;color:var(--muted);margin-top:6px}
+.bohr{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:16px;align-items:center}
+.bohr svg{width:100%;height:auto;display:block}
+.shells{display:flex;flex-direction:column;gap:8px}
+.shellrow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.shellrow .nm{font-weight:700;min-width:64px}
+.shellrow button{width:36px;height:36px;border-radius:8px;border:2px solid var(--accent);background:#fff;color:var(--accent);font-size:20px;font-weight:700;cursor:pointer;line-height:1}
+.shellrow button:disabled{opacity:.35;cursor:default}
+.shellrow output{min-width:28px;text-align:center;font-size:20px;font-weight:700}
+.bohrtotal{font-size:15px;color:var(--muted)}
+@media (max-width:520px){.bohr{grid-template-columns:1fr}}
+.qnav{display:flex;justify-content:space-between;gap:10px;margin-top:22px;padding-top:14px;border-top:1px solid #edf2f1}
+.nuc{display:inline-flex;align-items:center;white-space:nowrap;font-weight:700}
+.nn{display:inline-flex;flex-direction:column;align-items:flex-end;font-size:.66em;line-height:1.05;margin-right:2px}
+.review-list{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:6px}
+.review-list li{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+.st{font-size:14px;font-weight:700;border-radius:999px;padding:1px 10px}
+.st.ok{background:var(--ok-bg);color:var(--ok)}.st.no{background:var(--bad-bg);color:var(--bad)}.st.fl{background:var(--flag-bg);color:var(--flag)}
+.review-list li>span:last-child{display:flex;gap:4px;flex-wrap:nowrap;white-space:nowrap}
+.confirmbox{margin-top:14px;border:2px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:12px 14px}
+.confirmbox p{margin:0}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline;padding:0}
+
+/* ---- drag-and-drop questions ---- */
+.dnd{margin-top:4px}
+.dbank{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:54px;padding:10px;border:2px dashed #b9c9c6;border-radius:10px;background:#f7fbfa;margin-bottom:12px}
+.dbank .dhint{color:var(--muted);font-size:14px}
+.dchip{touch-action:none;-webkit-user-select:none;user-select:none;border:2px solid var(--accent);background:#fff;color:var(--ink);font-weight:700;padding:6px 12px;border-radius:8px;cursor:grab;line-height:1.3;text-align:left;font-size:15px}
+.dchip:hover{background:var(--accent-soft)}
+.dchip.on{background:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+.dchip:disabled{cursor:default;opacity:1}
+.dchip.lift{opacity:.35}
+.dghost{position:fixed;left:0;top:0;z-index:1000;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);box-shadow:0 8px 18px rgba(0,0,0,.25);margin:0}
+.dzone{min-height:44px;border:2px dashed #9fb4b0;border-radius:8px;background:#fff;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 6px;cursor:pointer}
+.dzone .dph{color:#8a979c;font-size:14px;padding:0 4px}
+.dzone.target{border-color:var(--accent);background:#fdf7fa}
+.dzone.hover{border-color:var(--accent);border-style:solid;background:var(--accent-soft)}
+.dzone.filled{border-style:solid;border-color:#b7cfcb}
+.dzone.right{border-color:var(--ok);background:var(--ok-bg);border-style:solid}
+.dzone.wrong{border-color:var(--bad);background:var(--bad-bg);border-style:solid}
+.dchip.right{border-color:var(--ok);background:var(--ok-bg)}
+.dchip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.dlabel{position:relative}
+.dlabel .dfig svg{width:100%;height:auto;display:block}
+.dlabel .dzone{position:absolute;transform:translateY(-50%);min-height:38px;padding:2px 4px}
+.dlabel .dzone .dph{font-size:12px}
+.dlabel .dzone .dchip{font-size:13px;padding:4px 8px}
+.dfig2{margin:0 0 12px;max-width:560px}
+.dfig2 svg{width:100%;height:auto;display:block}
+.drows{display:flex;flex-direction:column;gap:8px}
+.drow{display:grid;grid-template-columns:minmax(110px,30%) 1fr;gap:12px;align-items:center}
+.drow>span{font-weight:700}
+.dorder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dorder li{display:flex;gap:10px;align-items:center}
+.dorder .onum{flex:0 0 32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.dorder .dzone{flex:1}
+.dbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.dbin{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.dbin .bt{background:var(--accent-soft);color:var(--ink);font-weight:700;padding:6px 10px;font-size:15px}
+.dbin .dzone{border:0;border-radius:0;min-height:120px;align-content:flex-start;padding:8px}
+.dbin .dzone.hover,.dbin .dzone.target{outline:2px dashed var(--accent);outline-offset:-4px}
+.dfill{line-height:2.6;margin:0;font-size:17px}
+.dfill .dzone{display:inline-flex;vertical-align:middle;min-width:120px;min-height:38px;margin:0 2px;padding:2px 4px}
+@media (max-width:520px){.dlabel .dzone .dchip{font-size:11px;padding:2px 5px}.dlabel .dzone .dph{font-size:10px}}
+/* results */
+.results{max-width:900px;margin:0 auto;padding:18px}
+.results .panel{padding:20px 22px}
+.score{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:56px;line-height:1}
+.score small{font-size:24px;color:var(--muted);font-weight:600}
+.res-top{display:flex;flex-wrap:wrap;gap:16px 36px;align-items:end;margin:6px 0 14px}
+.res-meta{color:var(--muted);font-size:16px}
+.sendbox{border-radius:10px;padding:10px 14px;margin:6px 0 4px;font-weight:700}
+.sendbox.ok{background:var(--ok-bg);color:var(--ok)}.sendbox.wait{background:#eef3f2;color:var(--muted)}.sendbox.bad{background:var(--bad-bg);color:var(--bad)}
+.res{border:1px solid var(--line);border-left:6px solid #9aa8ab;border-radius:10px;padding:12px 14px;margin-top:12px;break-inside:avoid}
+.res.ok{border-left-color:var(--ok)}.res.bad{border-left-color:var(--bad)}.res.part{border-left-color:#c49000}
+.res h3{font-size:17px;font-family:"Atkinson Hyperlegible",sans-serif;display:flex;gap:10px;align-items:baseline}
+.res h3 .pts{margin-left:auto;font-weight:700;white-space:nowrap}
+.res ul{margin:8px 0 0;padding-left:20px}
+.good{color:var(--ok)}.wrong{color:var(--bad)}
+.explain{margin:10px 0 0;background:#f7fbfa;border-radius:8px;padding:8px 10px;font-size:16px}
+.student{white-space:pre-wrap;background:#fff;border:1px dashed var(--line);border-radius:8px;padding:8px 10px;margin-top:6px}
+.vocab{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.vocab span{border-radius:999px;padding:2px 10px;font-size:14px;border:1px solid}
+.vocab .hit{color:var(--ok);border-color:var(--ok);background:var(--ok-bg)}
+.vocab .miss{color:var(--bad);border-color:var(--bad);background:var(--bad-bg)}
+.cer-res{margin-top:10px}
+.cer-res h4{margin:0;font-size:15px;display:flex;gap:8px}
+.cer-res h4 .pts{margin-left:auto}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}
+@media (max-width:900px){.main{grid-template-columns:1fr}.stim{position:static;max-height:none}}
+@media (max-width:520px){.fields{grid-template-columns:1fr}.row{grid-template-columns:1fr}.tbody,.stub{padding-left:18px;padding-right:18px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{body{background:#fff;font-size:11pt}.no-print,#signin,#test{display:none!important}.results{padding:0}.results .panel{border:0;padding:0}.score{font-size:34pt}.res-q-fig svg{max-width:320px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d2b36"/></marker>
+<marker id="ahr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8403a"/></marker>
+<marker id="aha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b8403a"/></marker>
+</defs></svg>
+
+<!-- sign in -->
+<section class="signin" id="signin">
+ <div class="ticket">
+  <div class="stub">
+   <div class="unit">Chemistry exit ticket</div>
+   <h1>Ions</h1>
+   <div class="time" id="stubtime"></div>
+  </div>
+  <div class="perf" aria-hidden="true"></div>
+  <div class="tbody">
+   <div class="phen" id="phen1"></div>
+   <div id="signform">
+    <div class="fields" id="fields"></div>
+    <div class="btn-row" style="margin-top:20px"><button class="btn" type="button" id="startbtn">Start exit ticket</button></div>
+    <div class="err" id="signerr" role="alert"></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- test -->
+<section id="test" hidden>
+ <div class="bar"><div class="inner">
+  <h1>Ions</h1><span class="who" id="whoami"></span>
+  <nav class="navq" id="navq" aria-label="Questions"></nav>
+ </div></div>
+ <div class="main">
+  <div class="panel stim" id="stim">
+   <div class="phen" id="phen2"></div>
+   <div class="tabs" role="tablist" id="tabs" aria-label="Stimulus"></div>
+   <div class="tabpanel" id="tabpanel" role="tabpanel"></div>
+  </div>
+  <div class="panel qpane" id="qpane"></div>
+ </div>
+</section>
+
+<!-- results -->
+<section class="results" id="results" hidden></section>
+<div id="live" class="sr-only" aria-live="polite"></div>
+
+<script src="exit-ticket-config.js"></script>
+<script>
+/* ===== Ions: Bohr models, ion builder, and charge patterns (shared by lesson and exit ticket) ===== */
+const ION=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  const D=[null,["H","Hydrogen","hydride",1],["He","Helium","",18],["Li","Lithium","",1],["Be","Beryllium","",2],["B","Boron","",13],["C","Carbon","carbide",14],["N","Nitrogen","nitride",15],["O","Oxygen","oxide",16],["F","Fluorine","fluoride",17],["Ne","Neon","",18],["Na","Sodium","",1],["Mg","Magnesium","",2],["Al","Aluminum","",13],["Si","Silicon","",14],["P","Phosphorus","phosphide",15],["S","Sulfur","sulfide",16],["Cl","Chlorine","chloride",17],["Ar","Argon","",18],["K","Potassium","",1],["Ca","Calcium","",2]];
+  const SYM={};for(let z=1;z<D.length;z++)SYM[D[z][0]]=z;
+  const CHARGE={1:1,2:2,13:3,14:0,15:-3,16:-2,17:-1,18:0};
+  const sup=c=>c===0?"":(Math.abs(c)>1?Math.abs(c):"")+(c>0?"⁺":"⁻");
+  const supDigits=s=>String(s).replace(/[0-9]/g,d=>"⁰¹²³⁴⁵⁶⁷⁸⁹"[d]);
+  const ionSym=(z,e)=>{const c=z-e;return D[z][0]+(c===0?"":supDigits(Math.abs(c)>1?Math.abs(c):"")+(c>0?"⁺":"⁻"));};
+  function shells(e){const cap=[2,8,8,2],out=[];let r=e;for(let k=0;k<4&&r>0;k++){const n=Math.min(cap[k],r);out.push(n);r-=n;}return out;}
+  /* spots as [angle, electron number in fill order]: one each at top, right, bottom, left, then pairs in the same order */
+  function eSpots(n,r,first){const d=7/r,out=[],top=-Math.PI/2;if(first)return n===0?out:n===1?[[top,1]]:[[top-d,1],[top+d,2]];
+    for(let j=0;j<4;j++){const a=top+j*Math.PI/2,c=(j<n?1:0)+(j<n-4?1:0);if(c===2)out.push([a-d,j+1],[a+d,j+5]);else if(c===1)out.push([a,j+1]);}return out;}
+  function ionName(z,e){const c=z-e,d=D[z];if(c>0)return `${d[1].toLowerCase()} ion`;if(c<0)return d[2]?`${d[2]} ion`:`${d[1].toLowerCase()} ion`;return `${d[1].toLowerCase()} atom`;}
+  function nobleLike(e){return[2,10,18].includes(e)?{2:"helium",10:"neon",18:"argon"}[e]:null;}
+  /* Bohr model; o.r0 radius step; o.hiOuter colors outer shell; o.ghost: number of electrons shown as dashed (lost) */
+  function bohr(cx,cy,z,e,o){o=o||{};const sh=shells(e),R=o.R||[30,52,74,96];let s="";const col=o.col||"#2f5d9b";
+    const nShell=Math.max(sh.length,o.ghostShell||0);
+    for(let k=0;k<nShell;k++)s+=`<circle cx="${cx}" cy="${cy}" r="${R[k]}" fill="none" stroke="#9fb4b0" stroke-width="2"${k>=sh.length?' stroke-dasharray="4 4"':""}/>`;
+    s+=`<circle cx="${cx}" cy="${cy}" r="18" fill="#fde2df" stroke="#d9574f" stroke-width="2"/>`+T(cx,cy+4,`${z}p⁺`,{size:11,c:"#a33"});
+    sh.forEach((n,k)=>{const last=k===sh.length-1;eSpots(n,R[k],k===0).forEach(([q,num])=>{const isNew=o.added&&last&&num>n-o.added;s+=`<circle cx="${f(cx+R[k]*Math.cos(q))}" cy="${f(cy+R[k]*Math.sin(q))}" r="5.5" fill="${isNew?"#7a5ad0":col}" stroke="#fff" stroke-width="1.3"/>`;});});
+    if(o.lostAt){o.lostAt.forEach(([x,y])=>{s+=`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="${col}" stroke-width="1.5" stroke-dasharray="3 2"/>`;});}
+    return s;}
+  /* before → after picture of one atom becoming an ion */
+  function formation(z,e2,o){o=o||{};const W=o.W||520,H=196;const e1=z;let s="";s+=bohr(110,90,z,e1)+T(110,196,`${D[z][1]} atom: ${z}p⁺, ${e1}e⁻`,{size:12});
+    s+=`<path d="M216,90 L298,90" stroke="#1d2b36" stroke-width="3" marker-end="url(#ia)"/>`+T(255,78,e2<e1?`loses ${e1-e2} e⁻`:`gains ${e2-e1} e⁻`,{size:12,c:e2<e1?"#b8403a":"#2e7d4f"});
+    s+=bohr(400,90,z,e2,{added:e2>e1?e2-e1:0})+T(400,196,`${ionSym(z,e2)}: ${z}p⁺, ${e2}e⁻`,{size:12});
+    return `<svg viewBox="0 0 ${W} ${H+6}" role="img" aria-label="A ${D[z][1].toLowerCase()} atom with ${z} protons and ${e1} electrons ${e2<e1?"loses":"gains"} ${Math.abs(e1-e2)} electron${Math.abs(e1-e2)>1?"s":""} to become ${ionSym(z,e2)} with ${e2} electrons and a full outer shell"><defs><marker id="ia" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2b36"/></marker></defs>${s}</svg>`;}
+  /* ---- ion builder widget ---- */
+  function builder(el,opt){opt=opt||{};const list=opt.elements||["Li","Na","K","Mg","Ca","Al","N","O","S","F","Cl","Ne"];const st={z:SYM[opt.start||"Na"],e:SYM[opt.start||"Na"],made:{}};
+    function charge(){return st.z-st.e;}
+    function draw(){const z=st.z,e=st.e,c=charge(),sh=shells(e),full=nobleLike(e);
+      let s=bohr(170,120,z,e);s+=T(360,70,ionSym(z,e),{size:40,c:c>0?"#b8403a":c<0?"#2f5d9b":"#1d2b36",a:"start"});
+      s+=T(360,104,`${z} protons (+${z})`,{size:14,a:"start",c:"#a33"})+T(360,126,`${e} electrons (−${e})`,{size:14,a:"start",c:"#2f5d9b"})+T(360,152,`Charge: ${z} − ${e} = ${c>0?"+":c<0?"−":""}${Math.abs(c)}`,{size:15,a:"start"});
+      s+=T(360,178,c>0?"Cation (positive ion)":c<0?"Anion (negative ion)":"Neutral atom",{size:13,a:"start",c:"#56666f"})+T(360,200,ionName(z,e),{size:13,a:"start",w:400});
+      return `<svg viewBox="0 0 560 240" style="width:100%;max-width:560px;display:block" role="img" aria-label="${D[z][1]} with ${z} protons and ${e} electrons, shells ${sh.join(", ")}. Charge ${c}. ${full?"Full outer shell like "+full+".":""}">${s}</svg>`;}
+    function msg(){const z=st.z,e=st.e,c=charge(),full=nobleLike(e),grp=D[z][3];
+      if(full&&c!==0)return `<b style="color:#2e7d4f">Stable!</b> ${ionSym(z,e)} has a full outer shell, the same number of electrons as ${full}.`;
+      if(full&&c===0)return `${D[z][1]} is a noble gas. Its outer shell is already full, so it doesn't need to gain or lose electrons.`;
+      if(c===0)return `Neutral ${D[z][1].toLowerCase()} atom: ${z} protons and ${z} electrons. Its outer shell isn't full yet.`;
+      return `Outer shell not full yet. Keep ${c>0?"removing":"adding"} electrons, or try the other direction.`;}
+    el.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px" role="group" aria-label="Choose an element">${list.map(sy=>`<button type="button" class="btn secondary" style="padding:5px 11px;font-size:15px" data-ibz="${SYM[sy]}">${sy}</button>`).join("")}</div>
+      <div class="ibscene"></div><div class="btn-row" style="margin:6px 0"><button type="button" class="btn" data-ibe="-1">Remove an electron</button><button type="button" class="btn" data-ibe="1">Add an electron</button><button type="button" class="btn secondary" data-ibreset="1">Back to neutral</button></div><p class="ibmsg" aria-live="polite" style="margin:4px 0"></p>`;
+    const sc=el.querySelector(".ibscene"),m=el.querySelector(".ibmsg");
+    function redraw(){sc.innerHTML=draw();m.innerHTML=msg();el.querySelectorAll("[data-ibz]").forEach(b=>{b.style.background=+b.dataset.ibz===st.z?"var(--accent-soft)":"";b.setAttribute("aria-pressed",+b.dataset.ibz===st.z);});
+      if(nobleLike(st.e)&&charge()!==0){st.made[ionSym(st.z,st.e)]=true;if(opt.onMake)opt.onMake(ionSym(st.z,st.e),st.made);}}
+    el.addEventListener("click",e=>{const zb=e.target.closest("[data-ibz]");if(zb){st.z=+zb.dataset.ibz;st.e=st.z;redraw();return;}
+      const eb=e.target.closest("[data-ibe]");if(eb){const n=st.e+(+eb.dataset.ibe);if(n<0||n>20){m.textContent="That's as far as this model goes.";return;}if(Math.abs(st.z-n)>4){m.innerHTML="Atoms almost never gain or lose more than 3 electrons. That would take too much energy.";return;}st.e=n;redraw();return;}
+      if(e.target.closest("[data-ibreset]")){st.e=st.z;redraw();}});
+    redraw();return st;}
+  return{bohr,formation,builder,shells,ionSym,ionName,nobleLike,D,SYM,CHARGE,T};
+})();
+
+
+window.STIM_INIT={"Simulator":function(el){el.innerHTML='<h3>Ion builder</h3><p>Pick an element. Add or remove electrons and watch the charge change. Try to give each atom a full outer shell.</p><div class="ib"></div>';ION.builder(el.querySelector(".ib"),{elements:["Li","Na","K","Mg","Ca","Al","N","O","S","F","Cl","Ne"],start:"Na"});}};
+</script>
+<script>
+/* ===== Lockdown mode: full screen + leave-the-page detection + teacher unlock code =====
+   Settings come from exit-ticket-config.js (LOCKDOWN, UNLOCK_CODE, LOCK_ON_EXIT). */
+(function(){
+  const C=Object.assign({LOCKDOWN:true,UNLOCK_CODE:"Austin",LOCK_ON_EXIT:true},window.EXIT_TICKET_CONFIG||{},window.LOCKDOWN_OVERRIDE||{});
+  const L={active:false,count:0,away:0,locked:false,fsOK:false,ignoreUntil:0,leftAt:null,log:[]};
+  window.LOCKDOWN=L;
+  L.enabled=!!C.LOCKDOWN;
+  L.summary=()=>({count:L.count,away:Math.round(L.away)});
+  L.confirm=msg=>{L.ignoreUntil=Date.now()+1500;const r=window.confirm(msg);L.ignoreUntil=Date.now()+800;return r;};
+  if(!L.enabled){L.start=()=>{};L.stop=()=>{};return;}
+  const css=document.createElement("style");
+  css.textContent=`#ldOverlay{position:fixed;inset:0;z-index:99999;background:rgba(21,27,51,.97);color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+#ldOverlay[hidden],#ldBadge[hidden]{display:none!important}
+#ldOverlay .box{max-width:520px;text-align:center}
+#ldOverlay h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:32px;margin:0 0 10px}
+#ldOverlay p{font-size:18px;line-height:1.5;margin:0 0 14px}
+#ldOverlay input{font:inherit;font-size:22px;padding:10px 12px;border-radius:10px;border:2px solid #9fb4b0;width:220px;text-align:center;letter-spacing:2px}
+#ldOverlay button{font:inherit;font-weight:700;font-size:18px;border:0;border-radius:10px;padding:11px 22px;margin:10px 6px 0;cursor:pointer;background:#ffd35c;color:#1d2b36}
+#ldOverlay .err{color:#ffb4a8;font-weight:700;min-height:24px;margin-top:8px}
+#ldBadge{position:fixed;right:10px;bottom:10px;z-index:9999;background:#151b33;color:#fff;border-radius:999px;padding:5px 12px;font:700 13px system-ui,sans-serif;opacity:.85}
+body.ld-active .tabpanel,body.ld-active .prompt,body.ld-active .opts,body.ld-active .dnd{-webkit-user-select:none;user-select:none}`;
+  document.head.appendChild(css);
+  const ov=document.createElement("div");ov.id="ldOverlay";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");document.body.appendChild(ov);
+  const badge=document.createElement("div");badge.id="ldBadge";badge.hidden=true;document.body.appendChild(badge);
+  const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+  function goFS(){const el=document.documentElement,fn=el.requestFullscreen||el.webkitRequestFullscreen;if(!fn)return;try{const p=fn.call(el);if(p&&p.then)p.then(()=>{L.fsOK=true;}).catch(()=>{});else L.fsOK=true;}catch(e){}}
+  function setBadge(){badge.hidden=!L.active;badge.textContent=`🔒 Lockdown on${L.count?` · left ${L.count}×`:""}`;}
+  function showLock(reason){
+    ov.hidden=false;
+    if(C.LOCK_ON_EXIT){L.locked=true;
+      ov.innerHTML=`<div class="box"><h2>🔒 Locked</h2><p>You ${reason}. Leaving is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><p>Raise your hand. Your teacher will type the unlock code.</p><input id="ldCode" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Teacher unlock code"><br><button type="button" id="ldUnlock">Unlock</button><div class="err" id="ldErr" role="alert"></div></div>`;
+      setTimeout(()=>{const i=document.getElementById("ldCode");if(i)i.focus();},50);}
+    else{ov.innerHTML=`<div class="box"><h2>⚠ Stay on this page</h2><p>You ${reason}. This is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><button type="button" id="ldBack">Go back</button></div>`;
+      setTimeout(()=>{const b=document.getElementById("ldBack");if(b)b.focus();},50);}
+  }
+  function violation(reason){
+    if(!L.active||Date.now()<L.ignoreUntil)return;
+    if(L.locked||!ov.hidden)return;           // already counted this exit
+    L.count++;L.log.push({t:new Date().toLocaleTimeString(),reason});setBadge();showLock(reason);
+  }
+  document.addEventListener("visibilitychange",()=>{if(!L.active)return;
+    if(document.hidden){L.leftAt=Date.now();violation("switched to another tab or app");}
+    else if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  window.addEventListener("blur",()=>{if(!L.active)return;setTimeout(()=>{if(!document.hasFocus()&&!document.hidden){L.leftAt=L.leftAt||Date.now();violation("clicked outside this page");}},150);});
+  window.addEventListener("focus",()=>{if(L.leftAt&&!document.hidden){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  const onFS=()=>{if(!L.active)return;if(fsEl()){L.fsOK=true;}else if(L.fsOK){violation("left full screen");}};
+  document.addEventListener("fullscreenchange",onFS);document.addEventListener("webkitfullscreenchange",onFS);
+  ov.addEventListener("click",e=>{
+    if(e.target.id==="ldUnlock"){const v=(document.getElementById("ldCode").value||"").trim();
+      if(v.toLowerCase()===String(C.UNLOCK_CODE).trim().toLowerCase()){L.locked=false;ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+      else{document.getElementById("ldErr").textContent="That code isn't right. Ask your teacher.";}}
+    if(e.target.id==="ldBack"){ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+  });
+  ov.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ldCode"){e.preventDefault();document.getElementById("ldUnlock").click();}});
+  // block copy, paste, right-click, and print shortcuts while the exit ticket is running
+  ["copy","cut","paste","contextmenu","dragstart"].forEach(ev=>document.addEventListener(ev,e=>{if(!L.active)return;if(ev==="dragstart"&&e.target.closest&&e.target.closest(".dchip"))return;e.preventDefault();},true));
+  document.addEventListener("keydown",e=>{if(!L.active)return;const k=(e.key||"").toLowerCase();if((e.ctrlKey||e.metaKey)&&["c","v","x","p","s","u"].includes(k)){e.preventDefault();}},true);
+  L.start=function(){L.active=true;document.body.classList.add("ld-active");setBadge();goFS();};
+  L.stop=function(){if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}L.active=false;L.locked=false;ov.hidden=true;badge.hidden=true;document.body.classList.remove("ld-active");if(fsEl()){const x=document.exitFullscreen||document.webkitExitFullscreen;try{const p=x.call(document);if(p&&p.catch)p.catch(()=>{});}catch(e){}}};
+})();
+</script>
+<script>
+(function(){
+"use strict";
+/* ===== Drag-and-drop question engine (drag, or tap a word then tap a spot) ===== */
+const DND=(function(){
+  const S={};let sel=null,drag=null,lastDrag=false,changeFn=null;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const plain=h=>String(h).replace(/<[^>]+>/g,"").trim();
+  const zoneById=(q,id)=>q.zones.find(z=>z.id===id);
+  function where(qid,ci){const P=S[qid].pl;for(const z in P)if(P[z].includes(ci))return z;return null;}
+  function chip(qid,ci,mark){const s=S[qid],on=sel&&sel.qid===qid&&sel.ci===ci;
+    return `<button type="button" class="dchip${on?" on":""}${mark?" "+mark:""}" data-dq="${qid}" data-ci="${ci}" aria-pressed="${on}"${s.locked?" disabled":""}>${s.q.chips[ci]}</button>`;}
+  function zone(qid,z,style){const s=S[qid],items=s.pl[z.id]||[],q=s.q;let mark="";
+    if(s.locked&&s.marks&&!z.multi)mark=items[0]===z.answer?" right":" wrong";
+    const tgt=sel&&sel.qid===qid&&!s.locked&&(z.multi||!items.length)?" target":"";
+    const inner=items.map(ci=>chip(qid,ci,s.locked&&s.marks&&z.multi?(z.answer.includes(ci)?"right":"wrong"):"")).join("")||`<span class="dph">${z.ph||"Drop here"}</span>`;
+    const name=z.name||z.label||"Drop spot";
+    return `<div class="dzone${z.multi?" multi":""}${items.length?" filled":""}${tgt}${mark}" data-dq="${qid}" data-dz="${z.id}"${s.locked?"":' tabindex="0" role="button"'} aria-label="${esc(plain(name))}: ${items.length?esc(items.map(ci=>plain(q.chips[ci])).join(", ")):"empty"}"${style?` style="${style}"`:""}>${inner}</div>`;}
+  function inner(qid){
+    const s=S[qid],q=s.q;
+    const placed=new Set(Object.values(s.pl).flat());
+    const bank=q.chips.map((c,ci)=>ci).filter(ci=>!placed.has(ci));
+    let h=s.locked?"":`<div class="dbank" data-dq="${qid}" data-dbank="1" aria-label="Word bank">${bank.map(ci=>chip(qid,ci)).join("")||'<span class="dhint">Every card is placed. Drag one back here to remove it.</span>'}</div>`;
+    if(q.figure&&q.layout!=="label")h+=`<div class="dfig2">${q.figure}</div>`;
+    if(q.layout==="label")h+=`<div class="dlabel"><div class="dfig">${q.figure}</div>${q.zones.map(z=>zone(qid,z,`left:${z.x}%;top:${z.y}%;width:${z.w}%`)).join("")}</div>`;
+    else if(q.layout==="rows")h+=`<div class="drows">${q.zones.map(z=>`<div class="drow"><span>${z.label}</span>${zone(qid,z)}</div>`).join("")}</div>`;
+    else if(q.layout==="order")h+=`<ol class="dorder">${q.zones.map((z,k)=>`<li><span class="onum" aria-hidden="true">${k+1}</span>${zone(qid,z)}</li>`).join("")}</ol>`;
+    else if(q.layout==="sort")h+=`<div class="dbins">${q.zones.map(z=>`<div class="dbin"><div class="bt">${z.label}</div>${zone(qid,{...z,multi:true})}</div>`).join("")}</div>`;
+    else if(q.layout==="fill")h+=`<div class="dfill">${q.sentence.map(p=>typeof p==="string"?p:zone(qid,zoneById(q,p.z))).join("")}</div>`;
+    if(!s.locked)h+=`<p class="dhow" style="font-size:14px;color:var(--muted);margin:8px 0 0">Drag a card to a spot, or tap a card and then tap the spot.</p>`;
+    return h;
+  }
+  function refresh(qid){const el=document.getElementById("dnd-"+qid);if(el)el.innerHTML=inner(qid);}
+  function focusChip(qid,ci){const b=document.querySelector(`.dchip[data-dq="${qid}"][data-ci="${ci}"]`);if(b)b.focus({preventScroll:true});}
+  function place(qid,ci,zid){
+    const s=S[qid],P=s.pl;for(const z in P)P[z]=P[z].filter(x=>x!==ci);
+    if(zid){const z=zoneById(s.q,zid);if(!(z.multi||s.q.layout==="sort"))P[zid]=[];P[zid]=(P[zid]||[]).concat(ci);}
+    sel=null;refresh(qid);if(changeFn)changeFn(qid);focusChip(qid,ci);
+  }
+  function mount(qid,q,pl,opts){
+    opts=opts||{};q.zones.forEach(z=>{if(!pl[z.id])pl[z.id]=[];});
+    S[qid]={q,pl,locked:!!opts.locked,marks:!!opts.marks};
+    return `<div class="dnd" id="dnd-${qid}">${inner(qid)}</div>`;
+  }
+  function lock(qid,marks){if(!S[qid])return;S[qid].locked=true;S[qid].marks=!!marks;if(sel&&sel.qid===qid)sel=null;refresh(qid);}
+  function complete(q,pl){if(q.layout==="sort")return Object.values(pl).flat().length===q.chips.length;return q.zones.every(z=>(pl[z.id]||[]).length>0);}
+  function grade(q,pl){
+    if(q.layout==="sort"){let pts=0;const lines=q.chips.map((c,ci)=>{const right=q.zones.find(z=>z.answer.includes(ci));const w=Object.keys(pl).find(z=>(pl[z]||[]).includes(ci));const ok=w===right.id;if(ok)pts++;return{label:c,ok,yours:w?zoneById(q,w).label:"not placed",right:right.label};});return{pts,max:q.chips.length,lines};}
+    let pts=0;const lines=q.zones.map(z=>{const got=(pl[z.id]||[])[0];const ok=got===z.answer;if(ok)pts++;return{label:z.name||z.label,ok,yours:got===undefined?"empty":q.chips[got],right:q.chips[z.answer]};});
+    return{pts,max:q.zones.length,lines};
+  }
+  function linesHTML(g){return `<ul>${g.lines.map(l=>`<li>${l.label}: <b class="${l.ok?"good":"wrong"}">${l.yours}</b>${l.ok?" ✓":` (correct: <b>${l.right}</b>)`}</li>`).join("")}</ul>`;}
+  /* ---- events ---- */
+  function clearHover(){document.querySelectorAll(".dzone.hover").forEach(e=>e.classList.remove("hover"));}
+  document.addEventListener("pointerdown",e=>{lastDrag=false;const c=e.target.closest(".dchip");if(!c||c.disabled||e.button!==0)return;drag={qid:c.dataset.dq,ci:+c.dataset.ci,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId,el:c,g:null};});
+  document.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;
+    if(!drag.moved){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;drag.moved=true;const g=drag.el.cloneNode(true);g.classList.remove("on");g.classList.add("dghost");document.body.appendChild(g);drag.g=g;drag.el.classList.add("lift");}
+    drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px";
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone");clearHover();if(z&&z.dataset.dq===drag.qid)z.classList.add("hover");e.preventDefault();},{passive:false});
+  function end(e,cancel){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(!d.moved)return;lastDrag=true;d.g.remove();d.el.classList.remove("lift");clearHover();if(cancel)return;
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone"),b=u&&u.closest("[data-dbank]");
+    if(z&&z.dataset.dq===d.qid)place(d.qid,d.ci,z.dataset.dz);else if(b&&b.dataset.dq===d.qid)place(d.qid,d.ci,null);}
+  document.addEventListener("pointerup",e=>end(e,false));document.addEventListener("pointercancel",e=>end(e,true));
+  document.addEventListener("click",e=>{
+    const t=e.target;if(!t.closest||!t.closest(".dnd"))return;
+    if(lastDrag){lastDrag=false;return;}
+    const c=t.closest(".dchip");
+    if(c){if(c.disabled)return;const qid=c.dataset.dq,ci=+c.dataset.ci,z=c.closest(".dzone");
+      if(z&&sel&&sel.qid===qid&&sel.ci!==ci){place(qid,sel.ci,z.dataset.dz);return;}
+      sel=(sel&&sel.qid===qid&&sel.ci===ci)?null:{qid,ci};refresh(qid);focusChip(qid,ci);return;}
+    const z=t.closest(".dzone");if(z&&sel&&sel.qid===z.dataset.dq&&!S[z.dataset.dq].locked){place(z.dataset.dq,sel.ci,z.dataset.dz);return;}
+    const b=t.closest("[data-dbank]");if(b&&sel&&sel.qid===b.dataset.dq){place(b.dataset.dq,sel.ci,null);}
+  });
+  document.addEventListener("keydown",e=>{
+    lastDrag=false;
+    const z=e.target.classList&&e.target.classList.contains("dzone")?e.target:null;
+    if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(sel&&sel.qid===z.dataset.dq)place(z.dataset.dq,sel.ci,z.dataset.dz);}
+    if(e.key==="Escape"&&sel){const q=sel.qid;sel=null;refresh(q);}
+  });
+  return{mount,lock,complete,grade,linesHTML,onChange:f=>{changeFn=f;}};
+})();
+
+const T={"title": "Ions", "short": "Ions", "phenomenon": "Sports drinks advertise \"electrolytes.\" If you test them with a circuit, a bulb lights up. Salt water lights it too, but sugar water doesn't.", "stimulus": [{"name": "Passage", "html": "<h3>Charged atoms<\/h3>\n<p>A neutral atom has the same number of protons (+) and electrons (−), so its charges cancel out. But atoms can gain or lose electrons. When that happens, the atom becomes an ion, a particle with an electric charge. The number of protons never changes.<\/p>\n<p>Atoms gain or lose electrons to get a full outer shell, like the noble gases. Metals have only a few valence electrons, so they lose them and become positive ions, called cations. Sodium has 1 valence electron, so it loses 1 and becomes Na⁺. Nonmetals have nearly full outer shells, so they gain electrons and become negative ions, called anions. Chlorine has 7 valence electrons, so it gains 1 and becomes Cl⁻, the chloride ion.<\/p>\n<p>When table salt dissolves in water, it breaks apart into Na⁺ and Cl⁻ ions. Charged particles that can move around let electricity flow. That's what \"electrolytes\" are. Sugar dissolves too, but it stays as whole molecules with no charge."}, {"name": "Diagram", "html": "<h3>Forming ions<\/h3><svg viewBox=\"0 0 520 202\" role=\"img\" aria-label=\"A sodium atom with 11 protons and 11 electrons loses 1 electron to become Na⁺ with 10 electrons and a full outer shell\"><defs><marker id=\"ia\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"#1d2b36\"/><\/marker><\/defs><circle cx=\"110\" cy=\"90\" r=\"30\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"90\" r=\"52\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"90\" r=\"74\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"90\" r=\"18\" fill=\"#fde2df\" stroke=\"#d9574f\" stroke-width=\"2\"/><text x=\"110.0\" y=\"94.0\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#a33\" font-family=\"system-ui,sans-serif\">11p⁺<\/text><circle cx=\"103.1\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"116.9\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"103.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"117.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"161.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"161.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"117.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"103.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"58.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"58.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"110.0\" cy=\"16.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><text x=\"110.0\" y=\"196.0\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">Sodium atom: 11p⁺, 11e⁻<\/text><path d=\"M216,90 L298,90\" stroke=\"#1d2b36\" stroke-width=\"3\" marker-end=\"url(#ia)\"/><text x=\"255.0\" y=\"78.0\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#b8403a\" font-family=\"system-ui,sans-serif\">loses 1 e⁻<\/text><circle cx=\"400\" cy=\"90\" r=\"30\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"400\" cy=\"90\" r=\"52\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"400\" cy=\"90\" r=\"18\" fill=\"#fde2df\" stroke=\"#d9574f\" stroke-width=\"2\"/><text x=\"400.0\" y=\"94.0\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#a33\" font-family=\"system-ui,sans-serif\">11p⁺<\/text><circle cx=\"393.1\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"406.9\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"393.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"407.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"451.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"451.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"407.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"393.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"348.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"348.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><text x=\"400.0\" y=\"196.0\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">Na⁺: 11p⁺, 10e⁻<\/text><\/svg><svg viewBox=\"0 0 520 202\" role=\"img\" aria-label=\"A chlorine atom with 17 protons and 17 electrons gains 1 electron to become Cl⁻ with 18 electrons and a full outer shell\"><defs><marker id=\"ia\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\"><path d=\"M0,0 L10,5 L0,10 z\" fill=\"#1d2b36\"/><\/marker><\/defs><circle cx=\"110\" cy=\"90\" r=\"30\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"90\" r=\"52\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"90\" r=\"74\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"110\" cy=\"90\" r=\"18\" fill=\"#fde2df\" stroke=\"#d9574f\" stroke-width=\"2\"/><text x=\"110.0\" y=\"94.0\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#a33\" font-family=\"system-ui,sans-serif\">17p⁺<\/text><circle cx=\"103.1\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"116.9\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"103.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"117.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"161.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"161.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"117.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"103.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"58.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"58.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"103.0\" cy=\"16.3\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"117.0\" cy=\"16.3\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"183.7\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"183.7\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"117.0\" cy=\"163.7\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"103.0\" cy=\"163.7\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"36.0\" cy=\"90.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><text x=\"110.0\" y=\"196.0\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">Chlorine atom: 17p⁺, 17e⁻<\/text><path d=\"M216,90 L298,90\" stroke=\"#1d2b36\" stroke-width=\"3\" marker-end=\"url(#ia)\"/><text x=\"255.0\" y=\"78.0\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#2e7d4f\" font-family=\"system-ui,sans-serif\">gains 1 e⁻<\/text><circle cx=\"400\" cy=\"90\" r=\"30\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"400\" cy=\"90\" r=\"52\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"400\" cy=\"90\" r=\"74\" fill=\"none\" stroke=\"#9fb4b0\" stroke-width=\"2\"/><circle cx=\"400\" cy=\"90\" r=\"18\" fill=\"#fde2df\" stroke=\"#d9574f\" stroke-width=\"2\"/><text x=\"400.0\" y=\"94.0\" font-size=\"11\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#a33\" font-family=\"system-ui,sans-serif\">17p⁺<\/text><circle cx=\"393.1\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"406.9\" cy=\"60.8\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"393.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"407.0\" cy=\"38.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"451.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"451.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"407.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"393.0\" cy=\"141.5\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"348.5\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"348.5\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"393.0\" cy=\"16.3\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"407.0\" cy=\"16.3\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"473.7\" cy=\"83.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"473.7\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"407.0\" cy=\"163.7\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"393.0\" cy=\"163.7\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"326.3\" cy=\"97.0\" r=\"5.5\" fill=\"#2f5d9b\" stroke=\"#fff\" stroke-width=\"1.3\"/><circle cx=\"326.3\" cy=\"83.0\" r=\"5.5\" fill=\"#7a5ad0\" stroke=\"#fff\" stroke-width=\"1.3\"/><text x=\"400.0\" y=\"196.0\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">Cl⁻: 17p⁺, 18e⁻<\/text><\/svg><p class=\"cap\">Purple electrons were gained.<\/p>"}, {"name": "Graph", "html": "<svg viewBox=\"0 0 520 280\" role=\"img\" aria-label=\"Conductivity rises in a straight line as more salt dissolves: about 0 with no salt, 22 at 1 gram, 41 at 2, 62 at 3, 80 at 4, and 98 at 5 grams.\"><text x=\"260.0\" y=\"20.0\" font-size=\"14\" font-weight=\"700\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">Electrical conductivity of salt water<\/text><line x1=\"62\" y1=\"228.0\" x2=\"502\" y2=\"228.0\" stroke=\"#d6e0de\" opacity=\".7\"/><text x=\"54.0\" y=\"232.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"end\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">0<\/text><line x1=\"62\" y1=\"190.4\" x2=\"502\" y2=\"190.4\" stroke=\"#d6e0de\" opacity=\".7\"/><text x=\"54.0\" y=\"194.4\" font-size=\"11\" font-weight=\"400\" text-anchor=\"end\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">20<\/text><line x1=\"62\" y1=\"152.8\" x2=\"502\" y2=\"152.8\" stroke=\"#d6e0de\" opacity=\".7\"/><text x=\"54.0\" y=\"156.8\" font-size=\"11\" font-weight=\"400\" text-anchor=\"end\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">40<\/text><line x1=\"62\" y1=\"115.2\" x2=\"502\" y2=\"115.2\" stroke=\"#d6e0de\" opacity=\".7\"/><text x=\"54.0\" y=\"119.2\" font-size=\"11\" font-weight=\"400\" text-anchor=\"end\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">60<\/text><line x1=\"62\" y1=\"77.6\" x2=\"502\" y2=\"77.6\" stroke=\"#d6e0de\" opacity=\".7\"/><text x=\"54.0\" y=\"81.6\" font-size=\"11\" font-weight=\"400\" text-anchor=\"end\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">80<\/text><line x1=\"62\" y1=\"40.0\" x2=\"502\" y2=\"40.0\" stroke=\"#d6e0de\" opacity=\".7\"/><text x=\"54.0\" y=\"44.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"end\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">100<\/text><line x1=\"62.0\" y1=\"228\" x2=\"62.0\" y2=\"233\" stroke=\"#1d2b36\"/><text x=\"62.0\" y=\"247.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">0<\/text><line x1=\"150.0\" y1=\"228\" x2=\"150.0\" y2=\"233\" stroke=\"#1d2b36\"/><text x=\"150.0\" y=\"247.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">1<\/text><line x1=\"238.0\" y1=\"228\" x2=\"238.0\" y2=\"233\" stroke=\"#1d2b36\"/><text x=\"238.0\" y=\"247.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">2<\/text><line x1=\"326.0\" y1=\"228\" x2=\"326.0\" y2=\"233\" stroke=\"#1d2b36\"/><text x=\"326.0\" y=\"247.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">3<\/text><line x1=\"414.0\" y1=\"228\" x2=\"414.0\" y2=\"233\" stroke=\"#1d2b36\"/><text x=\"414.0\" y=\"247.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">4<\/text><line x1=\"502.0\" y1=\"228\" x2=\"502.0\" y2=\"233\" stroke=\"#1d2b36\"/><text x=\"502.0\" y=\"247.0\" font-size=\"11\" font-weight=\"400\" text-anchor=\"middle\" fill=\"#1d2b36\" font-family=\"system-ui,sans-serif\">5<\/text><line x1=\"62\" y1=\"34\" x2=\"62\" y2=\"228\" stroke=\"#1d2b36\" stroke-width=\"1.5\"/><line x1=\"62\" y1=\"228\" x2=\"502\" y2=\"228\" stroke=\"#1d2b36\" stroke-width=\"1.5\"/><text transform=\"translate(16 134) rotate(-90)\" font-size=\"12\" text-anchor=\"middle\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">Conductivity (units)<\/text><text x=\"282.0\" y=\"270.0\" font-size=\"12\" font-weight=\"400\" text-anchor=\"middle\" fill=\"#56666f\" font-family=\"system-ui,sans-serif\">Salt dissolved in 100 mL of water (g)<\/text><polyline points=\"62.0,227.1 150.0,186.6 238.0,150.9 326.0,111.4 414.0,77.6 502.0,43.8\" fill=\"none\" stroke=\"#2f5d9b\" stroke-width=\"3\" stroke-linejoin=\"round\"/><circle cx=\"62.0\" cy=\"227.1\" r=\"5\" fill=\"#fff\" stroke=\"#1d2b36\" stroke-width=\"2\"/><circle cx=\"150.0\" cy=\"186.6\" r=\"5\" fill=\"#fff\" stroke=\"#1d2b36\" stroke-width=\"2\"/><circle cx=\"238.0\" cy=\"150.9\" r=\"5\" fill=\"#fff\" stroke=\"#1d2b36\" stroke-width=\"2\"/><circle cx=\"326.0\" cy=\"111.4\" r=\"5\" fill=\"#fff\" stroke=\"#1d2b36\" stroke-width=\"2\"/><circle cx=\"414.0\" cy=\"77.6\" r=\"5\" fill=\"#fff\" stroke=\"#1d2b36\" stroke-width=\"2\"/><circle cx=\"502.0\" cy=\"43.8\" r=\"5\" fill=\"#fff\" stroke=\"#1d2b36\" stroke-width=\"2\"/><\/svg>"}, {"name": "Data", "html": "<h3>Conductivity test<\/h3><table class=\"data\"><thead><tr><th>Solution<\/th><th>Makes ions?<\/th><th>Bulb<\/th><\/tr><\/thead><tbody><tr><td>Pure water<\/td><td>No<\/td><td>Off<\/td><\/tr><tr><td>Sugar water<\/td><td>No<\/td><td>Off<\/td><\/tr><tr><td>Salt water<\/td><td>Yes (Na⁺, Cl⁻)<\/td><td>Bright<\/td><\/tr><tr><td>Sports drink<\/td><td>Yes (Na⁺, K⁺)<\/td><td>Dim<\/td><\/tr><\/tbody><\/table>"}, {"name": "Simulator", "html": "<p>Loading the simulator…<\/p>"}], "questions": [{"type": "grid", "uses": ["Simulator"], "prompt": "Fill in the number of protons and electrons in each ion.", "hint": "Atomic numbers: O = 8, Na = 11, Mg = 12, Cl = 17", "cols": ["Protons", "Electrons"], "rows": [{"label": "Na⁺", "answers": [11, 10]}, {"label": "Mg²⁺", "answers": [12, 10]}, {"label": "O²⁻", "answers": [8, 10]}, {"label": "Cl⁻", "answers": [17, 18]}], "explain": "Protons = atomic number and never change. A + charge means electrons were lost (Na⁺: 11 − 1 = 10; Mg²⁺: 12 − 2 = 10). A − charge means electrons were gained (O²⁻: 8 + 2 = 10; Cl⁻: 17 + 1 = 18)."}, {"type": "match", "uses": ["Simulator", "Passage"], "prompt": "What charge does an ion from each group usually have?", "choices": ["+1", "+2", "+3", "−1", "−2", "−3", "0"], "rows": [{"label": "Group 1 (1 valence electron)", "answer": "+1"}, {"label": "Group 2 (2 valence electrons)", "answer": "+2"}, {"label": "Group 13 (3 valence electrons)", "answer": "+3"}, {"label": "Group 16 (6 valence electrons)", "answer": "−2"}, {"label": "Group 17 (7 valence electrons)", "answer": "−1"}], "explain": "Metals lose their valence electrons: group 1 → +1, group 2 → +2, group 13 → +3. Nonmetals gain enough to fill the shell: group 16 gains 2 (−2), group 17 gains 1 (−1)."}, {"type": "ab", "uses": ["Data", "Passage"], "prompt": "This question has two parts.", "a": {"q": "<b>Part A:<\/b> Why does salt water light the bulb, but sugar water doesn't?", "o": ["Salt breaks into charged ions that can carry electricity; sugar stays as molecules with no charge", "Sugar water is too thick for electricity", "Salt water has more water in it", "Sugar soaks up the electricity"], "ans": 0}, "b": {"q": "<b>Part B:<\/b> Which evidence best supports your answer to Part A?", "o": ["Only the solutions that make ions (salt water and sports drink) light the bulb", "Pure water doesn't light the bulb", "Sugar dissolves in water", "The sports drink is colored"], "ans": 0}, "explain": "Electricity flows when charged particles can move. Salt and sports drinks form ions, so they conduct. Pure water and sugar water don't form ions, so they don't."}, {"type": "cer", "uses": ["Diagram", "Simulator", "Passage"], "prompt": "Why does sodium form a +1 ion, while chlorine forms a −1 ion?", "claim": {"starter": "My claim is that ", "sample": "My claim is that sodium loses 1 electron and chlorine gains 1 electron.", "keys": [{"label": "sodium loses 1 electron", "any": ["sodium[^.!?]{0,30}\\blos", "\\bna\\b[^.!?]{0,30}\\blos", "\\blos[^.!?]{0,30}(1|one) electron"]}, {"label": "chlorine gains 1 electron", "any": ["chlorine[^.!?]{0,30}\\bgain", "\\bcl\\b[^.!?]{0,30}\\bgain", "\\bgain[^.!?]{0,30}(1|one) electron"]}]}, "evidence": {"starter": "My evidence is that ", "sample": "My evidence is that sodium has 1 valence electron (2, 8, 1) and chlorine has 7 (2, 8, 7). After forming ions, Na⁺ has the same electrons as neon and Cl⁻ has the same as argon.", "keys": [{"label": "sodium has 1 valence electron", "any": ["\\b1 valence", "one valence", "2,\\s*8,\\s*1\\b"]}, {"label": "chlorine has 7 valence electrons", "any": ["\\b7 valence", "seven valence", "2,\\s*8,\\s*7\\b"]}, {"label": "ions match a noble gas", "any": ["\\bneon\\b", "\\bargon\\b", "noble"]}]}, "reasoning": {"starter": "This matters because ", "sample": "This matters because atoms gain or lose electrons to get a full outer shell. Losing 1 negative electron leaves sodium with one more proton than electrons, so it's +1. Gaining 1 electron gives chlorine one more electron than protons, so it's −1.", "keys": [{"label": "full outer shell", "any": ["\\bfull\\b", "complete", "\\boctet", "stable", "8 (valence )?electrons"]}, {"label": "charge = protons vs. electrons", "any": ["proton"]}]}}]};
+const CFG=Object.assign({SHEET_URL:"",TEACHERS:[],PERIODS:[1,2,3,4,5,6,7]},window.EXIT_TICKET_CONFIG||{});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=h=>String(h).replace(/<span class="nuc"><span class="nn"><span>(\d+)<\/span><span>(\d+)<\/span><\/span>(\w+)<\/span>/g,"$3-$1").replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim();
+const announce=m=>{const l=$("#live");l.textContent="";setTimeout(()=>l.textContent=m,30);};
+const PARTS=[{key:"claim",name:"Claim",guide:"Answer the question in one sentence."},
+ {key:"evidence",name:"Evidence",guide:"Give facts or numbers from the stimulus that back up your claim."},
+ {key:"reasoning",name:"Reasoning",guide:"Explain the science idea that connects your evidence to your claim."}];
+const N=T.questions.length;
+const state={stu:null,ans:[],flags:new Set(),cur:0,tab:0,done:false};
+
+/* ---------- helpers ---------- */
+/* Electron spots on a shell: first shell = a pair at the top. Other shells: one electron each at
+   top, right, bottom, left, then the 5th to 8th pair up in that same order. */
+function eSpots(n,r,first){const d=6.8/r,out=[];
+  if(first){if(n===1)return[-Math.PI/2];if(n>=2)return[-Math.PI/2-d,-Math.PI/2+d];return out;}
+  if(n<=8){for(let j=0;j<4;j++){const a=-Math.PI/2+j*Math.PI/2,c=(j<n?1:0)+(j<n-4?1:0);if(c===2)out.push(a-d,a+d);else if(c===1)out.push(a);}return out;}
+  const slots=Math.ceil(n/2);for(let j=0;j<slots;j++){const a=-Math.PI/2+j*2*Math.PI/slots;(2*j+1<n?[a-d,a+d]:[a]).forEach(q=>out.push(q));}return out;}
+
+const norm=s=>String(s).toLowerCase().replace(/²/g,"2").replace(/⁺/g,"+").replace(/[’‘]/g,"'").replace(/\s+/g," ").trim();
+function strip(text,starter){const a=norm(text),b=norm(starter);return a.startsWith(b)?a.slice(b.length).trim():a;}
+const num=v=>{const x=parseFloat(String(v).replace(/,/g,"").replace(/^\+/,"").trim());return isNaN(x)?null:x;};
+function initAns(){
+  state.ans=T.questions.map(q=>{
+    if(q.type==="mc"||q.type==="hotspot")return null;
+    if(q.type==="bohr")return q.answer.map(()=>0);
+    if(q.type==="drag")return {};
+    if(q.type==="ab")return {a:null,b:null};
+    if(q.type==="multi")return [];
+    if(q.type==="match")return q.rows.map(()=>"");
+    if(q.type==="num")return q.fields.map(()=>"");
+    if(q.type==="grid")return q.rows.map(()=>q.cols.map(()=>""));
+    if(q.type==="cer"){const o={};PARTS.forEach(p=>o[p.key]=q[p.key].starter);return o;}
+  });
+}
+function answered(i){
+  const q=T.questions[i],a=state.ans[i];
+  if(q.type==="mc"||q.type==="hotspot")return a!==null;
+  if(q.type==="bohr")return a.some(x=>x>0);
+  if(q.type==="drag")return DND.complete(q,a);
+  if(q.type==="ab")return a.a!==null&&a.b!==null;
+  if(q.type==="multi")return a.length===q.pick;
+  if(q.type==="match"||q.type==="num")return a.every(x=>String(x).trim());
+  if(q.type==="grid")return a.every(r=>r.every(x=>String(x).trim()));
+  if(q.type==="cer")return PARTS.every(p=>strip(a[p.key],q[p.key].starter).length>=3);
+}
+
+/* ---------- sign in ---------- */
+function buildSignin(){
+  const mins=T.minutes||"8 to 10";
+  $("#stubtime").textContent=`${N} questions, about ${mins} minutes. Work on your own.`;
+  const ph=`<b>Phenomenon</b>${T.phenomenon}`;
+  $("#phen1").innerHTML=ph;$("#phen2").innerHTML=ph;
+  const teacher=CFG.TEACHERS.length
+    ?`<label for="teacher">Teacher<select id="teacher"><option value="">Choose your teacher</option>${CFG.TEACHERS.map(t=>`<option>${esc(t)}</option>`).join("")}</select></label>`
+    :`<label for="teacher">Teacher<input id="teacher" type="text" autocomplete="off"></label>`;
+  $("#fields").innerHTML=`
+   <label for="first">First name<input id="first" type="text" autocomplete="given-name"></label>
+   <label for="last">Last name<input id="last" type="text" autocomplete="family-name"></label>
+   <label for="sid">Student ID number<input id="sid" type="text" inputmode="numeric" autocomplete="off"></label>
+   <label for="sid2">Type your ID again<input id="sid2" type="text" inputmode="numeric" autocomplete="off"></label>
+   <label for="period">Period<select id="period"><option value="">Choose</option>${CFG.PERIODS.map(p=>`<option>${esc(p)}</option>`).join("")}</select></label>
+   ${teacher}`;
+}
+function start(){
+  const f={first:$("#first"),last:$("#last"),sid:$("#sid"),sid2:$("#sid2"),period:$("#period"),teacher:$("#teacher")};
+  Object.values(f).forEach(el=>el.classList.remove("error"));
+  const v=k=>f[k].value.trim();
+  let msg="";
+  for(const k of ["first","last","sid","sid2","period","teacher"]){if(!v(k)){f[k].classList.add("error");msg=msg||"Fill in every box before you start.";}}
+  const sid=v("sid").replace(/\s+/g,""),sid2=v("sid2").replace(/\s+/g,"");
+  if(!msg&&!/^\d+$/.test(sid)){f.sid.classList.add("error");msg="Use only numbers in your student ID. No letters, dashes, or other symbols.";}
+  if(!msg&&sid.length>15){f.sid.classList.add("error");msg="That student ID is too long. Check your ID number.";}
+  if(!msg&&sid!==sid2){f.sid2.classList.add("error");msg="The two student ID boxes don't match. Check your ID number.";}
+  if(msg){$("#signerr").textContent=msg;const bad=document.querySelector(".fields .error");if(bad)bad.focus();return;}
+  state.stu={first:v("first"),last:v("last"),id:sid,period:v("period"),teacher:v("teacher")};
+  $("#whoami").textContent=`${state.stu.first} ${state.stu.last}, Period ${state.stu.period}`;
+  $("#signin").hidden=true;$("#test").hidden=false;
+  if(window.LOCKDOWN)LOCKDOWN.start();
+  go(0);
+}
+$("#startbtn").addEventListener("click",start);
+$("#signform").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();start();}});
+
+/* ---------- stimulus ---------- */
+function renderStim(){
+  $("#tabs").innerHTML=T.stimulus.map((s,k)=>`<button class="tab" role="tab" id="stab${k}" aria-selected="${k===state.tab}" data-stab="${k}">${s.name}</button>`).join("");
+  $("#tabpanel").innerHTML=T.stimulus[state.tab].html;
+  {const nm=T.stimulus[state.tab].name;if(window.STIM_INIT&&window.STIM_INIT[nm]){try{window.STIM_INIT[nm]($("#tabpanel"));}catch(e){console.error(e);}}}
+  $("#tabpanel").setAttribute("aria-labelledby","stab"+state.tab);
+}
+function showTab(name){const k=T.stimulus.findIndex(s=>s.name===name);if(k>=0){state.tab=k;renderStim();}}
+
+/* ---------- questions ---------- */
+function qHTML(i){
+  const q=T.questions[i],a=state.ans[i];
+  const uses=q.uses&&q.uses.length?`<div class="uses">${q.uses.map(u=>`<button type="button" data-use="${u}">Use the ${u} tab</button>`).join("")}</div>`:"";
+  const hint=q.hint?`<p class="hint">${q.hint}</p>`:"";
+  let body="";
+  if(q.type==="mc") body=`<fieldset style="border:0;padding:0;margin:0"><legend class="sr-only">${esc(plain(q.prompt))}</legend><div class="opts">${q.options.map((o,j)=>`<label class="opt"><input type="radio" name="mc${i}" data-mc="${i}" value="${j}"${a===j?" checked":""}><span>${o}</span></label>`).join("")}</div></fieldset>`;
+  if(q.type==="multi") body=`<fieldset style="border:0;padding:0;margin:0"><legend class="sr-only">${esc(plain(q.prompt))}</legend><div class="opts">${q.options.map((o,j)=>`<label class="opt"><input type="checkbox" data-multi="${i}" value="${j}"${a.includes(j)?" checked":""}><span>${o}</span></label>`).join("")}</div></fieldset><p class="err" id="mmsg${i}" role="alert"></p>`;
+  if(q.type==="match") body=`<div class="rows">${q.rows.map((r,k)=>`<div class="row"><span id="m${i}_${k}">${r.label}</span><select class="pick${a[k]?" has":""}" data-match="${i}" data-r="${k}" aria-labelledby="m${i}_${k}"><option value="">Choose</option>${q.choices.map(c=>`<option${a[k]===c?" selected":""}>${esc(c)}</option>`).join("")}</select></div>`).join("")}</div>`;
+  if(q.type==="num") body=`<div class="nums">${q.fields.map((f,k)=>`<label>${f.label}<span class="unitwrap"><input class="n" type="text" inputmode="decimal" data-num="${i}" data-f="${k}" value="${esc(a[k])}">${f.unit||""}</span></label>`).join("")}</div>`;
+  if(q.type==="grid") body=`<div style="overflow-x:auto"><table class="grid"><thead><tr><th>Atom</th>${q.cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>${q.rows.map((r,k)=>`<tr><td>${r.label}</td>${q.cols.map((c,m)=>`<td><input class="n" type="text" inputmode="numeric" aria-label="${esc(plain(r.label))} ${c}" data-grid="${i}" data-r="${k}" data-c="${m}" value="${esc(a[k][m])}"></td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  if(q.type==="hotspot"){
+    const cells={};T.ptable.forEach(c=>cells[c[1]+"_"+c[2]]=c[0]);
+    const stair=T.staircase||{left:[],bottom:[]};
+    let g=`<div></div>`;for(let c=1;c<=18;c++)g+=`<div class="gh">${c}</div>`;
+    for(let p=1;p<=T.periods;p++){g+=`<div class="ph">${p}</div>`;for(let c=1;c<=18;c++){const s=cells[p+"_"+c];
+      if(!s){g+=`<div></div>`;continue;}
+      const sel=a&&(q.mode==="group"?a.group===c:a.sym===s);
+      const cls=(stair.left.includes(s)?" sl":"")+(stair.bottom.includes(s)?" sb":"");
+      g+=`<button type="button" class="cell${sel?" sel":""}${cls}" data-hs="${i}" data-sym="${s}" data-group="${c}" aria-pressed="${!!(a&&a.sym===s)}" aria-label="${s}, group ${c}, period ${p}">${s}</button>`;}}
+    body=`<div class="pt" role="group" aria-label="Clickable periodic table">${g}</div><p class="ptkey">${q.mode==="group"?"Click any element in a group to select the whole group.":"Click one element."} The bold line is the staircase.${a?` <b>Selected: ${q.mode==="group"?`group ${a.group}`:a.sym}</b>`:""}</p>`;
+  }
+  if(q.type==="drag")body=DND.mount(i,q,a,{});
+  if(q.type==="ab")body=["a","b"].map(p=>`<fieldset style="border:0;padding:0;margin:0 0 14px"><legend style="font-weight:400;margin-bottom:8px">${q[p].q}</legend><div class="opts">${q[p].o.map((o,j)=>`<label class="opt"><input type="radio" name="ab${i}${p}" data-abp="${i}:${p}" value="${j}"${a[p]===j?" checked":""}><span>${o}</span></label>`).join("")}</div></fieldset>`).join("");
+  if(q.type==="bohr"){
+    const R=[34,52,70,88].slice(0,a.length),C=100;
+    let g=R.map(r=>`<circle cx="${C}" cy="${C}" r="${r}" fill="none" stroke="#9fb4b0" stroke-width="2"/>`).join("");
+    a.forEach((n,k)=>{const r=R[k];eSpots(n,r,k===0).forEach(q=>{g+=`<circle cx="${(C+r*Math.cos(q)).toFixed(1)}" cy="${(C+r*Math.sin(q)).toFixed(1)}" r="5.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>`;});});
+    g+=`<circle cx="${C}" cy="${C}" r="22" fill="#fbe3df" stroke="#b8403a" stroke-width="2"/><text x="${C}" y="${C-2}" text-anchor="middle" font-size="12" font-weight="700" fill="#1d2b36">${q.nucleus[0]}</text><text x="${C}" y="${C+12}" text-anchor="middle" font-size="12" font-weight="700" fill="#1d2b36">${q.nucleus[1]}</text>`;
+    const total=a.reduce((x,y)=>x+y,0);
+    body=`<div class="bohr"><svg viewBox="0 0 200 200" role="img" aria-label="Your Bohr model: ${a.map((n,k)=>`shell ${k+1} has ${n}`).join(", ")}">${g}</svg>
+     <div class="shells">${a.map((n,k)=>`<div class="shellrow"><span class="nm">Shell ${k+1}</span><button type="button" data-bohr="${i}" data-k="${k}" data-d="-1" aria-label="Remove an electron from shell ${k+1}"${n<=0?" disabled":""}>−</button><output aria-live="polite">${n}</output><button type="button" data-bohr="${i}" data-k="${k}" data-d="1" aria-label="Add an electron to shell ${k+1}"${n>=q.maxPer?" disabled":""}>+</button></div>`).join("")}
+     <span class="bohrtotal">Total electrons: <b>${total}</b></span></div></div>`;
+  }
+  if(q.type==="cer") body=`<p class="hint">Finish each sentence starter. Use evidence from the stimulus and your unit vocabulary.</p><div class="cer">${PARTS.map(p=>`<div class="cer-part"><label for="cer${i}${p.key}"><span class="tag">${p.name}</span><span class="guide">${p.guide}</span></label><textarea id="cer${i}${p.key}" data-cer="${i}" data-part="${p.key}">${esc(a[p.key])}</textarea></div>`).join("")}</div>`;
+  const fl=state.flags.has(i);
+  return `<div class="qmeta"><span>Question ${i+1} of ${N}${q.type==="cer"?" (written response)":""}</span><button type="button" class="flag" data-flag="${i}" aria-pressed="${fl}">${fl?"⚑ Flagged":"⚐ Flag for review"}</button></div>
+   <p class="prompt" id="qprompt">${q.prompt}</p>${uses}${hint}${body}
+   <div class="qnav"><button type="button" class="btn secondary" data-go="${i-1}"${i===0?" disabled":""}>Back</button><button type="button" class="btn" data-go="${i+1}">${i===N-1?"Review answers":"Next"}</button></div>`;
+}
+function reviewHTML(){
+  const items=T.questions.map((q,i)=>{
+    const st=answered(i)?`<span class="st ok">Answered</span>`:`<span class="st no">Not answered</span>`;
+    const fl=state.flags.has(i)?` <span class="st fl">⚑ Flagged</span>`:"";
+    return `<li><span><button type="button" class="linkbtn" data-go="${i}">Question ${i+1}</button> ${esc(plain(q.prompt)).slice(0,70)}${plain(q.prompt).length>70?"…":""}</span><span>${st}${fl}</span></li>`;
+  }).join("");
+  const left=T.questions.filter((q,i)=>!answered(i)).length;
+  return `<h2 style="font-size:24px">Review your answers</h2><p class="hint" style="margin:6px 0 0">${left?`${left} question${left>1?"s are":" is"} not finished.`:"Every question has an answer."} Click a question to go back to it.</p>
+   <ul class="review-list">${items}</ul>
+   <div class="qnav"><button type="button" class="btn secondary" data-go="${N-1}">Back</button><button type="button" class="btn" id="submit">Turn in exit ticket</button></div>
+   <div id="confirmbox" class="confirmbox" hidden></div>`;
+}
+function renderNav(){
+  $("#navq").innerHTML=T.questions.map((q,i)=>`<button type="button" data-go="${i}" class="${answered(i)?"done ":""}${state.cur===i?"cur ":""}${state.flags.has(i)?"flagged":""}" aria-label="Question ${i+1}${answered(i)?", answered":""}${state.flags.has(i)?", flagged":""}"${state.cur===i?' aria-current="step"':""}>${i+1}</button>`).join("")+
+    `<button type="button" data-go="${N}" class="${state.cur===N?"cur":""}"${state.cur===N?' aria-current="step"':""}>Review</button>`;
+}
+function go(i){
+  if(i<0||i>N)return;
+  state.cur=i;
+  if(i<N){const q=T.questions[i];if(q.uses&&q.uses.length)showTab(q.uses[0]);else renderStim();$("#qpane").innerHTML=qHTML(i);}
+  else{renderStim();$("#qpane").innerHTML=reviewHTML();}
+  renderNav();
+  const h=$("#qpane .prompt, #qpane h2");if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+  if(window.innerWidth<900)$("#qpane").scrollIntoView({block:"start"});
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target;
+  const g=t.closest("[data-go]");if(g&&!g.disabled){go(+g.dataset.go);return;}
+  const st=t.closest("[data-stab]");if(st){state.tab=+st.dataset.stab;renderStim();$("#stab"+state.tab).focus();return;}
+  const hs=t.closest("[data-hs]");if(hs){const i=+hs.dataset.hs;state.ans[i]={sym:hs.dataset.sym,group:+hs.dataset.group};$("#qpane").innerHTML=qHTML(i);renderNav();const b=document.querySelector(`[data-hs="${i}"][data-sym="${hs.dataset.sym}"]`);if(b)b.focus();return;}
+  const bb=t.closest("[data-bohr]");if(bb){const i=+bb.dataset.bohr,k=+bb.dataset.k,q=T.questions[i];state.ans[i][k]=Math.max(0,Math.min(q.maxPer,state.ans[i][k]+(+bb.dataset.d)));$("#qpane").innerHTML=qHTML(i);renderNav();const nb=document.querySelector(`[data-bohr="${i}"][data-k="${k}"][data-d="${bb.dataset.d}"]`);(nb&&!nb.disabled?nb:document.querySelector(`[data-bohr="${i}"][data-k="${k}"]:not([disabled])`))?.focus();return;}
+  const u=t.closest("[data-use]");if(u){showTab(u.dataset.use);if(window.innerWidth<900)$("#stim").scrollIntoView({block:"start"});return;}
+  const f=t.closest("[data-flag]");if(f){const i=+f.dataset.flag;state.flags.has(i)?state.flags.delete(i):state.flags.add(i);const on=state.flags.has(i);f.setAttribute("aria-pressed",on);f.textContent=on?"⚑ Flagged":"⚐ Flag for review";renderNav();return;}
+  if(t.closest("#submit")){askSubmit();return;}
+  if(t.closest("#confirmsubmit")){submit();return;}
+  if(t.closest("#cancelsubmit")){$("#confirmbox").hidden=true;$("#submit").focus();return;}
+  if(t.closest("#print")){window.print();return;}
+  if(t.closest("#dlcsv")){downloadCSV();return;}
+  if(t.closest("#resend")){send();return;}
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.mc!==undefined){state.ans[+t.dataset.mc]=+t.value;renderNav();}
+  if(t.dataset.abp!==undefined){const[i,p]=t.dataset.abp.split(":");state.ans[+i][p]=+t.value;renderNav();}
+  if(t.dataset.multi!==undefined){
+    const i=+t.dataset.multi,q=T.questions[i],a=state.ans[i],j=+t.value;
+    const mm=$("#mmsg"+i);if(mm)mm.textContent="";
+    if(t.checked){if(a.length>=q.pick){t.checked=false;if(mm)mm.textContent=`Choose only ${q.pick}. Uncheck one first.`;return;}a.push(j);}
+    else state.ans[i]=a.filter(x=>x!==j);
+    renderNav();
+  }
+  if(t.dataset.match!==undefined){state.ans[+t.dataset.match][+t.dataset.r]=t.value;t.classList.toggle("has",!!t.value);renderNav();}
+});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.num!==undefined){state.ans[+t.dataset.num][+t.dataset.f]=t.value;renderNav();}
+  if(t.dataset.grid!==undefined){state.ans[+t.dataset.grid][+t.dataset.r][+t.dataset.c]=t.value;renderNav();}
+  if(t.dataset.cer!==undefined){state.ans[+t.dataset.cer][t.dataset.part]=t.value;renderNav();}
+  if(t.classList)t.classList.remove("error");
+});
+window.addEventListener("beforeunload",e=>{if(state.stu&&!state.done){e.preventDefault();e.returnValue="";}});
+
+/* ---------- grading ---------- */
+function scorePart(text,spec){
+  const body=strip(text,spec.starter);
+  return spec.keys.map(k=>({label:k.label,hit:body.length>0&&k.any.some(r=>new RegExp(r,"i").test(body))&&!(k.none||[]).some(r=>new RegExp(r,"i").test(body))}));
+}
+function grade(q,a){
+  if(q.type==="mc"){const ok=a===q.answer;return{pts:ok?1:0,max:1,html:`<div>Your answer: <b class="${ok?"good":"wrong"}">${a===null?"No answer":q.options[a]}</b></div>${ok?"":`<div>Correct answer: <b>${q.options[q.answer]}</b></div>`}`};}
+  if(q.type==="hotspot"){
+    const ok=a!==null&&(q.mode==="group"?a.group===q.answer:q.answer.includes(a.sym));
+    const yours=a===null?"No answer":q.mode==="group"?`Group ${a.group}`:a.sym;
+    const right=q.mode==="group"?`Group ${q.answer}`:`any of ${q.answer.join(", ")}`;
+    return{pts:ok?1:0,max:1,html:`<div>Your answer: <b class="${ok?"good":"wrong"}">${yours}</b></div>${ok?"":`<div>Correct answer: <b>${right}</b></div>`}`};
+  }
+  if(q.type==="ab"){const oa=a.a===q.a.ans,ob=a.b===q.b.ans;const ln=(P,v,ok)=>`<li>${P.q}<br>Your answer: <b class="${ok?"good":"wrong"}">${v===null?"No answer":P.o[v]}</b>${ok?" ✓":`<br>Correct answer: <b>${P.o[P.ans]}</b>`}</li>`;
+    return{pts:(oa?1:0)+(ob?1:0),max:2,html:`<ul>${ln(q.a,a.a,oa)}${ln(q.b,a.b,ob)}</ul>`};}
+  if(q.type==="drag"){const g=DND.grade(q,a);return{pts:g.pts,max:g.max,html:DND.linesHTML(g)};}
+  if(q.type==="bohr"){
+    const tot=a.reduce((x,y)=>x+y,0),need=q.answer.reduce((x,y)=>x+y,0);
+    const t1=tot===need,t2=a.every((n,k)=>n===q.answer[k]);
+    const show=arr=>arr.slice(0,Math.max(1,arr.reduce((m,n,k)=>n?k+1:m,0))).join(", ");
+    return{pts:(t1?1:0)+(t2?1:0),max:2,html:`<ul><li>Total electrons: <b class="${t1?"good":"wrong"}">${tot}</b>${t1?" ✓":` (correct: <b>${need}</b>)`}</li><li>Electrons in each shell: <b class="${t2?"good":"wrong"}">${tot?show(a):"No answer"}</b>${t2?" ✓":` (correct: <b>${show(q.answer)}</b>)`}</li></ul>`};
+  }
+  if(q.type==="multi"){const hits=a.filter(j=>q.answer.includes(j)).length;return{pts:hits,max:q.answer.length,html:`<div>Your choices: <b>${a.length?a.map(j=>`<span class="${q.answer.includes(j)?"good":"wrong"}">${q.options[j]}</span>`).join("; "):"No answer"}</b></div>${hits===q.answer.length?"":`<div>Correct choices: <b>${q.answer.map(j=>q.options[j]).join("; ")}</b></div>`}`};}
+  if(q.type==="match"){let p=0;const li=q.rows.map((r,k)=>{const ok=a[k]===r.answer;if(ok)p++;return `<li>${r.label}: <b class="${ok?"good":"wrong"}">${a[k]?esc(a[k]):"No answer"}</b>${ok?" ✓":` (correct: <b>${esc(r.answer)}</b>)`}</li>`;}).join("");return{pts:p,max:q.rows.length,html:`<ul>${li}</ul>`};}
+  if(q.type==="num"){let p=0;const li=q.fields.map((f,k)=>{const v=num(a[k]);const ok=v!==null&&Math.abs(v-f.answer)<=(f.tol||0)+1e-9;if(ok)p++;return `<li>${f.label}: <b class="${ok?"good":"wrong"}">${a[k]?esc(a[k]):"No answer"}</b>${ok?" ✓":` (correct: <b>${f.answer}${f.unit?" "+f.unit:""}</b>)`}</li>`;}).join("");return{pts:p,max:q.fields.length,html:`<ul>${li}</ul>`};}
+  if(q.type==="grid"){let p=0;const li=q.rows.map((r,k)=>{const ok=r.answers.every((ans,m)=>num(a[k][m])===ans);if(ok)p++;return `<li>${r.label} (${q.cols.join(", ").toLowerCase()}): <b class="${ok?"good":"wrong"}">${a[k].map(x=>x||"?").join(", ")}</b>${ok?" ✓":` (correct: <b>${r.answers.join(", ")}</b>)`}</li>`;}).join("");return{pts:p,max:q.rows.length,html:`<ul>${li}</ul>`};}
+  if(q.type==="cer"){
+    let p=0,m=0;
+    const html=PARTS.map(pt=>{
+      const r=scorePart(a[pt.key],q[pt.key]);const hp=r.filter(x=>x.hit).length;p+=hp;m+=r.length;
+      const body=strip(a[pt.key],q[pt.key].starter);
+      return `<div class="cer-res"><h4><span>${pt.name}</span><span class="pts">${hp} / ${r.length}</span></h4><div class="student">${body.length?esc(a[pt.key].trim()):"<i>No answer</i>"}</div><div class="vocab">${r.map(x=>`<span class="${x.hit?"hit":"miss"}">${x.hit?"✓":"✗"} ${esc(x.label)}</span>`).join("")}</div></div>`;
+    }).join("");
+    return{pts:p,max:m,html:html+`<div class="explain"><b>A strong answer:</b><ul>${PARTS.map(pt=>`<li><b>${pt.name}:</b> ${esc(q[pt.key].sample)}</li>`).join("")}</ul><span class="hint" style="display:block;margin:6px 0 0">Scored by key vocabulary. Your teacher will read your answer and may adjust this score.</span></div>`,cer:true};
+  }
+}
+
+/* ---------- submit, export, send ---------- */
+let RESULT=null;
+function askSubmit(){
+  const left=T.questions.filter((q,i)=>!answered(i)).length;
+  const box=$("#confirmbox");
+  box.innerHTML=`<p><b>${left?`${left} question${left>1?"s are":" is"} not finished.`:"Ready to turn it in?"}</b> Once you turn in your exit ticket, you can't change your answers.</p>
+   <div class="btn-row"><button type="button" class="btn" id="confirmsubmit">Yes, turn it in</button><button type="button" class="btn secondary" id="cancelsubmit">Keep working</button></div>`;
+  box.hidden=false;$("#confirmsubmit").focus();
+}
+function submit(){
+  let pts=0,max=0;const items=[];
+  const blocks=T.questions.map((q,i)=>{
+    const g=grade(q,state.ans[i]);pts+=g.pts;max+=g.max;items.push(g.pts);
+    const cls=g.pts===g.max?"ok":g.pts===0?"bad":"part";
+    return `<div class="res ${cls}"><h3><span>${i+1}.</span><span>${q.prompt}</span><span class="pts">${g.pts} / ${g.max}</span></h3>${g.html}${g.cer?"":`<p class="explain">${q.explain}</p>`}</div>`;
+  });
+  if(window.LOCKDOWN)LOCKDOWN.stop();
+  const LD=window.LOCKDOWN&&LOCKDOWN.enabled?LOCKDOWN.summary():null;
+  const now=new Date();
+  const pct=max?Math.round(pts/max*1000)/10:0;
+  const s=state.stu;
+  const header=["Student ID","# Correct","Last Name","First Name","Period","Teacher","Points Possible","Percent","Exit Ticket","Submitted"].concat(T.questions.map((q,i)=>`Q${i+1}${q.type==="cer"?" CER":""}`)).concat(LD?["Times Left Page","Seconds Away"]:[]);
+  const row=[s.id,pts,s.last,s.first,s.period,s.teacher,max,pct,T.title,now.toLocaleString()].concat(items).concat(LD?[LD.count,LD.away]:[]);
+  const tab=`${T.short}${CFG.TEACHERS.length>1?" "+s.teacher.split(/\s+/).pop():""} P${s.period}`;
+  RESULT={header,row,tab};
+  state.done=true;
+  $("#results").innerHTML=`<div class="panel">
+   <h2 style="font-size:26px">${esc(T.title)}: your results</h2>
+   <div class="res-top"><div class="score">${pts}<small> / ${max}</small></div>
+    <div class="res-meta"><div><b>${esc(s.first)} ${esc(s.last)}</b>, ID ${esc(s.id)}</div><div>Period ${esc(s.period)}, ${esc(s.teacher)}</div><div>${now.toLocaleString()}</div>${LD?`<div>Left the exit ticket: <b>${LD.count}</b> time${LD.count===1?"":"s"}${LD.count?` (${LD.away} seconds away)`:""}</div>`:""}</div></div>
+   <div id="sendbox" class="sendbox wait no-print">Sending your score to your teacher…</div>
+   <div class="btn-row no-print"><button type="button" class="btn" id="print">Print results</button><button type="button" class="btn secondary" id="dlcsv">Download my results (CSV)</button></div>
+   ${blocks.join("")}</div>`;
+  $("#test").hidden=true;$("#results").hidden=false;window.scrollTo({top:0});
+  send();
+}
+function send(){
+  const box=$("#sendbox");
+  if(!CFG.SHEET_URL){box.className="sendbox bad no-print";box.innerHTML=`This exit ticket isn't connected to your teacher's gradebook yet. Click <b>Download my results (CSV)</b> and turn in the file the way your teacher asks.`;return;}
+  box.className="sendbox wait no-print";box.textContent="Sending your score to your teacher…";
+  fetch(CFG.SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(RESULT)})
+   .then(()=>{box.className="sendbox ok no-print";box.textContent="✓ Your score was sent to your teacher.";})
+   .catch(()=>{box.className="sendbox bad no-print";box.innerHTML=`Your score didn't send. Check your internet connection, then <button type="button" class="linkbtn" id="resend">try again</button>. If it still won't send, download your results instead.`;});
+}
+function csvCell(v){v=String(v);return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v;}
+function downloadCSV(){
+  const csv=[RESULT.header,RESULT.row].map(r=>r.map(csvCell).join(",")).join("\r\n");
+  const b=new Blob([csv],{type:"text/csv"});const u=URL.createObjectURL(b);
+  const a=document.createElement("a");a.href=u;a.download=`${T.short.replace(/\s+/g,"-")}_${state.stu.last}_${state.stu.first}_${state.stu.id}.csv`.replace(/[^\w.-]/g,"");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);
+}
+
+DND.onChange(()=>renderNav());
+buildSignin();initAns();
+})();
+</script>
+</body>
+</html>

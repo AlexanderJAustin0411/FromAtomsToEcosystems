@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homeostasis Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b36;--muted:#56666f;--paper:#f3f6f5;--line:#d3dedb;--accent:#2f5d9b;--accent-soft:#e6eef9;--ok:#2e7d4f;--ok-bg:#e7f4ec;--bad:#b8403a;--bad-bg:#f9e8e6;--night:#15233b}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{border:0;border-radius:10px;padding:11px 22px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;font-size:17px}
+.btn.secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.err{color:var(--bad);font-weight:700;margin-top:10px}
+.hint{color:var(--muted);font-size:15px}
+.signin{max-width:640px;margin:28px auto;padding:0 16px}
+.ticket{background:#fff;border-radius:14px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(29,43,54,.07);overflow:hidden}
+.stub{background:var(--night);color:#fff;padding:22px 26px 24px;position:relative;overflow:hidden}
+.stub .unit{font-size:15px;opacity:.85}
+.stub h1{font-size:clamp(30px,6vw,42px);font-weight:800;letter-spacing:-.015em;margin-top:2px;position:relative}
+.stub .time{margin-top:6px;font-size:15px;opacity:.9;position:relative}
+.stub svg{position:absolute;right:8px;top:12px;width:210px;opacity:.95}
+.tbody{padding:22px 26px 28px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+.fields input,.fields select{border:2px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;font-weight:400;min-width:0}
+.fields .error{border-color:var(--bad);background:var(--bad-bg)}
+.bar{background:var(--night);color:#fff}
+.bar .inner{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.bar h1{font-size:21px;font-weight:800}
+.bar .who{font-size:15px;opacity:.85;margin-right:auto}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+.steps button{border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.steps button.done{background:rgba(255,255,255,.18)}
+.steps button.cur{background:#fff;color:var(--night);border-color:#fff}
+.steps button:disabled{opacity:.4;cursor:default}
+.progress{height:5px;background:rgba(255,255,255,.15)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#b8403a,#a23b72,#2f5d9b);transition:width .3s}
+main{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.kicker{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.step h2{font-size:clamp(26px,4vw,34px);font-weight:800;margin-bottom:10px}
+.step p{max-width:68ch;margin:0 0 12px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.figure svg{width:100%;height:auto;display:block}
+.cap{font-size:14px;color:var(--muted);margin-top:6px}
+textarea{width:100%;min-height:96px;border:2px solid #9fb4b0;border-radius:10px;padding:10px 12px;resize:vertical}
+.rule{border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 12px 12px 0;padding:12px 16px;margin:0 0 12px}
+.rule h3{font-size:18px;margin-bottom:6px}
+.rule ul,.rule ol{margin:0;padding-left:22px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+table.data{border-collapse:collapse;font-size:16px;margin:6px 0}
+table.data th,table.data td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+table.data th{background:#f4f8f7}
+table.data td:first-child{font-weight:700}
+.rxn{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:12px}
+.rxn .arrow{font-weight:700;color:var(--accent);text-align:center;font-size:15px}
+.rxn .arrow b{display:block;font-size:26px;line-height:1}
+.rxn svg{width:100%;height:auto;max-height:90px}
+.rxn .lbl{font-size:14px;color:var(--muted);text-align:center}
+/* four macromolecules */
+.mtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.mtab{border:2px solid var(--c);background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer;font-weight:700;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.mtab[aria-selected="true"]{background:var(--c);color:#fff}
+.mtab .seen{font-size:13px}
+.mcard{border:3px solid var(--c);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.mcard h3{font-size:24px;color:var(--c);margin-bottom:6px}
+.mcard .pic{background:#fafcfb;border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:10px}
+.mcard .pic svg{width:100%;height:auto;max-height:120px;display:block}
+.mcard .k{font-size:14px;font-weight:700;color:var(--muted);margin-top:4px}
+.mcard ul{margin:4px 0 10px;padding-left:20px}
+/* simulator */
+.sim{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pbtn{display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 8px;cursor:pointer;min-width:92px;font-weight:700;font-size:14px}
+.pbtn:hover{border-color:var(--accent)}
+.pbtn svg{height:44px;width:auto}
+.work{background:#fff;border:2px solid var(--line);border-radius:14px;min-height:220px;padding:10px;display:flex;align-items:center;justify-content:center}
+.work svg{width:100%;height:auto;max-height:300px}
+.work .empty{color:var(--muted);text-align:center}
+.toast{min-height:24px;color:var(--bad);font-weight:700;font-size:15px;margin-top:6px}
+.note{min-height:24px;color:var(--ok);font-weight:700;font-size:15px}
+.readout{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.readout .el{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;font-weight:800}
+.readout dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:8px 0 0}
+.readout dt{color:var(--muted)}.readout dd{margin:0;font-weight:700}
+.challenge{border:2px solid var(--accent);background:var(--accent-soft);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.challenge h3{font-size:20px}
+.feedback{margin-top:8px;font-weight:700}
+.feedback .good{color:var(--ok)}.feedback .warn{color:var(--bad)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chips span{border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;border:2px solid var(--line);background:#fff}
+.chips span.on{border-color:var(--accent);color:var(--accent)}
+.chips span.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+input.n{width:110px;border:2px solid #9fb4b0;border-radius:8px;padding:7px 10px}
+.q{border:0;margin:0 0 22px;padding:0}
+.q legend,.q .qp{font-weight:700;font-size:18px;margin:0 0 8px}
+.explain{background:#f7fbfa;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:16px}
+.score{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:56px;line-height:1}
+.score small{font-size:24px;color:var(--muted)}
+.sendbox{border-radius:10px;padding:10px 14px;margin:10px 0;font-weight:700}
+.sendbox.ok{background:var(--ok-bg);color:var(--ok)}.sendbox.wait{background:#eef3f2;color:var(--muted)}.sendbox.bad{background:var(--bad-bg);color:var(--bad)}
+.summary{border-collapse:collapse;margin:10px 0}
+.summary td{border:1px solid var(--line);padding:6px 12px}
+/* ---- drag-and-drop questions ---- */
+.dnd{margin-top:4px}
+.dbank{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:54px;padding:10px;border:2px dashed #b9c9c6;border-radius:10px;background:#f7fbfa;margin-bottom:12px}
+.dbank .dhint{color:var(--muted);font-size:14px}
+.dchip{touch-action:none;-webkit-user-select:none;user-select:none;border:2px solid var(--accent);background:#fff;color:var(--ink);font-weight:700;padding:6px 12px;border-radius:8px;cursor:grab;line-height:1.3;text-align:left;font-size:15px}
+.dchip:hover{background:var(--accent-soft)}
+.dchip.on{background:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+.dchip:disabled{cursor:default;opacity:1}
+.dchip.lift{opacity:.35}
+.dghost{position:fixed;left:0;top:0;z-index:1000;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);box-shadow:0 8px 18px rgba(0,0,0,.25);margin:0}
+.dzone{min-height:44px;border:2px dashed #9fb4b0;border-radius:8px;background:#fff;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 6px;cursor:pointer}
+.dzone .dph{color:#8a979c;font-size:14px;padding:0 4px}
+.dzone.target{border-color:var(--accent);background:#fdf7fa}
+.dzone.hover{border-color:var(--accent);border-style:solid;background:var(--accent-soft)}
+.dzone.filled{border-style:solid;border-color:#b7cfcb}
+.dzone.right{border-color:var(--ok);background:var(--ok-bg);border-style:solid}
+.dzone.wrong{border-color:var(--bad);background:var(--bad-bg);border-style:solid}
+.dchip.right{border-color:var(--ok);background:var(--ok-bg)}
+.dchip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.dlabel{position:relative}
+.dlabel .dfig svg{width:100%;height:auto;display:block}
+.dlabel .dzone{position:absolute;transform:translateY(-50%);min-height:38px;padding:2px 4px}
+.dlabel .dzone .dph{font-size:12px}
+.dlabel .dzone .dchip{font-size:13px;padding:4px 8px}
+.dfig2{margin:0 0 12px;max-width:560px}
+.dfig2 svg{width:100%;height:auto;display:block}
+.drows{display:flex;flex-direction:column;gap:8px}
+.drow{display:grid;grid-template-columns:minmax(110px,30%) 1fr;gap:12px;align-items:center}
+.drow>span{font-weight:700}
+.dorder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dorder li{display:flex;gap:10px;align-items:center}
+.dorder .onum{flex:0 0 32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.dorder .dzone{flex:1}
+.dbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.dbin{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.dbin .bt{background:var(--accent-soft);color:var(--ink);font-weight:700;padding:6px 10px;font-size:15px}
+.dbin .dzone{border:0;border-radius:0;min-height:120px;align-content:flex-start;padding:8px}
+.dbin .dzone.hover,.dbin .dzone.target{outline:2px dashed var(--accent);outline-offset:-4px}
+.dfill{line-height:2.6;margin:0;font-size:17px}
+.dfill .dzone{display:inline-flex;vertical-align:middle;min-width:120px;min-height:38px;margin:0 2px;padding:2px 4px}
+@media (max-width:520px){.dlabel .dzone .dchip{font-size:11px;padding:2px 5px}.dlabel .dzone .dph{font-size:10px}}
+
+/* enzyme lab */
+.simgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+.panelw{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px}
+.panelw svg{width:100%;height:auto;display:block}
+.log{list-style:none;margin:8px 0 0;padding:0;font-size:15px;max-height:190px;overflow:auto}
+.log li{padding:3px 0;border-top:1px solid #edf2f1}
+.log li b{color:var(--accent)}
+.toggle{display:flex;gap:8px;align-items:center;font-weight:700;margin-top:8px}
+.toggle input{width:20px;height:20px;accent-color:var(--accent)}
+.cast{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start;margin-top:12px}
+.stimpanel{position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+.phenbox{margin:12px 14px 0;padding:10px 12px;border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+.phenbox b{display:block;color:var(--accent);font-size:15px}
+.stabs{display:flex;gap:2px;padding:10px 10px 0;border-bottom:2px solid var(--line);overflow-x:auto}
+.stab{border:0;background:none;padding:7px 12px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;border-radius:6px 6px 0 0}
+.stab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-soft)}
+.stimbody{padding:12px 16px 16px}
+.stimbody p{margin:0 0 10px}
+.stimbody h3{font-size:17px;margin:2px 0 8px}
+.stimbody svg{width:100%;height:auto;display:block}
+.castq{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.usetab{border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;cursor:pointer}
+@media (max-width:900px){.simgrid,.cast{grid-template-columns:1fr}.stimpanel{position:static;max-height:none}}
+
+.lab{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.stage{background:#fbfaff;border:2px solid var(--line);border-radius:14px;padding:6px}
+.stage svg{width:100%;height:auto;display:block}
+.ctrlbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px}
+.seg{display:inline-flex;border:2px solid var(--accent);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:#fff;color:var(--accent);font-weight:700;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.slider{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-top:10px}
+.slider input{width:100%;accent-color:var(--accent)}
+.slider output{font-weight:700;min-width:64px;text-align:right}
+.shape{font-weight:700}.shape.ok{color:var(--ok)}.shape.mid{color:#a86a00}.shape.bad{color:var(--bad)}
+.graphs{display:grid;grid-template-columns:1fr;gap:10px}
+.graphs svg{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pair .panel2{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;text-align:center}
+.pair svg{width:100%;height:auto}
+.legend2{font-size:14px;color:var(--muted)}
+@media (max-width:900px){.lab,.pair{grid-template-columns:1fr}}
+
+@media (max-width:900px){.two,.sim,.mcard{grid-template-columns:1fr}.mtabs{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.fields{grid-template-columns:1fr}.tbody,.stub{padding-left:18px;padding-right:18px}.stub svg{display:none}.rxn{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.bar,.nav,.no-print{display:none!important}body{background:#fff}.card{border:0}}
+</style>
+</head>
+<body>
+<section class="signin" id="signin">
+ <div class="ticket">
+  <div class="stub"><svg viewBox="0 0 260 70" aria-hidden="true" id="stubart"></svg>
+   <div class="unit">Biology lesson</div><h1>Homeostasis</h1>
+   <div class="time">7 short steps with a feedback loop simulator. About 35 minutes.</div></div>
+  <div class="tbody"><div id="signform">
+   <div class="fields">
+    <label for="first">First name<input id="first" type="text" autocomplete="given-name"></label>
+    <label for="last">Last name<input id="last" type="text" autocomplete="family-name"></label>
+    <label for="sid">Student ID number<input id="sid" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="sid2">Type your ID again<input id="sid2" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="period">Period<select id="period"></select></label>
+    <span id="teacherslot"></span>
+   </div>
+   <div class="btn-row" style="margin-top:20px"><button class="btn" type="button" id="startbtn">Start the lesson</button></div>
+   <div class="err" id="signerr" role="alert"></div>
+  </div></div>
+ </div>
+</section>
+<section id="lesson" hidden>
+ <div class="bar"><div class="inner"><h1>Homeostasis</h1><span class="who" id="whoami"></span><nav class="steps" id="steps" aria-label="Lesson steps"></nav></div><div class="progress"><i id="prog" style="width:0"></i></div></div>
+ <main id="main"></main>
+</section>
+<div id="live" class="sr-only" aria-live="polite"></div>
+<script src="exit-ticket-config.js"></script>
+<script>
+(function(){
+"use strict";
+/* ===== Homeostasis drawings, models, and graphs (shared by the lesson and the exit ticket) ===== */
+const HOM=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  /* ---- line graph with optional band, set-point line, and markers ---- */
+  function graph(o){
+    const W=o.W||520,H=o.H||300,x0=62,x1=W-18,y0=o.title?40:22,y1=H-52,[xa,xb]=o.x,[ya,yb]=o.y;
+    const X=v=>x0+(v-xa)/(xb-xa)*(x1-x0),Y=v=>y1-(v-ya)/(yb-ya)*(y1-y0);
+    let s=o.title?T(W/2,20,o.title,{size:14}):"";
+    if(o.band){const bt=Math.min(o.band[1],yb),bb=Math.max(o.band[0],ya);s+=`<rect x="${x0}" y="${f(Y(bt))}" width="${x1-x0}" height="${f(Y(bb)-Y(bt))}" fill="#e7f4ec"/>`;}if(o.band)s+=""+T(x1-4,Y(o.band[1])-4,o.bandLabel||"normal range",{a:"end",size:11,c:"#2e7d4f",w:400});
+    for(let v=ya;v<=yb+1e-9;v+=o.ystep){s+=`<line x1="${x0}" y1="${f(Y(v))}" x2="${x1}" y2="${f(Y(v))}" stroke="#d6e0de" opacity=".7"/>`+T(x0-8,Y(v)+4,+v.toFixed(2),{a:"end",size:11,w:400,c:"#56666f"});}
+    for(let v=xa;v<=xb+1e-9;v+=o.xstep){s+=`<line x1="${f(X(v))}" y1="${y1}" x2="${f(X(v))}" y2="${y1+5}" stroke="#1d2b36"/>`+T(X(v),y1+19,v,{size:11,w:400});}
+    if(o.setpoint!=null)s+=`<line x1="${x0}" y1="${f(Y(o.setpoint))}" x2="${x1}" y2="${f(Y(o.setpoint))}" stroke="#2e7d4f" stroke-width="2" stroke-dasharray="7 5"/>`+T(x0+6,Y(o.setpoint)+15,o.setLabel||"set point",{a:"start",size:11,c:"#2e7d4f"});
+    s+=`<line x1="${x0}" y1="${y0-6}" x2="${x0}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/><line x1="${x0}" y1="${y1}" x2="${x1}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/>`;
+    s+=`<text transform="translate(16 ${(y0+y1)/2}) rotate(-90)" font-size="12" text-anchor="middle" fill="#56666f" font-family="system-ui,sans-serif">${o.ylabel}</text>`+T((x0+x1)/2,H-10,o.xlabel,{w:400,c:"#56666f"});
+    (o.series||[]).forEach(se=>{if(se.points.length>1)s+=`<polyline points="${se.points.map(p=>f(X(p[0]))+","+f(Y(p[1]))).join(" ")}" fill="none" stroke="${se.color}" stroke-width="${se.width||3}"${se.dash?' stroke-dasharray="6 5"':""} stroke-linejoin="round"/>`;
+      if(se.label){const lp=se.labelAt;s+=T(X(lp[0]),Y(lp[1]),se.label,{c:se.color,size:12});}});
+    (o.markers||[]).forEach(m=>{const px=X(m.x),py=Y(m.y);s+=`<circle cx="${f(px)}" cy="${f(py)}" r="${m.r||7}" fill="${m.fill||"#ffd35c"}" stroke="#1d2b36" stroke-width="2"/>`;
+      if(m.label)s+=T(px+(m.dx||0),py+(m.dy==null?-13:m.dy),m.label,{size:m.size||13,a:m.a||"middle"});});
+    return{svg:`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||o.title||"graph"}">${s}</svg>`,X,Y};
+  }
+  /* ---- feedback loop diagram: nodes around a circle ---- */
+  function loop(o){
+    const W=o.W||520,H=o.H||330,cx=W/2,cy=H/2+4,rx=o.rx||175,ry=o.ry||112,n=o.nodes.length,bw=o.bw||150,bh=o.bh||58;
+    const pos=o.nodes.map((nd,k)=>{const a=-Math.PI/2+k*2*Math.PI/n;return[cx+rx*Math.cos(a),cy+ry*Math.sin(a)];});
+    let s=`<defs><marker id="${o.id||"lp"}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${o.arrow||"#56666f"}"/></marker></defs>`;
+    for(let k=0;k<n;k++){const a1=-Math.PI/2+k*2*Math.PI/n+0.42,a2=-Math.PI/2+(k+1)*2*Math.PI/n-0.42;
+      const p1=[cx+rx*Math.cos(a1),cy+ry*Math.sin(a1)],p2=[cx+rx*Math.cos(a2),cy+ry*Math.sin(a2)],am=(a1+a2)/2,c=[cx+rx*1.18*Math.cos(am),cy+ry*1.18*Math.sin(am)];
+      if(k===n-1&&o.open)continue;
+      s+=`<path d="M${f(p1[0])},${f(p1[1])} Q${f(c[0])},${f(c[1])} ${f(p2[0])},${f(p2[1])}" fill="none" stroke="${o.arrow||"#56666f"}" stroke-width="3" marker-end="url(#${o.id||"lp"}a)"/>`;}
+    if(o.center)s+=T(cx,cy-4,o.center[0],{size:16,c:o.centerColor||"#1d2b36"})+(o.center[1]?T(cx,cy+16,o.center[1],{size:12,w:400,c:"#56666f"}):"");
+    o.nodes.forEach((nd,k)=>{const[x,y]=pos[k],on=o.hi===k;
+      s+=`<rect x="${f(x-bw/2)}" y="${f(y-bh/2)}" width="${bw}" height="${bh}" rx="10" fill="${on?(nd.color||"#2f5d9b"):"#fff"}" stroke="${nd.color||"#2f5d9b"}" stroke-width="${on?3:2}"/>`;
+      if(nd.title)s+=T(x,y-(nd.lines&&nd.lines.length?8:-4),nd.title,{size:13,c:on?"#fff":(nd.color||"#2f5d9b")});
+      (nd.lines||[]).forEach((ln,j)=>{s+=T(x,y+(nd.lineY||8)+j*13,ln,{size:11,w:400,c:on?"#fff":"#1d2b36"});});});
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||"feedback loop"}">${s}</svg>`;
+  }
+  /* ---- models ---- */
+  // Body temperature with negative feedback. event: "hot" or "cold"; effectorOn: can the effector respond?
+  function tempRun(event,effectorOn,opts){opts=opts||{};const dt=0.1,end=opts.end||30,start=2,len=10,inp=event==="hot"?0.3:-0.3;
+    let Tb=37,k=0,detect=null,ctrl=null,eff=null,back=null,peak=null;const pts=[],ks=[];
+    for(let t=0;t<=end+1e-9;t+=dt){const ev=t>=start&&t<start+len?inp:0;const dev=Tb-37;
+      if(detect===null&&Math.abs(dev)>0.3)detect=+t.toFixed(1);
+      if(detect!==null&&ctrl===null&&t>=detect+0.8)ctrl=+t.toFixed(1);
+      if(ctrl!==null&&effectorOn)k=Math.min(1,k+dt/2.5);
+      if(eff===null&&k>=0.99)eff=+t.toFixed(1);
+      const dT=ev-k*1.4*dev-0.03*dev;Tb+=dT*dt;
+      if(peak===null||Math.abs(Tb-37)>Math.abs(peak[1]-37))peak=[+t.toFixed(1),Tb];
+      if(eff!==null&&back===null&&t>start+len&&Math.abs(Tb-37)<0.06)back=+t.toFixed(1);
+      pts.push([+t.toFixed(1),+Tb.toFixed(3)]);ks.push([+t.toFixed(1),k]);}
+    const at=tt=>{const p=pts.find(q=>q[0]>=tt);return p?p[1]:37;};
+    return{pts,ks,stim:[start,at(start)],detect:detect!=null?[detect,at(detect)]:null,ctrl:ctrl!=null?[ctrl,at(ctrl)]:null,eff:eff!=null?[eff,at(eff)]:null,back:back!=null?[back,at(back)]:null,peak,start,len};}
+  // Childbirth: positive feedback. Contraction strength 0-100.
+  function birthRun(opts){opts=opts||{};const dt=0.1,end=opts.end||30,start=2;let C=5,O=1,born=null,detect=null,eff=null;const pts=[];
+    for(let t=0;t<=end+1e-9;t+=dt){
+      if(t>=start&&born===null){if(detect===null&&t>=start+1)detect=+t.toFixed(1);O+=0.12*C*dt;C+=0.35*O*dt;if(eff===null&&t>=start+3)eff=+t.toFixed(1);if(C>=100){C=100;born=+t.toFixed(1);}}
+      else if(born!==null){C=Math.max(4,C-40*dt);}
+      pts.push([+t.toFixed(1),+C.toFixed(2)]);}
+    const at=tt=>{const p=pts.find(q=>q[0]>=tt);return p?p[1]:4;};
+    return{pts,stim:[start,at(start)],detect:[detect,at(detect)],eff:[eff,at(eff)],born:[born,100],start};}
+  return{graph,loop,tempRun,birthRun,T};
+})();
+
+
+/* ===== Drag-and-drop question engine (drag, or tap a word then tap a spot) ===== */
+const DND=(function(){
+  const S={};let sel=null,drag=null,lastDrag=false,changeFn=null;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const plain=h=>String(h).replace(/<[^>]+>/g,"").trim();
+  const zoneById=(q,id)=>q.zones.find(z=>z.id===id);
+  function where(qid,ci){const P=S[qid].pl;for(const z in P)if(P[z].includes(ci))return z;return null;}
+  function chip(qid,ci,mark){const s=S[qid],on=sel&&sel.qid===qid&&sel.ci===ci;
+    return `<button type="button" class="dchip${on?" on":""}${mark?" "+mark:""}" data-dq="${qid}" data-ci="${ci}" aria-pressed="${on}"${s.locked?" disabled":""}>${s.q.chips[ci]}</button>`;}
+  function zone(qid,z,style){const s=S[qid],items=s.pl[z.id]||[],q=s.q;let mark="";
+    if(s.locked&&s.marks&&!z.multi)mark=items[0]===z.answer?" right":" wrong";
+    const tgt=sel&&sel.qid===qid&&!s.locked&&(z.multi||!items.length)?" target":"";
+    const inner=items.map(ci=>chip(qid,ci,s.locked&&s.marks&&z.multi?(z.answer.includes(ci)?"right":"wrong"):"")).join("")||`<span class="dph">${z.ph||"Drop here"}</span>`;
+    const name=z.name||z.label||"Drop spot";
+    return `<div class="dzone${z.multi?" multi":""}${items.length?" filled":""}${tgt}${mark}" data-dq="${qid}" data-dz="${z.id}"${s.locked?"":' tabindex="0" role="button"'} aria-label="${esc(plain(name))}: ${items.length?esc(items.map(ci=>plain(q.chips[ci])).join(", ")):"empty"}"${style?` style="${style}"`:""}>${inner}</div>`;}
+  function inner(qid){
+    const s=S[qid],q=s.q;
+    const placed=new Set(Object.values(s.pl).flat());
+    const bank=q.chips.map((c,ci)=>ci).filter(ci=>!placed.has(ci));
+    let h=s.locked?"":`<div class="dbank" data-dq="${qid}" data-dbank="1" aria-label="Word bank">${bank.map(ci=>chip(qid,ci)).join("")||'<span class="dhint">Every card is placed. Drag one back here to remove it.</span>'}</div>`;
+    if(q.figure&&q.layout!=="label")h+=`<div class="dfig2">${q.figure}</div>`;
+    if(q.layout==="label")h+=`<div class="dlabel"><div class="dfig">${q.figure}</div>${q.zones.map(z=>zone(qid,z,`left:${z.x}%;top:${z.y}%;width:${z.w}%`)).join("")}</div>`;
+    else if(q.layout==="rows")h+=`<div class="drows">${q.zones.map(z=>`<div class="drow"><span>${z.label}</span>${zone(qid,z)}</div>`).join("")}</div>`;
+    else if(q.layout==="order")h+=`<ol class="dorder">${q.zones.map((z,k)=>`<li><span class="onum" aria-hidden="true">${k+1}</span>${zone(qid,z)}</li>`).join("")}</ol>`;
+    else if(q.layout==="sort")h+=`<div class="dbins">${q.zones.map(z=>`<div class="dbin"><div class="bt">${z.label}</div>${zone(qid,{...z,multi:true})}</div>`).join("")}</div>`;
+    else if(q.layout==="fill")h+=`<div class="dfill">${q.sentence.map(p=>typeof p==="string"?p:zone(qid,zoneById(q,p.z))).join("")}</div>`;
+    if(!s.locked)h+=`<p class="dhow" style="font-size:14px;color:var(--muted);margin:8px 0 0">Drag a card to a spot, or tap a card and then tap the spot.</p>`;
+    return h;
+  }
+  function refresh(qid){const el=document.getElementById("dnd-"+qid);if(el)el.innerHTML=inner(qid);}
+  function focusChip(qid,ci){const b=document.querySelector(`.dchip[data-dq="${qid}"][data-ci="${ci}"]`);if(b)b.focus({preventScroll:true});}
+  function place(qid,ci,zid){
+    const s=S[qid],P=s.pl;for(const z in P)P[z]=P[z].filter(x=>x!==ci);
+    if(zid){const z=zoneById(s.q,zid);if(!(z.multi||s.q.layout==="sort"))P[zid]=[];P[zid]=(P[zid]||[]).concat(ci);}
+    sel=null;refresh(qid);if(changeFn)changeFn(qid);focusChip(qid,ci);
+  }
+  function mount(qid,q,pl,opts){
+    opts=opts||{};q.zones.forEach(z=>{if(!pl[z.id])pl[z.id]=[];});
+    S[qid]={q,pl,locked:!!opts.locked,marks:!!opts.marks};
+    return `<div class="dnd" id="dnd-${qid}">${inner(qid)}</div>`;
+  }
+  function lock(qid,marks){if(!S[qid])return;S[qid].locked=true;S[qid].marks=!!marks;if(sel&&sel.qid===qid)sel=null;refresh(qid);}
+  function complete(q,pl){if(q.layout==="sort")return Object.values(pl).flat().length===q.chips.length;return q.zones.every(z=>(pl[z.id]||[]).length>0);}
+  function grade(q,pl){
+    if(q.layout==="sort"){let pts=0;const lines=q.chips.map((c,ci)=>{const right=q.zones.find(z=>z.answer.includes(ci));const w=Object.keys(pl).find(z=>(pl[z]||[]).includes(ci));const ok=w===right.id;if(ok)pts++;return{label:c,ok,yours:w?zoneById(q,w).label:"not placed",right:right.label};});return{pts,max:q.chips.length,lines};}
+    let pts=0;const lines=q.zones.map(z=>{const got=(pl[z.id]||[])[0];const ok=got===z.answer;if(ok)pts++;return{label:z.name||z.label,ok,yours:got===undefined?"empty":q.chips[got],right:q.chips[z.answer]};});
+    return{pts,max:q.zones.length,lines};
+  }
+  function linesHTML(g){return `<ul>${g.lines.map(l=>`<li>${l.label}: <b class="${l.ok?"good":"wrong"}">${l.yours}</b>${l.ok?" ✓":` (correct: <b>${l.right}</b>)`}</li>`).join("")}</ul>`;}
+  /* ---- events ---- */
+  function clearHover(){document.querySelectorAll(".dzone.hover").forEach(e=>e.classList.remove("hover"));}
+  document.addEventListener("pointerdown",e=>{lastDrag=false;const c=e.target.closest(".dchip");if(!c||c.disabled||e.button!==0)return;drag={qid:c.dataset.dq,ci:+c.dataset.ci,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId,el:c,g:null};});
+  document.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;
+    if(!drag.moved){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;drag.moved=true;const g=drag.el.cloneNode(true);g.classList.remove("on");g.classList.add("dghost");document.body.appendChild(g);drag.g=g;drag.el.classList.add("lift");}
+    drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px";
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone");clearHover();if(z&&z.dataset.dq===drag.qid)z.classList.add("hover");e.preventDefault();},{passive:false});
+  function end(e,cancel){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(!d.moved)return;lastDrag=true;d.g.remove();d.el.classList.remove("lift");clearHover();if(cancel)return;
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone"),b=u&&u.closest("[data-dbank]");
+    if(z&&z.dataset.dq===d.qid)place(d.qid,d.ci,z.dataset.dz);else if(b&&b.dataset.dq===d.qid)place(d.qid,d.ci,null);}
+  document.addEventListener("pointerup",e=>end(e,false));document.addEventListener("pointercancel",e=>end(e,true));
+  document.addEventListener("click",e=>{
+    const t=e.target;if(!t.closest||!t.closest(".dnd"))return;
+    if(lastDrag){lastDrag=false;return;}
+    const c=t.closest(".dchip");
+    if(c){if(c.disabled)return;const qid=c.dataset.dq,ci=+c.dataset.ci,z=c.closest(".dzone");
+      if(z&&sel&&sel.qid===qid&&sel.ci!==ci){place(qid,sel.ci,z.dataset.dz);return;}
+      sel=(sel&&sel.qid===qid&&sel.ci===ci)?null:{qid,ci};refresh(qid);focusChip(qid,ci);return;}
+    const z=t.closest(".dzone");if(z&&sel&&sel.qid===z.dataset.dq&&!S[z.dataset.dq].locked){place(z.dataset.dq,sel.ci,z.dataset.dz);return;}
+    const b=t.closest("[data-dbank]");if(b&&sel&&sel.qid===b.dataset.dq){place(b.dataset.dq,sel.ci,null);}
+  });
+  document.addEventListener("keydown",e=>{
+    lastDrag=false;
+    const z=e.target.classList&&e.target.classList.contains("dzone")?e.target:null;
+    if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(sel&&sel.qid===z.dataset.dq)place(z.dataset.dq,sel.ci,z.dataset.dz);}
+    if(e.key==="Escape"&&sel){const q=sel.qid;sel=null;refresh(q);}
+  });
+  return{mount,lock,complete,grade,linesHTML,onChange:f=>{changeFn=f;}};
+})();
+
+const CFG=Object.assign({SHEET_URL:"",TEACHERS:[],PERIODS:[1,2,3,4,5,6,7]},window.EXIT_TICKET_CONFIG||{});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const announce=m=>{const l=$("#live");l.textContent="";setTimeout(()=>l.textContent=m,30);};
+const REDUCED=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const RED="#b8403a",ORG="#b5561a",PUR="#5b3f8f",BLU="#2f5d9b",GRN="#2e7d4f",MAG="#a23b72";
+$("#stubart").innerHTML=(()=>{let s="";const pts=[];for(let x=0;x<=250;x+=5){pts.push(x+","+(38-16*Math.exp(-Math.pow((x-80)/30,2))).toFixed(1));}s+=`<line x1="0" y1="38" x2="250" y2="38" stroke="#7fe0a0" stroke-dasharray="6 5" stroke-width="2"/><polyline points="${pts.join(" ")}" fill="none" stroke="#ff8a7a" stroke-width="3"/>`;return s;})();
+
+/* ---------- loop content ---------- */
+const LOOPS={
+ hot:[{title:"Stimulus",lines:["Body temp rises"],color:RED},{title:"Sensor",lines:["Nerve cells in skin"],color:ORG},{title:"Control center",lines:["Brain (hypothalamus)"],color:PUR},{title:"Effector",lines:["Sweat glands"],color:BLU},{title:"Response",lines:["Sweat cools the body"],color:GRN}],
+ cold:[{title:"Stimulus",lines:["Body temp drops"],color:RED},{title:"Sensor",lines:["Nerve cells in skin"],color:ORG},{title:"Control center",lines:["Brain (hypothalamus)"],color:PUR},{title:"Effector",lines:["Muscles shiver"],color:BLU},{title:"Response",lines:["Shivering warms body"],color:GRN}],
+ birth:[{title:"Stimulus",lines:["Baby pushes on cervix"],color:RED},{title:"Sensor",lines:["Stretch receptors"],color:ORG},{title:"Control center",lines:["Brain releases oxytocin"],color:PUR},{title:"Effector",lines:["Uterus muscles"],color:BLU},{title:"Response",lines:["Stronger contractions"],color:GRN}]};
+const loopSVG=(k,hi,id)=>HOM.loop({nodes:LOOPS[k],hi,id:id||"lp",center:k==="birth"?["Positive","feedback"]:["Negative","feedback"],centerColor:k==="birth"?MAG:GRN,aria:`${k==="birth"?"Positive":"Negative"} feedback loop: `+LOOPS[k].map(n=>n.title+", "+n.lines[0]).join("; ")});
+
+/* ---------- state ---------- */
+const S={stu:null,step:0,maxStep:0,wonder:"",ex:0,sim:{mode:"temp",event:"hot",eff:true,t:0,run:null,playing:false,ranTemp:false,ranBirth:false},
+  cl:[[],[]],tab:[0,0],reflect:"",done:false};
+const STEPS=["Phenomenon","Feedback loop parts","Negative vs. positive","Feedback simulator","Investigation 1","Investigation 2","Wrap-up"];
+
+/* ---------- sign in ---------- */
+$("#period").innerHTML=`<option value="">Choose</option>`+CFG.PERIODS.map(p=>`<option>${esc(p)}</option>`).join("");
+$("#teacherslot").outerHTML=CFG.TEACHERS.length?`<label for="teacher">Teacher<select id="teacher"><option value="">Choose your teacher</option>${CFG.TEACHERS.map(t=>`<option>${esc(t)}</option>`).join("")}</select></label>`:`<label for="teacher">Teacher<input id="teacher" type="text" autocomplete="off"></label>`;
+function start(){
+  const f={first:$("#first"),last:$("#last"),sid:$("#sid"),sid2:$("#sid2"),period:$("#period"),teacher:$("#teacher")};
+  Object.values(f).forEach(el=>el.classList.remove("error"));
+  const v=k=>f[k].value.trim();let msg="";
+  for(const k of Object.keys(f))if(!v(k)){f[k].classList.add("error");msg=msg||"Fill in every box before you start.";}
+  const sid=v("sid").replace(/\s+/g,""),sid2=v("sid2").replace(/\s+/g,"");
+  if(!msg&&!/^\d+$/.test(sid)){f.sid.classList.add("error");msg="Use only numbers in your student ID. No letters, dashes, or other symbols.";}
+  if(!msg&&sid.length>15){f.sid.classList.add("error");msg="That student ID is too long. Check your ID number.";}
+  if(!msg&&sid!==sid2){f.sid2.classList.add("error");msg="The two student ID boxes don't match. Check your ID number.";}
+  if(msg){$("#signerr").textContent=msg;const b=document.querySelector(".fields .error");if(b)b.focus();return;}
+  S.stu={first:v("first"),last:v("last"),id:sid,period:v("period"),teacher:v("teacher")};
+  $("#whoami").textContent=`${S.stu.first} ${S.stu.last}, Period ${S.stu.period}`;
+  $("#signin").hidden=true;$("#lesson").hidden=false;go(0);
+}
+$("#startbtn").addEventListener("click",start);
+$("#signform").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();start();}});
+
+/* ---------- navigation ---------- */
+function canLeave(){
+  const m=(id,t)=>{const el=$("#"+id);if(el)el.textContent=t;announce(t);return false;};
+  if(S.step===0&&S.wonder.trim().length<5)return m("wonderMsg","Write your first idea before you move on. There's no wrong answer yet.");
+  if(S.step===3&&!(S.sim.ranTemp&&S.sim.ranBirth))return m("simMsg","Run at least one temperature run and the childbirth run all the way through before you move on.");
+  if(S.step===4&&CL[0].items.some((it,k)=>!itemState(0,k).done))return m("clMsg0","Check every question in this investigation first.");
+  if(S.step===5&&CL[1].items.some((it,k)=>!itemState(1,k).done))return m("clMsg1","Check every question in this investigation first.");
+  return true;
+}
+function go(i){
+  if(i>S.step&&!canLeave())return;
+  stopSim();
+  S.step=i;S.maxStep=Math.max(S.maxStep,i);
+  $("#steps").innerHTML=STEPS.map((n,k)=>`<button type="button" data-step="${k}" class="${k===i?"cur":k<=S.maxStep?"done":""}"${k>S.maxStep||S.done?" disabled":""}${k===i?' aria-current="step"':""}>${k+1}. ${n}</button>`).join("");
+  $("#prog").style.width=`${(i/(STEPS.length-1))*100}%`;
+  $("#main").innerHTML=[step0,step1,step2,step3,step4,step5,step6][i]();
+  window.scrollTo({top:0});
+  const h=$("#main h2");if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+}
+const nav=i=>`<div class="nav no-print">${i>0?`<button class="btn secondary" type="button" data-go="${i-1}">Back</button>`:"<span></span>"}${i<STEPS.length-1?`<button class="btn" type="button" data-go="${i+1}">Next</button>`:""}</div>`;
+
+/* ---------- step 0: phenomenon ---------- */
+function thermo(x,label,temp,col){const h=Math.max(10,Math.min(120,(temp+5)/50*120));return `<g transform="translate(${x},20)"><rect x="-12" y="0" width="24" height="140" rx="12" fill="#fff" stroke="#8aa1b1" stroke-width="3"/><circle cx="0" cy="152" r="18" fill="${col}" stroke="#8aa1b1" stroke-width="3"/><rect x="-6" y="${140-h}" width="12" height="${h+6}" fill="${col}"/>${HOM.T(0,196,label,{size:13})}</g>`;}
+function step0(){return `<div class="card step"><div class="kicker">Step 1 of 7: The phenomenon</div><h2>Why do you sweat when it's hot and shiver when it's cold?</h2>
+ <div class="two"><div><div class="figure" style="max-width:340px"><svg viewBox="0 0 300 220" role="img" aria-label="Thermometers showing 5 degrees outside in winter, 40 degrees outside in summer, and body temperature near 37 degrees both times">${thermo(60,"Winter: 5 °C",5,BLU)}${thermo(150,"Body: 37 °C",37,GRN)}${thermo(240,"Summer: 40 °C",40,RED)}</svg></div>
+ <p>You don't decide to sweat or shiver. Your body just does it. On a hot day, beads of sweat show up on your forehead and your face turns red. On a freezing morning, your muscles start shaking and you get goosebumps, even if you try to stay still.</p>
+ <p>Here's the strange part: the weather can change by 35 °C, but your body temperature barely moves. Doctors consider anything from about 36.5 °C to 37.5 °C normal. If your body drifts far outside that range, you can get very sick. So something inside you must be watching your temperature and fixing it all day long.</p></div>
+ <div><table class="data"><caption style="text-align:left;font-weight:700;margin-bottom:4px">One student's temperature</caption><thead><tr><th>Outside temperature</th><th>Body temperature</th></tr></thead><tbody><tr><td>5 °C</td><td>36.8 °C</td></tr><tr><td>22 °C</td><td>37.0 °C</td></tr><tr><td>40 °C</td><td>37.3 °C</td></tr></tbody></table>
+ <label for="wonder" style="display:block;margin-top:14px"><b>Your first idea:</b> How does your body "know" it's too hot or too cold, and how does it fix it?</label>
+ <textarea id="wonder" style="margin-top:6px">${esc(S.wonder)}</textarea><p class="hint">Just write your best guess. You'll come back to it at the end.</p><div class="err" id="wonderMsg" role="alert"></div></div></div>${nav(0)}</div>`;}
+
+/* ---------- step 1: loop parts ---------- */
+const EXP=[["Stimulus","A <b>stimulus</b> is a change that pushes the body away from normal. On a hot day, your body temperature starts to rise."],
+ ["Sensor","A <b>sensor</b> (also called a receptor) detects the change. Nerve cells in your skin and brain sense that you're getting warm."],
+ ["Control center","The <b>control center</b> compares the change to the <b>set point</b> (about 37 °C) and decides what to do. For temperature, that's the hypothalamus in your brain."],
+ ["Effector","An <b>effector</b> is the muscle or gland that carries out the response. Your sweat glands start making sweat."],
+ ["Response","The <b>response</b> changes the body back toward normal. Sweat evaporates and cools you down, so the stimulus goes away."]];
+function step1(){return `<div class="card step"><div class="kicker">Step 2 of 7: Feedback loop parts</div><h2>The parts of a feedback loop</h2>
+ <p><b>Homeostasis</b> is how your body keeps conditions inside stable, like temperature and blood sugar. It works through <b>feedback loops</b>.</p>
+ <div class="two"><div class="panelw">${loopSVG("hot",S.ex)}</div>
+ <div><p class="say" style="font-size:18px" aria-live="polite"><b style="background:${LOOPS.hot[S.ex].color};color:#fff;border-radius:6px;padding:0 8px;margin-right:6px">${S.ex+1}. ${EXP[S.ex][0]}</b>${EXP[S.ex][1]}</p>
+ <div class="btn-row"><button class="btn secondary" type="button" id="exBack"${S.ex===0?" disabled":""}>Previous</button><button class="btn" type="button" id="exNext"${S.ex===4?" disabled":""}>Next part</button></div>
+ <div class="rule"><h3>Remember the order</h3><p style="margin:0"><b>Stimulus → Sensor → Control center → Effector → Response</b></p></div></div></div>${nav(1)}</div>`;}
+
+/* ---------- step 2: negative vs positive ---------- */
+function step2(){const r=HOM.tempRun("hot",true),b=HOM.birthRun();
+ const g1=HOM.graph({W:420,H:250,title:"Negative feedback: body temperature",x:[0,30],y:[36,39],xstep:5,ystep:0.5,xlabel:"Time (minutes)",ylabel:"Temperature (°C)",band:[36.5,37.5],setpoint:37,series:[{color:RED,points:r.pts}],aria:"Temperature rises a little, then goes back down to the set point of 37"}).svg;
+ const g2=HOM.graph({W:420,H:250,title:"Positive feedback: childbirth",x:[0,30],y:[0,100],xstep:5,ystep:20,xlabel:"Time (minutes)",ylabel:"Contraction strength",series:[{color:MAG,points:b.pts}],markers:[{x:b.born[0],y:100,label:"baby born",r:6}],aria:"Contraction strength grows faster and faster until the baby is born, then drops"}).svg;
+ return `<div class="card step"><div class="kicker">Step 3 of 7: Negative vs. positive</div><h2>Two kinds of feedback</h2>
+ <div class="pair"><div class="panel2"><h3 style="color:${GRN};font-size:20px">Negative feedback</h3>${g1}<p style="text-align:left">The response <b>reverses</b> the change, bringing the body back to its set point. A home thermostat works the same way: when the room gets too cold, the heater turns on; when it warms back up, the heater shuts off. Most of your body's loops work like this, which keeps conditions <b>stable</b>.</p></div>
+ <div class="panel2"><h3 style="color:${MAG};font-size:20px">Positive feedback</h3>${g2}<p style="text-align:left">The response makes the change <b>bigger and bigger</b>. Each trip around the loop pushes things further from where they started. That would be dangerous if it went on forever, so positive feedback is used only for jobs that need to finish fast, and the loop stops when an <b>event ends it</b>, like a baby being born.</p></div></div>
+ <table class="data" style="margin-top:14px"><thead><tr><th></th><th>Negative feedback</th><th>Positive feedback</th></tr></thead><tbody>
+ <tr><td>What it does</td><td>Reverses the change</td><td>Makes the change bigger</td></tr><tr><td>Graph shape</td><td>Goes back to set point</td><td>Climbs faster and faster</td></tr><tr><td>Examples</td><td>Body temperature, blood sugar</td><td>Childbirth, blood clotting</td></tr><tr><td>How common?</td><td>Most body systems</td><td>Rare</td></tr></tbody></table>${nav(2)}</div>`;}
+
+/* ---------- simulator ---------- */
+let TIMER=null;
+function simRun(){const s=S.sim;return s.mode==="temp"?HOM.tempRun(s.event,s.eff):HOM.birthRun();}
+function simStage(run,t){const s=S.sim;if(s.mode==="birth"){if(t<run.start)return -1;if(run.born[0]&&t>=run.born[0])return -2;const ph=Math.floor((t-run.start)*2)%5;return ph;}
+  if(t<run.start)return -1;if(!run.detect||t<run.detect[0])return 0;if(!run.ctrl||t<run.ctrl[0])return 1;if(!s.eff)return 2;if(!run.eff||t<run.eff[0]-1.6)return 2;if(!run.back||t<run.back[0])return t<run.eff[0]?3:4;return -3;}
+function simGraph(run,t){const s=S.sim,pts=run.pts.filter(p=>p[0]<=t+1e-9),mk=[];
+  if(s.mode==="temp"){const hot=s.event==="hot",sg=hot?1:-1;const L=(p,label,o)=>{if(p&&t>=p[0])mk.push(Object.assign({x:p[0],y:p[1],label,size:12,r:6},o));};
+    L(run.stim,"Stimulus",{dy:hot?20:-14,dx:8,a:"start"});L(run.detect,"Sensor detects",{a:"end",dx:-10,dy:4});
+    if(s.eff){L(run.peak&&t>=run.peak[0]?run.peak:null,"Effector responds",{dy:hot?-13:22});L(run.back,"Back to set point",{dy:hot?-13:22});}
+    const ys=run.pts.map(p=>p[1]),lo=Math.min(36,Math.floor((Math.min(...ys)-0.3)*2)/2),hi=Math.max(38,Math.ceil((Math.max(...ys)+0.3)*2)/2);
+    return HOM.graph({W:520,H:300,title:"Body temperature",x:[0,20],y:[lo,hi],xstep:2,ystep:hi-lo>3?1:0.5,xlabel:"Time (minutes)",ylabel:"Body temperature (°C)",band:[36.5,37.5],setpoint:37,series:[{color:hot?RED:BLU,points:pts.filter(p=>p[0]<=20)}],markers:mk,aria:"Body temperature graph"}).svg;}
+  if(t>=run.stim[0])mk.push({x:run.stim[0],y:run.stim[1],label:"Stimulus",size:12,r:6,dy:-13});if(run.born[0]&&t>=run.born[0])mk.push({x:run.born[0],y:100,label:"Baby born: loop ends",size:12,r:6,a:"end",dx:-8,dy:4});
+  return HOM.graph({W:520,H:300,title:"Childbirth contractions",x:[0,30],y:[0,100],xstep:5,ystep:20,xlabel:"Time (minutes)",ylabel:"Contraction strength",series:[{color:MAG,points:pts}],markers:mk,aria:"Contraction strength graph"}).svg;}
+function simLog(run,t){const s=S.sim,L=[];const add=(tt,msg)=>{if(tt!=null&&t>=tt)L.push(`<li><b>Minute ${tt.toFixed(1)}:</b> ${msg}</li>`);};
+  if(s.mode==="temp"){const hot=s.event==="hot";add(run.start,hot?"Stimulus: you start running in the heat, and your temperature rises.":"Stimulus: you jump into a cold lake, and your temperature drops.");
+    add(run.detect&&run.detect[0],"Sensors: nerve cells detect the change.");add(run.ctrl&&run.ctrl[0],"Control center: the hypothalamus signals the effectors.");
+    if(s.eff){add(run.peak&&run.peak[0],hot?"Effectors: sweat glands are sweating. Temperature turns back down.":"Effectors: muscles are shivering. Temperature turns back up.");add(run.back&&run.back[0],"Response: temperature is back near the set point. Loop complete.");}
+    else add((run.ctrl?run.ctrl[0]:run.start)+1,hot?"Effectors not working (dehydrated: no sweat). Temperature keeps climbing. Dangerous!":"Effectors not working. Temperature keeps falling. Dangerous!");
+    add(run.start+run.len,hot?"You stop running.":"You climb out of the lake.");}
+  else{add(run.start,"Stimulus: the baby pushes on the cervix.");add(run.detect[0],"Sensors: stretch receptors detect the push.");add(run.detect[0]+0.5,"Control center: the brain releases oxytocin.");add(run.eff[0],"Effector: the uterus contracts harder, pushing the baby more.");add(run.eff[0]+4,"The loop repeats, and each round makes contractions stronger.");add(run.born[0],"Event: the baby is born. The stretching stops, so the loop ends.");}
+  L.sort((a,b)=>parseFloat(a.match(/Minute ([\d.]+)/)[1])-parseFloat(b.match(/Minute ([\d.]+)/)[1]));return L.join("");}
+function simPanels(){const s=S.sim,run=s.run||simRun(),t=s.t,st=simStage(run,t);
+  const key=s.mode==="birth"?"birth":s.event;const hi=st>=0?st:null;
+  return{graph:simGraph(run,t),loop:loopSVG(key,hi,"sl"),log:simLog(run,t)};}
+function simHTML(){const s=S.sim,p=simPanels();
+  return `<div class="ctrlbox" style="margin:0 0 12px"><div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+   <span class="seg" role="group" aria-label="Which feedback loop"><button type="button" data-smode="temp" aria-pressed="${s.mode==="temp"}">Body temperature (negative)</button><button type="button" data-smode="birth" aria-pressed="${s.mode==="birth"}">Childbirth (positive)</button></span>
+   ${s.mode==="temp"?`<span class="seg" role="group" aria-label="Stimulus"><button type="button" data-ev="hot" aria-pressed="${s.event==="hot"}">Run on a hot day</button><button type="button" data-ev="cold" aria-pressed="${s.event==="cold"}">Jump in a cold lake</button></span>`:""}</div>
+   ${s.mode==="temp"?`<label class="toggle"><input type="checkbox" id="effOn"${s.eff?" checked":""}> Effectors working (sweat glands and shivering muscles)</label>`:""}
+   <div class="btn-row" style="margin-bottom:0"><button class="btn" type="button" id="play"${s.playing?" disabled":""}>${s.t>0?"Run again":"Start"}</button></div></div>
+   <div class="simgrid"><div class="panelw" id="sgraph">${p.graph}</div><div><div class="panelw" id="sloop">${p.loop}</div><ul class="log" id="slog" aria-live="polite">${p.log||'<li class="hint">Press Start to begin.</li>'}</ul></div></div>`;}
+function simDraw(){const p=simPanels();const g=$("#sgraph"),l=$("#sloop"),lg=$("#slog");if(g)g.innerHTML=p.graph;if(l)l.innerHTML=p.loop;if(lg)lg.innerHTML=p.log||'<li class="hint">Press Start to begin.</li>';}
+function simRefresh(){const w=$("#simwrap");if(w)w.innerHTML=simHTML();}
+function play(){const s=S.sim;stopSim();s.run=simRun();s.t=0;s.playing=true;simRefresh();
+  const end=s.mode==="birth"?Math.min(30,(s.run.born[0]||28)+4):(s.eff&&s.run.back?Math.min(20,Math.max(s.run.back[0]+2,16)):20);
+  if(REDUCED){s.t=end;finishRun();return;}
+  TIMER=setInterval(()=>{s.t=+(s.t+0.25).toFixed(2);simDraw();if(s.t>=end)finishRun();},70);}
+function finishRun(){const s=S.sim;stopSim();s.playing=false;if(s.mode==="temp")s.ranTemp=true;else s.ranBirth=true;simRefresh();const m=$("#simMsg");if(m&&s.ranTemp&&s.ranBirth)m.textContent="";
+  announce(s.mode==="temp"?(s.eff?"Run complete. Temperature returned to the set point.":"Run complete. Without effectors, temperature never came back."):"Run complete. The baby was born and the loop ended.");$("#play")&&$("#play").focus();}
+function stopSim(){if(TIMER)clearInterval(TIMER);TIMER=null;if(S.sim)S.sim.playing=false;}
+
+/* ---------- step 3 ---------- */
+function step3(){return `<div class="card step"><div class="kicker">Step 4 of 7: Feedback simulator</div><h2>Watch feedback loops in action</h2>
+ <p>Pick a loop and press <b>Start</b>. Watch the graph and the loop at the same time. Labels show where each step happens on the graph.</p>
+ <div class="rule"><h3>Try these</h3><ul><li>Run on a hot day. Where on the graph do the sensors detect the change? Where do the effectors start working?</li><li>Run again with <b>Effectors working</b> turned off. What happens to body temperature?</li><li>Switch to childbirth. How is the graph shape different from temperature?</li></ul></div>
+ <div id="simwrap">${simHTML()}</div><div class="err" id="simMsg" role="alert"></div>${nav(3)}</div>`;}
+
+/* ---------- steps 4 and 5: CAST-style investigations ---------- */
+const CL=(()=>{const r=HOM.tempRun("hot",true),bt=HOM.birthRun();
+  const tempAt=m=>r.pts.find(q=>q[0]>=m)[1],kAt=m=>r.ks.find(q=>q[0]>=m)[1],sweat=m=>Math.round(kAt(m)*Math.max(0,tempAt(m)-37)*40);
+  const tg=HOM.graph({W:520,H:280,title:"Maya's body temperature",x:[0,20],y:[36.8,37.8],xstep:2,ystep:0.2,xlabel:"Time (minutes)",ylabel:"Body temperature (°C)",band:[36.5,37.5],setpoint:37,series:[{color:RED,points:r.pts.filter(p=>p[0]<=20)}],
+   markers:[{x:r.stim[0],y:r.stim[1],label:"C",a:"end",dx:-11,dy:4},{x:r.detect[0],y:r.detect[1],label:"A",a:"end",dx:-12,dy:2},{x:r.peak[0],y:r.peak[1],label:"D"},{x:r.back[0],y:r.back[1],label:"B"}],aria:"Temperature graph with four points. C is where the temperature first starts rising. A is partway up the rise. D is the peak, where temperature turns back down. B is where it returns to 37 degrees."}).svg;
+  const bAt=m=>bt.pts.find(q=>q[0]>=m)[1];
+  const bg=HOM.graph({W:520,H:280,title:"Contraction strength during labor",x:[0,30],y:[0,100],xstep:5,ystep:20,xlabel:"Time (minutes)",ylabel:"Contraction strength",series:[{color:MAG,points:bt.pts}],
+   markers:[{x:13,y:bAt(13),label:"Q",a:"end",dx:-11,dy:4},{x:bt.born[0],y:100,label:"R",dx:12,dy:4},{x:bt.stim[0],y:bt.stim[1],label:"P"}],aria:"Childbirth graph. P is at the start. Q is partway up a curve that climbs faster and faster. R is the very top, just before the curve drops."}).svg;
+  const blank=k=>({title:"",lines:LOOPS.hot[k].lines,color:LOOPS.hot[k].color,lineY:20});
+  const W=520,Hh=340,cx=W/2,cy=Hh/2+4,rx=175,ry=112;
+  const loopBlank=HOM.loop({W,H:Hh,bh:70,id:"lb",nodes:[blank(0),blank(1),blank(2),blank(3),{title:"Response",lines:["Sweat cools the body"],color:GRN}],center:["Maya's","temperature loop"],aria:"Feedback loop with four unnamed boxes: body temp rises; nerve cells in skin; brain (hypothalamus); sweat glands. The fifth box is the response: sweat cools the body."});
+  const lz=[0,1,2,3].map(k=>{const a=-Math.PI/2+k*2*Math.PI/5,x=cx+rx*Math.cos(a),y=cy+ry*Math.sin(a);return{x:+((x-75)/W*100).toFixed(1),y:+((y-14)/Hh*100).toFixed(1),w:+(150/W*100).toFixed(1)};});
+  const mini=(p,col)=>HOM.graph({W:250,H:170,x:[0,10],y:[0,10],xstep:5,ystep:5,xlabel:"Time",ylabel:"Level",series:[{color:col,points:p}]}).svg;
+  const g1=[],g2=[];for(let t=0;t<=10;t+=.25){g1.push([t,Math.min(9.5,1+0.25*Math.pow(1.38,t))]);g2.push([t,5+3*Math.exp(-0.45*t)*Math.cos(1.2*t)]);}
+  const two=`<div class="pair" style="max-width:560px"><div class="panel2"><b>Graph 1</b>${mini(g1,PUR)}</div><div class="panel2"><b>Graph 2</b>${mini(g2,PUR)}</div></div>`;
+  const oxy=m=>Math.round(2+bAt(m)*0.55);
+  return[
+  {title:"Investigation 1: A runner on a hot day",phen:"Maya runs a 5K race on a 34 °C afternoon. Her muscles make a lot of heat, but her body temperature barely rises. How?",
+   stim:[{name:"Passage",html:`<h3>Running in the heat</h3>
+<p>When Maya runs, her leg muscles work hard. Working muscles turn a lot of energy into heat, so her body temperature starts to climb within a few minutes.</p>
+<p>Nerve cells in her skin and in a part of her brain called the hypothalamus act as temperature sensors. When they detect that her blood is getting warmer than about 37 °C, the hypothalamus sends signals out through her nerves.</p>
+<p>Those signals reach her sweat glands, which start pumping sweat onto her skin. Blood vessels near the skin also widen, which is why her face turns red. As sweat evaporates, it carries heat away, and her temperature drops back toward normal, even though she keeps running.</p>
+<p>This only works if Maya drinks enough water. If she gets dehydrated, her sweat glands can't keep up, and her temperature can rise to dangerous levels. That's called heat exhaustion.</p>`},
+    {name:"Diagram",html:`<h3>Maya's temperature loop</h3>${loopSVG("hot",null,"st")}`},
+    {name:"Graph",html:tg},
+    {name:"Data",html:`<h3>Maya's race data</h3><table class="data"><thead><tr><th>Minute</th><th>Body temperature (°C)</th><th>Sweat rate (mL/min)</th></tr></thead><tbody>${[0,2,4,6,8,12,14,16].map(m=>`<tr><td>${m}</td><td>${tempAt(m).toFixed(1)}</td><td>${sweat(m)}</td></tr>`).join("")}</tbody></table>`}],
+   items:[
+    {type:"drag",layout:"rows",uses:["Graph"],q:"Use the graph. Drag a description to each lettered point.",chips:["Stimulus: body starts heating up","Sensors detect the change","Effectors respond: temperature turns down","Back to the set point"],
+     zones:[{id:"A",label:"Point A",answer:1},{id:"B",label:"Point B",answer:3},{id:"C",label:"Point C",answer:0},{id:"D",label:"Point D",answer:2}],
+     x:"C is the stimulus, where temperature first starts rising. At A, the sensors detect it. At D, the effectors (sweat glands) are working and the temperature turns back down. At B, it's back to the 37 °C set point."},
+    {type:"drag",layout:"label",uses:["Passage"],figure:loopBlank,q:"Four boxes in Maya's loop are missing their names. Drag each name onto the right box.",chips:["Stimulus","Sensor","Control center","Effector"],
+     zones:[{id:"b0",name:"Box: body temp rises",answer:0,...lz[0]},{id:"b1",name:"Box: nerve cells in skin",answer:1,...lz[1]},{id:"b2",name:"Box: brain (hypothalamus)",answer:2,...lz[2]},{id:"b3",name:"Box: sweat glands",answer:3,...lz[3]}],
+     x:"Rising body temperature is the stimulus. Nerve cells are the sensors. The hypothalamus is the control center. Sweat glands are the effectors."},
+    {type:"ab",uses:["Graph","Data"],q:"This question has two parts.",
+     a:{q:"<b>Part A:</b> What kind of feedback controls Maya's body temperature?",o:["Negative feedback","Positive feedback"],ans:0},
+     b:{q:"<b>Part B:</b> Which evidence from the graph or data best supports your answer to Part A?",o:["Her temperature rose, then went back down toward 37 °C while she was still running","Her temperature climbed faster and faster the longer she ran","Her sweat rate stayed at 0 the whole race","Her temperature never changed at all"],ans:0},
+     x:"The response reversed the change: temperature rose to about 37.6 °C, then sweating brought it back toward the 37 °C set point. That's negative feedback."},
+    {type:"num",uses:["Data"],q:"Use the data table.",fields:[{label:"Highest body temperature",answer:+Math.max(...[0,2,4,6,8,12,14,16].map(tempAt)).toFixed(1),tol:0.1,unit:"°C"},{label:"Highest sweat rate",answer:Math.max(...[0,2,4,6,8,12,14,16].map(sweat)),tol:0,unit:"mL/min"}],
+     x:"Her temperature peaked first. Sweating peaked a little later, as the effectors caught up and started pulling her temperature back down."}]},
+  {title:"Investigation 2: When feedback speeds things up",phen:"During labor, contractions start gentle and get stronger and stronger until the baby is born. Why don't they settle back down like body temperature does?",
+   stim:[{name:"Passage",html:`<h3>Feedback that grows</h3>
+<p>Most feedback loops in your body push things back to normal. A few do the opposite: they make a change grow until a job is finished. This is called positive feedback.</p>
+<p>Childbirth is the best-known example. When the baby's head presses on the cervix, stretch receptors there send signals to the brain. The brain releases a hormone called oxytocin, which makes the muscles of the uterus contract. Stronger contractions push the baby harder against the cervix, which causes even more oxytocin to be released.</p>
+<p>Each trip around the loop makes the contractions stronger. The loop only stops when an outside event ends it: the baby is born, and the stretching stops.</p>
+<p>Blood clotting works in a similar way. Platelets that stick to a cut release chemicals that call more platelets, which release even more chemicals, until the cut is sealed.</p>`},
+    {name:"Diagram",html:`<h3>The childbirth loop</h3>${loopSVG("birth",null,"sb")}`},
+    {name:"Graph",html:bg},
+    {name:"Data",html:`<h3>Labor data</h3><table class="data"><thead><tr><th>Minute</th><th>Contraction strength</th><th>Oxytocin level</th></tr></thead><tbody>${[2,6,10,14,18].map(m=>`<tr><td>${m}</td><td>${Math.round(bAt(m))}</td><td>${oxy(m)}</td></tr>`).join("")}<tr><td>20</td><td>${Math.round(bAt(20))} (baby born)</td><td>${oxy(20)}</td></tr></tbody></table>`}],
+   items:[
+    {type:"drag",layout:"rows",uses:["Graph"],q:"Use the graph. Drag a description to each lettered point.",chips:["Stimulus: baby pushes on cervix","Loop repeats: contractions keep getting stronger","Event ends the loop: baby is born"],
+     zones:[{id:"P",label:"Point P",answer:0},{id:"Q",label:"Point Q",answer:1},{id:"R",label:"Point R",answer:2}],
+     x:"P is the stimulus. At Q, each round of the loop makes contractions stronger, so the curve climbs faster and faster. At R the baby is born, the stretching stops, and the loop ends."},
+    {type:"drag",layout:"order",uses:["Passage","Diagram"],q:"Put one trip around the childbirth loop in order.",chips:["The uterus contracts harder","Stretch receptors detect the push","The baby pushes on the cervix","The baby pushes even harder, so the loop starts again","The brain releases oxytocin"],
+     zones:[{id:"o1",name:"Step 1",answer:2},{id:"o2",name:"Step 2",answer:1},{id:"o3",name:"Step 3",answer:4},{id:"o4",name:"Step 4",answer:0},{id:"o5",name:"Step 5",answer:3}],
+     x:"Stimulus (baby pushes), sensor (stretch receptors), control center (brain releases oxytocin), effector (uterus contracts harder), and the response makes the stimulus bigger, so the loop repeats."},
+    {type:"drag",layout:"sort",q:"Sort each example into the right kind of feedback.",chips:["Sweating when you're hot","Shivering when you're cold","Insulin lowering blood sugar","Contractions during childbirth","Blood clotting at a cut","Fruit ripening in a bag"],
+     zones:[{id:"n",label:"Negative feedback",answer:[0,1,2]},{id:"p",label:"Positive feedback",answer:[3,4,5]}],
+     x:"Sweating, shivering, and insulin all reverse a change (negative). Childbirth, clotting, and ripening fruit (which releases ethylene that ripens more fruit) all make a change bigger until it's done (positive)."},
+    {type:"drag",layout:"rows",figure:two,q:"Which kind of feedback does each graph show?",chips:["Negative feedback","Positive feedback","No feedback"],
+     zones:[{id:"g1",label:"Graph 1",answer:1},{id:"g2",label:"Graph 2",answer:0}],
+     x:"Graph 1 climbs faster and faster: positive feedback. Graph 2 swings back and settles at a set level: negative feedback."},
+    {type:"drag",layout:"fill",q:"Drag words into the blanks.",chips:["reverses","set point","bigger","smaller","effector","stimulus"],
+     sentence:["Negative feedback ",{z:"f1"}," a change and brings the body back to its ",{z:"f2"},". Positive feedback makes a change ",{z:"f3"}," until an event ends it."],
+     zones:[{id:"f1",name:"Blank 1",answer:0},{id:"f2",name:"Blank 2",answer:1},{id:"f3",name:"Blank 3",answer:2}],
+     x:"Negative feedback reverses a change to return to the set point. Positive feedback amplifies a change until something ends the loop."}]}];})();
+const itemMax=it=>it.type==="ab"?2:it.type==="num"?it.fields.length:(it.layout==="sort"?it.chips.length:it.zones.length);
+function itemState(c,k){if(!S.cl[c][k])S.cl[c][k]={pts:null,pl:{},a:null,b:null,vals:CL[c].items[k].fields?CL[c].items[k].fields.map(()=>""):[]};const st=S.cl[c][k];st.done=st.pts!==null;return st;}
+function itemHTML(c,k){const it=CL[c].items[k],st=itemState(c,k),done=st.done,mx=itemMax(it),id=`c${c}i${k}`;
+  const uses=it.uses?`<div class="chips" style="margin:-4px 0 8px">${it.uses.map(u=>`<button type="button" class="usetab" data-usetab="${c}:${u}">Use the ${u} tab</button>`).join("")}</div>`:"";
+  let body="";
+  if(it.type==="drag")body=DND.mount("K"+c+"_"+k,it,st.pl,{locked:done,marks:true});
+  if(it.type==="ab")body=["a","b"].map(p=>{const P=it[p],sel=st[p];return `<fieldset class="q" style="margin:0 0 12px"><legend style="font-size:17px;font-weight:400">${P.q}</legend><div class="opts" style="display:flex;flex-direction:column;gap:8px">${P.o.map((o,j)=>{const good=done&&j===P.ans,bad=done&&sel===j&&j!==P.ans;return `<label style="display:flex;gap:10px;align-items:center;border:2px solid ${good?"var(--ok)":bad?"var(--bad)":"var(--line)"};background:${good?"var(--ok-bg)":bad?"var(--bad-bg)":"#fff"};border-radius:10px;padding:8px 12px;cursor:pointer"><input type="radio" name="${id}${p}" data-ab="${c}:${k}:${p}" value="${j}"${sel===j?" checked":""}${done?" disabled":""}><span>${o}</span></label>`;}).join("")}</div></fieldset>`;}).join("");
+  if(it.type==="num")body=`<div style="display:flex;flex-wrap:wrap;gap:14px">${it.fields.map((f,j)=>`<label style="display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:15px">${f.label}<span style="display:flex;align-items:center;gap:6px;font-weight:400"><input class="n" type="text" inputmode="decimal" data-numf="${c}:${k}:${j}" value="${esc(st.vals[j])}"${done?" disabled":""}> ${f.unit}</span></label>`).join("")}</div>${done?`<p class="hint">Correct answers: ${it.fields.map(f=>`${f.label}: ${f.answer} ${f.unit}`).join("; ")}</p>`:""}`;
+  return `<div class="q castq" id="${id}"><p class="qp">${k+1}. ${it.q}</p>${uses}${body}
+   ${done?`<div class="explain"><b>${st.pts===mx?"All correct!":`${st.pts} of ${mx} correct.`}</b> ${it.x}</div>`:`<div class="btn-row"><button class="btn secondary" type="button" data-icheck="${c}:${k}">Check</button></div><div class="err" id="${id}err" role="alert"></div>`}</div>`;}
+function checkItem(c,k){const it=CL[c].items[k],st=itemState(c,k),id=`c${c}i${k}`;let pts=0;
+  if(it.type==="drag"){if(!DND.complete(it,st.pl)){$("#"+id+"err").textContent="Place every card before you check.";return;}pts=DND.grade(it,st.pl).pts;}
+  if(it.type==="ab"){if(st.a===null||st.b===null){$("#"+id+"err").textContent="Answer both Part A and Part B before you check.";return;}pts=(st.a===it.a.ans?1:0)+(st.b===it.b.ans?1:0);}
+  if(it.type==="num"){if(st.vals.some(v=>!String(v).trim())){$("#"+id+"err").textContent="Fill in every box before you check.";return;}
+    pts=it.fields.filter((f,j)=>{const v=parseFloat(String(st.vals[j]).replace(/,/g,""));return !isNaN(v)&&Math.abs(v-f.answer)<=f.tol+1e-9;}).length;}
+  st.pts=pts;const y=window.scrollY;go(S.step);window.scrollTo({top:y});const mx=itemMax(it);announce(pts===mx?"All correct!":`${pts} of ${mx} correct.`);}
+function clusterHTML(c,stepNo){const C=CL[c],tab=S.tab[c];
+  return `<div class="card step"><div class="kicker">Step ${stepNo} of 7: ${STEPS[stepNo-1]}</div><h2>${C.title.replace(/^Investigation \d: /,"")}</h2><p>Read the stimulus on the left, then answer the questions. Your first answer to each question counts, so check your work before you press <b>Check</b>.</p>
+  <div class="cast"><div class="stimpanel"><div class="phenbox"><b>Phenomenon</b>${C.phen}</div>
+   <div class="stabs" role="tablist">${C.stim.map((s,k)=>`<button type="button" role="tab" class="stab" aria-selected="${k===tab}" data-stab="${c}:${k}">${s.name}</button>`).join("")}</div>
+   <div class="stimbody" role="tabpanel">${C.stim[tab].html}</div></div>
+  <div class="qcol">${C.items.map((it,k)=>itemHTML(c,k)).join("")}<div class="err" id="clMsg${c}" role="alert"></div></div></div>${nav(stepNo-1)}</div>`;}
+function step4(){return clusterHTML(0,5);}
+function step5(){return clusterHTML(1,6);}
+
+/* ---------- step 6: wrap-up ---------- */
+function step6(){if(S.done)return resultsHTML();
+ return `<div class="card step"><div class="kicker">Step 7 of 7: Wrap-up</div><h2>Back to sweating and shivering</h2>
+ <div class="two"><div><p>Your body keeps its temperature near a <b>set point</b> of about 37 °C using <b>negative feedback</b>.</p>
+ <p>When you get too hot (<b>stimulus</b>), nerve cells (<b>sensors</b>) tell your brain's hypothalamus (<b>control center</b>). It signals your sweat glands (<b>effectors</b>), and sweating cools you down (<b>response</b>). When you get too cold, the effectors are your muscles, which shiver to make heat.</p>
+ <p>Because the response reverses the change, your temperature stays almost the same whether it's 5 °C or 40 °C outside.</p>
+ <div class="rule"><h3>Your first idea was</h3><p style="margin:0;white-space:pre-wrap">${esc(S.wonder)||"<i>(blank)</i>"}</p></div></div>
+ <div><label for="reflect"><b>Look back at your first idea.</b> What would you change or add now? Use the words <i>stimulus</i>, <i>sensor</i>, <i>effector</i>, and <i>negative feedback</i>.</label>
+ <textarea id="reflect" style="margin-top:6px;min-height:140px">${esc(S.reflect)}</textarea>
+ <div class="btn-row"><button class="btn" type="button" id="finish">Finish lesson</button></div><div class="err" id="finMsg" role="alert"></div></div></div>
+ <div class="nav no-print"><button class="btn secondary" type="button" data-go="5">Back</button><span></span></div></div>`;}
+let RESULT=null;
+function finish(){if(S.reflect.trim().length<10){$("#finMsg").textContent="Write your updated idea before you finish.";return;}
+  const allPts=[],labels=[];CL.forEach((C,c)=>C.items.forEach((it,k)=>{allPts.push(itemState(c,k).pts||0);labels.push(`Inv${c+1} Q${k+1}`);}));
+  const pts=allPts.reduce((a,b)=>a+b,0),max=CL.flatMap(C=>C.items.map(itemMax)).reduce((a,b)=>a+b,0);
+  const s=S.stu,now=new Date();
+  const header=["Student ID","# Correct","Last Name","First Name","Period","Teacher","Points Possible","Percent","Lesson","Submitted"].concat(labels,["First Idea","Updated Idea"]);
+  const row=[s.id,pts,s.last,s.first,s.period,s.teacher,max,Math.round(pts/max*1000)/10,"Homeostasis",now.toLocaleString()].concat(allPts,[S.wonder.trim(),S.reflect.trim()]);
+  RESULT={header,row,tab:`Homeostasis Lesson${CFG.TEACHERS.length>1?" "+s.teacher.split(/\s+/).pop():""} P${s.period}`,pts,max,allPts,now};S.done=true;go(6);send();}
+function resultsHTML(){const R=RESULT,s=S.stu;return `<div class="card step"><div class="kicker">Lesson complete</div><h2>Nice work, ${esc(s.first)}!</h2><div class="score">${R.pts}<small> / ${R.max}</small></div>
+  <div class="hint" style="margin-top:6px">${esc(s.first)} ${esc(s.last)}, ID ${esc(s.id)}, Period ${esc(s.period)}, ${esc(s.teacher)}. ${R.now.toLocaleString()}</div>
+  <div id="sendbox" class="sendbox wait no-print">Sending your score to your teacher…</div>
+  <table class="summary"><tbody>${CL.map((C,c)=>C.items.map((it,k)=>`<tr><td>Investigation ${c+1}, question ${k+1}</td><td>${itemState(c,k).pts||0} / ${itemMax(it)}</td></tr>`).join("")).join("")}</tbody></table>
+  <div class="rule"><h3>Your updated idea</h3><p style="margin:0;white-space:pre-wrap">${esc(S.reflect)}</p></div>
+  <div class="btn-row no-print"><button class="btn" type="button" id="print">Print</button><button class="btn secondary" type="button" id="dlcsv">Download my results (CSV)</button></div></div>`;}
+function send(){const box=$("#sendbox");if(!box)return;
+  if(!CFG.SHEET_URL){box.className="sendbox bad no-print";box.innerHTML="This lesson isn't connected to your teacher's gradebook yet. Click <b>Download my results (CSV)</b> and turn in the file the way your teacher asks.";return;}
+  box.className="sendbox wait no-print";box.textContent="Sending your score to your teacher…";
+  fetch(CFG.SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({header:RESULT.header,row:RESULT.row,tab:RESULT.tab})})
+   .then(()=>{box.className="sendbox ok no-print";box.textContent="✓ Your score was sent to your teacher.";})
+   .catch(()=>{box.className="sendbox bad no-print";box.innerHTML=`Your score didn't send. Check your internet, then <button type="button" class="btn secondary" id="resend" style="padding:4px 12px;font-size:15px">try again</button>. If it still won't send, download your results.`;});}
+function csvCell(v){v=String(v);return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v;}
+function downloadCSV(){const csv=[RESULT.header,RESULT.row].map(r=>r.map(csvCell).join(",")).join("\r\n");const u=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));const a=document.createElement("a");a.href=u;a.download=`Homeostasis-Lesson_${S.stu.last}_${S.stu.first}_${S.stu.id}.csv`.replace(/[^\w.-]/g,"");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{const t=e.target;
+  const g=t.closest("[data-go]");if(g){go(+g.dataset.go);return;}
+  const sp=t.closest("[data-step]");if(sp&&!sp.disabled){const k=+sp.dataset.step;if(k<=S.maxStep)go(k);return;}
+  if(t.closest("#exNext")){S.ex=Math.min(4,S.ex+1);go(1);($("#exNext")&&!$("#exNext").disabled?$("#exNext"):$("#exBack")).focus();return;}
+  if(t.closest("#exBack")){S.ex=Math.max(0,S.ex-1);go(1);($("#exBack")&&!$("#exBack").disabled?$("#exBack"):$("#exNext")).focus();return;}
+  const sm=t.closest("[data-smode]");if(sm){stopSim();S.sim.mode=sm.dataset.smode;S.sim.t=0;S.sim.run=null;simRefresh();const b=document.querySelector(`[data-smode="${S.sim.mode}"]`);if(b)b.focus();return;}
+  const ev=t.closest("[data-ev]");if(ev){stopSim();S.sim.event=ev.dataset.ev;S.sim.t=0;S.sim.run=null;simRefresh();const b=document.querySelector(`[data-ev="${S.sim.event}"]`);if(b)b.focus();return;}
+  if(t.closest("#play")){play();return;}
+  const ic=t.closest("[data-icheck]");if(ic){const[c,k]=ic.dataset.icheck.split(":").map(Number);checkItem(c,k);return;}
+  const stb=t.closest("[data-stab]");if(stb){const[c,k]=stb.dataset.stab.split(":").map(Number);S.tab[c]=k;const p=document.querySelector(".stimpanel");p.querySelector(".stabs").innerHTML=CL[c].stim.map((s,j)=>`<button type="button" role="tab" class="stab" aria-selected="${j===k}" data-stab="${c}:${j}">${s.name}</button>`).join("");p.querySelector(".stimbody").innerHTML=CL[c].stim[k].html;document.querySelector(`[data-stab="${c}:${k}"]`).focus();return;}
+  const ut=t.closest("[data-usetab]");if(ut){const[c,name]=ut.dataset.usetab.split(":");const k=CL[+c].stim.findIndex(s=>s.name===name);const btn=document.querySelector(`[data-stab="${c}:${k}"]`);if(btn){btn.click();if(window.innerWidth<900)document.querySelector(".stimpanel").scrollIntoView({block:"start"});}return;}
+  if(t.closest("#finish")){finish();return;}
+  if(t.closest("#print")){window.print();return;}
+  if(t.closest("#dlcsv")){downloadCSV();return;}
+  if(t.closest("#resend")){send();return;}
+});
+document.addEventListener("change",e=>{const ab=e.target.dataset&&e.target.dataset.ab;if(ab){const[c,k,p]=ab.split(":");itemState(+c,+k)[p]=+e.target.value;return;}if(e.target.id==="effOn"){stopSim();S.sim.eff=e.target.checked;S.sim.t=0;S.sim.run=null;simRefresh();$("#effOn").focus();}});
+document.addEventListener("input",e=>{const t=e.target;
+  if(t.id==="wonder"){S.wonder=t.value;$("#wonderMsg").textContent="";}
+  if(t.id==="reflect")S.reflect=t.value;
+  if(t.dataset&&t.dataset.numf){const[c,k,j]=t.dataset.numf.split(":").map(Number);itemState(c,k).vals[j]=t.value;}
+  if(t.classList)t.classList.remove("error");});
+window.addEventListener("beforeunload",e=>{if(S.stu&&!S.done){e.preventDefault();e.returnValue="";}});
+})();
+</script>
+</body>
+</html>

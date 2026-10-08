@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Macromolecules Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b36;--muted:#56666f;--paper:#f3f6f5;--line:#d3dedb;--accent:#3f7a2e;--accent-soft:#e8f2e3;--ok:#2e7d4f;--ok-bg:#e7f4ec;--bad:#b8403a;--bad-bg:#f9e8e6;--night:#15291c}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{border:0;border-radius:10px;padding:11px 22px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;font-size:17px}
+.btn.secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.err{color:var(--bad);font-weight:700;margin-top:10px}
+.hint{color:var(--muted);font-size:15px}
+.signin{max-width:640px;margin:28px auto;padding:0 16px}
+.ticket{background:#fff;border-radius:14px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(29,43,54,.07);overflow:hidden}
+.stub{background:var(--night);color:#fff;padding:22px 26px 24px;position:relative;overflow:hidden}
+.stub .unit{font-size:15px;opacity:.85}
+.stub h1{font-size:clamp(30px,6vw,42px);font-weight:800;letter-spacing:-.015em;margin-top:2px;position:relative}
+.stub .time{margin-top:6px;font-size:15px;opacity:.9;position:relative}
+.stub svg{position:absolute;right:8px;top:12px;width:210px;opacity:.95}
+.tbody{padding:22px 26px 28px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+.fields input,.fields select{border:2px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;font-weight:400;min-width:0}
+.fields .error{border-color:var(--bad);background:var(--bad-bg)}
+.bar{background:var(--night);color:#fff}
+.bar .inner{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.bar h1{font-size:21px;font-weight:800}
+.bar .who{font-size:15px;opacity:.85;margin-right:auto}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+.steps button{border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.steps button.done{background:rgba(255,255,255,.18)}
+.steps button.cur{background:#fff;color:var(--night);border-color:#fff}
+.steps button:disabled{opacity:.4;cursor:default}
+.progress{height:5px;background:rgba(255,255,255,.15)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#c27c00,#1f7f7a,#6d4fa3);transition:width .3s}
+main{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.kicker{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.step h2{font-size:clamp(26px,4vw,34px);font-weight:800;margin-bottom:10px}
+.step p{max-width:68ch;margin:0 0 12px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.figure svg{width:100%;height:auto;display:block}
+.cap{font-size:14px;color:var(--muted);margin-top:6px}
+textarea{width:100%;min-height:96px;border:2px solid #9fb4b0;border-radius:10px;padding:10px 12px;resize:vertical}
+.rule{border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 12px 12px 0;padding:12px 16px;margin:0 0 12px}
+.rule h3{font-size:18px;margin-bottom:6px}
+.rule ul,.rule ol{margin:0;padding-left:22px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+table.data{border-collapse:collapse;font-size:16px;margin:6px 0}
+table.data th,table.data td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+table.data th{background:#f4f8f7}
+table.data td:first-child{font-weight:700}
+.rxn{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:12px}
+.rxn .arrow{font-weight:700;color:var(--accent);text-align:center;font-size:15px}
+.rxn .arrow b{display:block;font-size:26px;line-height:1}
+.rxn svg{width:100%;height:auto;max-height:90px}
+.rxn .lbl{font-size:14px;color:var(--muted);text-align:center}
+/* four macromolecules */
+.mtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.mtab{border:2px solid var(--c);background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer;font-weight:700;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.mtab[aria-selected="true"]{background:var(--c);color:#fff}
+.mtab .seen{font-size:13px}
+.mcard{border:3px solid var(--c);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.mcard h3{font-size:24px;color:var(--c);margin-bottom:6px}
+.mcard .pic{background:#fafcfb;border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:10px}
+.mcard .pic svg{width:100%;height:auto;max-height:120px;display:block}
+.mcard .k{font-size:14px;font-weight:700;color:var(--muted);margin-top:4px}
+.mcard ul{margin:4px 0 10px;padding-left:20px}
+/* simulator */
+.sim{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pbtn{display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 8px;cursor:pointer;min-width:92px;font-weight:700;font-size:14px}
+.pbtn:hover{border-color:var(--accent)}
+.pbtn svg{height:44px;width:auto}
+.work{background:#fff;border:2px solid var(--line);border-radius:14px;min-height:220px;padding:10px;display:flex;align-items:center;justify-content:center}
+.work svg{width:100%;height:auto;max-height:300px}
+.work .empty{color:var(--muted);text-align:center}
+.toast{min-height:24px;color:var(--bad);font-weight:700;font-size:15px;margin-top:6px}
+.note{min-height:24px;color:var(--ok);font-weight:700;font-size:15px}
+.readout{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.readout .el{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;font-weight:800}
+.readout dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:8px 0 0}
+.readout dt{color:var(--muted)}.readout dd{margin:0;font-weight:700}
+.challenge{border:2px solid var(--accent);background:var(--accent-soft);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.challenge h3{font-size:20px}
+.feedback{margin-top:8px;font-weight:700}
+.feedback .good{color:var(--ok)}.feedback .warn{color:var(--bad)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chips span{border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;border:2px solid var(--line);background:#fff}
+.chips span.on{border-color:var(--accent);color:var(--accent)}
+.chips span.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+input.n{width:110px;border:2px solid #9fb4b0;border-radius:8px;padding:7px 10px}
+.q{border:0;margin:0 0 22px;padding:0}
+.q legend,.q .qp{font-weight:700;font-size:18px;margin:0 0 8px}
+.explain{background:#f7fbfa;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:16px}
+.score{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:56px;line-height:1}
+.score small{font-size:24px;color:var(--muted)}
+.sendbox{border-radius:10px;padding:10px 14px;margin:10px 0;font-weight:700}
+.sendbox.ok{background:var(--ok-bg);color:var(--ok)}.sendbox.wait{background:#eef3f2;color:var(--muted)}.sendbox.bad{background:var(--bad-bg);color:var(--bad)}
+.summary{border-collapse:collapse;margin:10px 0}
+.summary td{border:1px solid var(--line);padding:6px 12px}
+/* ---- drag-and-drop questions ---- */
+.dnd{margin-top:4px}
+.dbank{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:54px;padding:10px;border:2px dashed #b9c9c6;border-radius:10px;background:#f7fbfa;margin-bottom:12px}
+.dbank .dhint{color:var(--muted);font-size:14px}
+.dchip{touch-action:none;-webkit-user-select:none;user-select:none;border:2px solid var(--accent);background:#fff;color:var(--ink);font-weight:700;padding:6px 12px;border-radius:8px;cursor:grab;line-height:1.3;text-align:left;font-size:15px}
+.dchip:hover{background:var(--accent-soft)}
+.dchip.on{background:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+.dchip:disabled{cursor:default;opacity:1}
+.dchip.lift{opacity:.35}
+.dghost{position:fixed;left:0;top:0;z-index:1000;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);box-shadow:0 8px 18px rgba(0,0,0,.25);margin:0}
+.dzone{min-height:44px;border:2px dashed #9fb4b0;border-radius:8px;background:#fff;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 6px;cursor:pointer}
+.dzone .dph{color:#8a979c;font-size:14px;padding:0 4px}
+.dzone.target{border-color:var(--accent);background:#fdf7fa}
+.dzone.hover{border-color:var(--accent);border-style:solid;background:var(--accent-soft)}
+.dzone.filled{border-style:solid;border-color:#b7cfcb}
+.dzone.right{border-color:var(--ok);background:var(--ok-bg);border-style:solid}
+.dzone.wrong{border-color:var(--bad);background:var(--bad-bg);border-style:solid}
+.dchip.right{border-color:var(--ok);background:var(--ok-bg)}
+.dchip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.dlabel{position:relative}
+.dlabel .dfig svg{width:100%;height:auto;display:block}
+.dlabel .dzone{position:absolute;transform:translateY(-50%);min-height:38px;padding:2px 4px}
+.dlabel .dzone .dph{font-size:12px}
+.dlabel .dzone .dchip{font-size:13px;padding:4px 8px}
+.dfig2{margin:0 0 12px;max-width:560px}
+.dfig2 svg{width:100%;height:auto;display:block}
+.drows{display:flex;flex-direction:column;gap:8px}
+.drow{display:grid;grid-template-columns:minmax(110px,30%) 1fr;gap:12px;align-items:center}
+.drow>span{font-weight:700}
+.dorder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dorder li{display:flex;gap:10px;align-items:center}
+.dorder .onum{flex:0 0 32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.dorder .dzone{flex:1}
+.dbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.dbin{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.dbin .bt{background:var(--accent-soft);color:var(--ink);font-weight:700;padding:6px 10px;font-size:15px}
+.dbin .dzone{border:0;border-radius:0;min-height:120px;align-content:flex-start;padding:8px}
+.dbin .dzone.hover,.dbin .dzone.target{outline:2px dashed var(--accent);outline-offset:-4px}
+.dfill{line-height:2.6;margin:0;font-size:17px}
+.dfill .dzone{display:inline-flex;vertical-align:middle;min-width:120px;min-height:38px;margin:0 2px;padding:2px 4px}
+@media (max-width:520px){.dlabel .dzone .dchip{font-size:11px;padding:2px 5px}.dlabel .dzone .dph{font-size:10px}}
+
+@media (max-width:900px){.two,.sim,.mcard{grid-template-columns:1fr}.mtabs{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.fields{grid-template-columns:1fr}.tbody,.stub{padding-left:18px;padding-right:18px}.stub svg{display:none}.rxn{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.bar,.nav,.no-print{display:none!important}body{background:#fff}.card{border:0}}
+</style>
+</head>
+<body>
+<section class="signin" id="signin">
+ <div class="ticket">
+  <div class="stub"><svg viewBox="0 0 260 70" aria-hidden="true" id="stubart"></svg>
+   <div class="unit">Biology lesson</div><h1>Macromolecules</h1>
+   <div class="time">7 short steps with a molecule builder. About 35 minutes.</div></div>
+  <div class="tbody"><div id="signform">
+   <div class="fields">
+    <label for="first">First name<input id="first" type="text" autocomplete="given-name"></label>
+    <label for="last">Last name<input id="last" type="text" autocomplete="family-name"></label>
+    <label for="sid">Student ID number<input id="sid" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="sid2">Type your ID again<input id="sid2" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="period">Period<select id="period"></select></label>
+    <span id="teacherslot"></span>
+   </div>
+   <div class="btn-row" style="margin-top:20px"><button class="btn" type="button" id="startbtn">Start the lesson</button></div>
+   <div class="err" id="signerr" role="alert"></div>
+  </div></div>
+ </div>
+</section>
+<section id="lesson" hidden>
+ <div class="bar"><div class="inner"><h1>Macromolecules</h1><span class="who" id="whoami"></span><nav class="steps" id="steps" aria-label="Lesson steps"></nav></div><div class="progress"><i id="prog" style="width:0"></i></div></div>
+ <main id="main"></main>
+</section>
+<div id="live" class="sr-only" aria-live="polite"></div>
+<script src="exit-ticket-config.js"></script>
+<script>
+(function(){
+"use strict";
+/* ===== Drawings of monomers and polymers (shared by the lesson and the exit ticket) ===== */
+const BIO=(function(){
+  const COL={carb:["#c27c00","#fde9b8"],protein:["#1f7f7a","#cfece8"],nucleic:["#6d4fa3","#e7def6"],lipid:["#8a6d00","#f6e8a6"]};
+  const RCOL=["#e0562b","#2f5d9b","#3f7a2e","#b5561a","#a23b72","#4f8fbf"];
+  const BASE=[["A","#e0562b"],["T","#2f5d9b"],["G","#3f7a2e"],["C","#c27c00"]];
+  const f=n=>(+n).toFixed(1);
+  function hexPts(x,y,r){let p=[];for(let k=0;k<6;k++){const a=Math.PI/6+k*Math.PI/3;p.push(f(x+r*Math.cos(a))+","+f(y+r*Math.sin(a)));}return p.join(" ");}
+  function pentPts(x,y,r){let p=[];for(let k=0;k<5;k++){const a=-Math.PI/2+k*2*Math.PI/5;p.push(f(x+r*Math.cos(a))+","+f(y+r*Math.sin(a)));}return p.join(" ");}
+  function glucose(x,y,r){r=r||17;const[c,s]=COL.carb;return `<polygon points="${hexPts(x,y,r)}" fill="${s}" stroke="${c}" stroke-width="3" stroke-linejoin="round"/><text x="${f(x+r*Math.cos(-Math.PI/6))}" y="${f(y+r*Math.sin(-Math.PI/6)+4)}" font-size="11" font-weight="700" text-anchor="middle" fill="${c}" font-family="system-ui,sans-serif">O</text>`;}
+  function amino(x,y,i,r){r=r||12;const[c,s]=COL.protein,rc=RCOL[(i||0)%RCOL.length];return `<line x1="${f(x)}" y1="${f(y-r)}" x2="${f(x)}" y2="${f(y-r-9)}" stroke="${c}" stroke-width="2.5"/><circle cx="${f(x)}" cy="${f(y-r-15)}" r="7" fill="${rc}"/><text x="${f(x)}" y="${f(y-r-11.5)}" font-size="9" font-weight="700" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif">R</text><circle cx="${f(x)}" cy="${f(y)}" r="${r}" fill="${s}" stroke="${c}" stroke-width="3"/>`;}
+  function nucleotide(x,y,i){const[c,s]=COL.nucleic,b=BASE[(i||0)%4];return `<circle cx="${f(x-17)}" cy="${f(y)}" r="6" fill="#ffd35c" stroke="#b98900" stroke-width="1.5"/><text x="${f(x-17)}" y="${f(y+3)}" font-size="8" font-weight="700" text-anchor="middle" fill="#5a4300" font-family="system-ui,sans-serif">P</text><polygon points="${pentPts(x,y,11)}" fill="${s}" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/><line x1="${f(x)}" y1="${f(y+9)}" x2="${f(x)}" y2="${f(y+15)}" stroke="${c}" stroke-width="2.5"/><rect x="${f(x-8)}" y="${f(y+15)}" width="16" height="20" rx="3" fill="${b[1]}"/><text x="${f(x)}" y="${f(y+29)}" font-size="11" font-weight="700" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif">${b[0]}</text>`;}
+  function fatty(x,y,len){len=len||84;const[c]=COL.lipid;let d=`M${f(x)},${f(y)}`;const seg=len/8;for(let k=1;k<=8;k++)d+=` L${f(x+k*seg)},${f(y+(k%2?-6:6))}`;return `<path d="${d}" fill="none" stroke="${c}" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${f(x)}" cy="${f(y)}" r="4" fill="${c}"/>`;}
+  function glycerol(x,y){const[c,s]=COL.lipid;return `<rect x="${f(x-8)}" y="${f(y-34)}" width="16" height="68" rx="6" fill="${s}" stroke="${c}" stroke-width="3"/>${[-24,0,24].map(d=>`<circle cx="${f(x+8)}" cy="${f(y+d)}" r="3.5" fill="${c}"/>`).join("")}`;}
+  function water(x,y){return `<g><circle cx="${f(x)}" cy="${f(y)}" r="9" fill="#d6ecfb" stroke="#3a86c8" stroke-width="2"/><text x="${f(x)}" y="${f(y+3.5)}" font-size="8" font-weight="700" text-anchor="middle" fill="#1f5f96" font-family="system-ui,sans-serif">H₂O</text></g>`;}
+  const bond=(x1,y1,x2,y2,c)=>`<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`;
+  /* chain of n monomers. opts: broken (spread apart, no bonds), folded (proteins), x0,y0 */
+  function chain(kind,n,o){
+    o=o||{};const x0=o.x0||28,y0=o.y0||(kind==="protein"?52:40);let s="",w=0,h=0;
+    if(kind==="carb"){const gap=o.broken?54:40;for(let i=0;i<n;i++){const x=x0+i*gap;if(i&&!o.broken)s+=bond(x-gap+15,y0,x-15,y0,COL.carb[0]);}for(let i=0;i<n;i++)s+=glucose(x0+i*gap,y0);w=x0+(n-1)*gap+28;h=y0+28;}
+    else if(kind==="protein"&&o.folded&&n>=3){const cols=Math.max(2,Math.ceil(Math.sqrt(n*1.4))),gap=28,pts=[];
+      for(let i=0;i<n;i++){const r=Math.floor(i/cols),c=r%2?cols-1-(i%cols):i%cols;pts.push([x0+14+c*gap,y0-14+r*gap]);}
+      const rows=Math.ceil(n/cols);
+      s+=`<rect x="${f(x0-4)}" y="${f(y0-32)}" width="${f((cols-1)*gap+36)}" height="${f((rows-1)*gap+36)}" rx="18" fill="${COL.protein[1]}" opacity=".45"/>`;
+      let d=`M${f(pts[0][0])},${f(pts[0][1])}`;for(let i=1;i<n;i++){const[p,q]=[pts[i-1],pts[i]];if(p[1]!==q[1]){const side=p[0]>x0+40?1:-1;d+=` C${f(p[0]+side*22)},${f(p[1])} ${f(q[0]+side*22)},${f(q[1])} ${f(q[0])},${f(q[1])}`;}else d+=` L${f(q[0])},${f(q[1])}`;}
+      s+=`<path d="${d}" fill="none" stroke="${COL.protein[0]}" stroke-width="3"/>`;
+      pts.forEach((p,i)=>{s+=`<circle cx="${f(p[0])}" cy="${f(p[1])}" r="10" fill="${COL.protein[1]}" stroke="${COL.protein[0]}" stroke-width="2.5"/><circle cx="${f(p[0]+6)}" cy="${f(p[1]-6)}" r="4.5" fill="${RCOL[i%RCOL.length]}"/>`;});
+      w=x0+(cols-1)*gap+40;h=y0+(rows-1)*gap+10;}
+    else if(kind==="protein"){const gap=o.broken?50:36;for(let i=1;i<n;i++)if(!o.broken)s+=bond(x0+(i-1)*gap+12,y0,x0+i*gap-12,y0,COL.protein[0]);for(let i=0;i<n;i++)s+=amino(x0+i*gap,y0,i);w=x0+(n-1)*gap+24;h=y0+20;}
+    else if(kind==="nucleic"){const gap=o.broken?60:44;for(let i=1;i<n;i++)if(!o.broken)s+=bond(x0+(i-1)*gap+10,y0,x0+i*gap-23,y0,COL.nucleic[0]);for(let i=0;i<n;i++)s+=nucleotide(x0+i*gap+6,y0,i);w=x0+(n-1)*gap+26;h=y0+42;}
+    return{svg:s,w,h};
+  }
+  function lipid(g,fa,o){o=o||{};let s="";const x=24,y=48;const ys=[y-24,y,y+24];const bonded=g&&!o.broken;
+    if(g)s+=glycerol(x,y);
+    for(let k=0;k<fa;k++){const fx=bonded?x+10:x+(g?38:4);if(bonded)s+=`<circle cx="${f(fx)}" cy="${f(ys[k])}" r="0"/>`;s+=fatty(fx+(bonded?0:4),ys[k],84);}
+    return{svg:s,w:x+(g?38:10)+96,h:y+34};}
+  function svgWrap(inner,w,h,label,pad){pad=pad==null?6:pad;return `<svg viewBox="${-pad} ${-pad} ${w+2*pad} ${h+2*pad}" role="img" aria-label="${label}">${inner}</svg>`;}
+  return{COL,glucose,amino,nucleotide,fatty,glycerol,water,chain,lipid,svgWrap};
+})();
+
+
+/* ===== Drag-and-drop question engine (drag, or tap a word then tap a spot) ===== */
+const DND=(function(){
+  const S={};let sel=null,drag=null,lastDrag=false,changeFn=null;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const plain=h=>String(h).replace(/<[^>]+>/g,"").trim();
+  const zoneById=(q,id)=>q.zones.find(z=>z.id===id);
+  function where(qid,ci){const P=S[qid].pl;for(const z in P)if(P[z].includes(ci))return z;return null;}
+  function chip(qid,ci,mark){const s=S[qid],on=sel&&sel.qid===qid&&sel.ci===ci;
+    return `<button type="button" class="dchip${on?" on":""}${mark?" "+mark:""}" data-dq="${qid}" data-ci="${ci}" aria-pressed="${on}"${s.locked?" disabled":""}>${s.q.chips[ci]}</button>`;}
+  function zone(qid,z,style){const s=S[qid],items=s.pl[z.id]||[],q=s.q;let mark="";
+    if(s.locked&&s.marks&&!z.multi)mark=items[0]===z.answer?" right":" wrong";
+    const tgt=sel&&sel.qid===qid&&!s.locked&&(z.multi||!items.length)?" target":"";
+    const inner=items.map(ci=>chip(qid,ci,s.locked&&s.marks&&z.multi?(z.answer.includes(ci)?"right":"wrong"):"")).join("")||`<span class="dph">${z.ph||"Drop here"}</span>`;
+    const name=z.name||z.label||"Drop spot";
+    return `<div class="dzone${z.multi?" multi":""}${items.length?" filled":""}${tgt}${mark}" data-dq="${qid}" data-dz="${z.id}"${s.locked?"":' tabindex="0" role="button"'} aria-label="${esc(plain(name))}: ${items.length?esc(items.map(ci=>plain(q.chips[ci])).join(", ")):"empty"}"${style?` style="${style}"`:""}>${inner}</div>`;}
+  function inner(qid){
+    const s=S[qid],q=s.q;
+    const placed=new Set(Object.values(s.pl).flat());
+    const bank=q.chips.map((c,ci)=>ci).filter(ci=>!placed.has(ci));
+    let h=s.locked?"":`<div class="dbank" data-dq="${qid}" data-dbank="1" aria-label="Word bank">${bank.map(ci=>chip(qid,ci)).join("")||'<span class="dhint">Every card is placed. Drag one back here to remove it.</span>'}</div>`;
+    if(q.figure&&q.layout!=="label")h+=`<div class="dfig2">${q.figure}</div>`;
+    if(q.layout==="label")h+=`<div class="dlabel"><div class="dfig">${q.figure}</div>${q.zones.map(z=>zone(qid,z,`left:${z.x}%;top:${z.y}%;width:${z.w}%`)).join("")}</div>`;
+    else if(q.layout==="rows")h+=`<div class="drows">${q.zones.map(z=>`<div class="drow"><span>${z.label}</span>${zone(qid,z)}</div>`).join("")}</div>`;
+    else if(q.layout==="order")h+=`<ol class="dorder">${q.zones.map((z,k)=>`<li><span class="onum" aria-hidden="true">${k+1}</span>${zone(qid,z)}</li>`).join("")}</ol>`;
+    else if(q.layout==="sort")h+=`<div class="dbins">${q.zones.map(z=>`<div class="dbin"><div class="bt">${z.label}</div>${zone(qid,{...z,multi:true})}</div>`).join("")}</div>`;
+    else if(q.layout==="fill")h+=`<div class="dfill">${q.sentence.map(p=>typeof p==="string"?p:zone(qid,zoneById(q,p.z))).join("")}</div>`;
+    if(!s.locked)h+=`<p class="dhow" style="font-size:14px;color:var(--muted);margin:8px 0 0">Drag a card to a spot, or tap a card and then tap the spot.</p>`;
+    return h;
+  }
+  function refresh(qid){const el=document.getElementById("dnd-"+qid);if(el)el.innerHTML=inner(qid);}
+  function focusChip(qid,ci){const b=document.querySelector(`.dchip[data-dq="${qid}"][data-ci="${ci}"]`);if(b)b.focus({preventScroll:true});}
+  function place(qid,ci,zid){
+    const s=S[qid],P=s.pl;for(const z in P)P[z]=P[z].filter(x=>x!==ci);
+    if(zid){const z=zoneById(s.q,zid);if(!(z.multi||s.q.layout==="sort"))P[zid]=[];P[zid]=(P[zid]||[]).concat(ci);}
+    sel=null;refresh(qid);if(changeFn)changeFn(qid);focusChip(qid,ci);
+  }
+  function mount(qid,q,pl,opts){
+    opts=opts||{};q.zones.forEach(z=>{if(!pl[z.id])pl[z.id]=[];});
+    S[qid]={q,pl,locked:!!opts.locked,marks:!!opts.marks};
+    return `<div class="dnd" id="dnd-${qid}">${inner(qid)}</div>`;
+  }
+  function lock(qid,marks){if(!S[qid])return;S[qid].locked=true;S[qid].marks=!!marks;if(sel&&sel.qid===qid)sel=null;refresh(qid);}
+  function complete(q,pl){if(q.layout==="sort")return Object.values(pl).flat().length===q.chips.length;return q.zones.every(z=>(pl[z.id]||[]).length>0);}
+  function grade(q,pl){
+    if(q.layout==="sort"){let pts=0;const lines=q.chips.map((c,ci)=>{const right=q.zones.find(z=>z.answer.includes(ci));const w=Object.keys(pl).find(z=>(pl[z]||[]).includes(ci));const ok=w===right.id;if(ok)pts++;return{label:c,ok,yours:w?zoneById(q,w).label:"not placed",right:right.label};});return{pts,max:q.chips.length,lines};}
+    let pts=0;const lines=q.zones.map(z=>{const got=(pl[z.id]||[])[0];const ok=got===z.answer;if(ok)pts++;return{label:z.name||z.label,ok,yours:got===undefined?"empty":q.chips[got],right:q.chips[z.answer]};});
+    return{pts,max:q.zones.length,lines};
+  }
+  function linesHTML(g){return `<ul>${g.lines.map(l=>`<li>${l.label}: <b class="${l.ok?"good":"wrong"}">${l.yours}</b>${l.ok?" ✓":` (correct: <b>${l.right}</b>)`}</li>`).join("")}</ul>`;}
+  /* ---- events ---- */
+  function clearHover(){document.querySelectorAll(".dzone.hover").forEach(e=>e.classList.remove("hover"));}
+  document.addEventListener("pointerdown",e=>{lastDrag=false;const c=e.target.closest(".dchip");if(!c||c.disabled||e.button!==0)return;drag={qid:c.dataset.dq,ci:+c.dataset.ci,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId,el:c,g:null};});
+  document.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;
+    if(!drag.moved){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;drag.moved=true;const g=drag.el.cloneNode(true);g.classList.remove("on");g.classList.add("dghost");document.body.appendChild(g);drag.g=g;drag.el.classList.add("lift");}
+    drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px";
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone");clearHover();if(z&&z.dataset.dq===drag.qid)z.classList.add("hover");e.preventDefault();},{passive:false});
+  function end(e,cancel){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(!d.moved)return;lastDrag=true;d.g.remove();d.el.classList.remove("lift");clearHover();if(cancel)return;
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone"),b=u&&u.closest("[data-dbank]");
+    if(z&&z.dataset.dq===d.qid)place(d.qid,d.ci,z.dataset.dz);else if(b&&b.dataset.dq===d.qid)place(d.qid,d.ci,null);}
+  document.addEventListener("pointerup",e=>end(e,false));document.addEventListener("pointercancel",e=>end(e,true));
+  document.addEventListener("click",e=>{
+    const t=e.target;if(!t.closest||!t.closest(".dnd"))return;
+    if(lastDrag){lastDrag=false;return;}
+    const c=t.closest(".dchip");
+    if(c){if(c.disabled)return;const qid=c.dataset.dq,ci=+c.dataset.ci,z=c.closest(".dzone");
+      if(z&&sel&&sel.qid===qid&&sel.ci!==ci){place(qid,sel.ci,z.dataset.dz);return;}
+      sel=(sel&&sel.qid===qid&&sel.ci===ci)?null:{qid,ci};refresh(qid);focusChip(qid,ci);return;}
+    const z=t.closest(".dzone");if(z&&sel&&sel.qid===z.dataset.dq&&!S[z.dataset.dq].locked){place(z.dataset.dq,sel.ci,z.dataset.dz);return;}
+    const b=t.closest("[data-dbank]");if(b&&sel&&sel.qid===b.dataset.dq){place(b.dataset.dq,sel.ci,null);}
+  });
+  document.addEventListener("keydown",e=>{
+    lastDrag=false;
+    const z=e.target.classList&&e.target.classList.contains("dzone")?e.target:null;
+    if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(sel&&sel.qid===z.dataset.dq)place(z.dataset.dq,sel.ci,z.dataset.dz);}
+    if(e.key==="Escape"&&sel){const q=sel.qid;sel=null;refresh(q);}
+  });
+  return{mount,lock,complete,grade,linesHTML,onChange:f=>{changeFn=f;}};
+})();
+
+const CFG=Object.assign({SHEET_URL:"",TEACHERS:[],PERIODS:[1,2,3,4,5,6,7]},window.EXIT_TICKET_CONFIG||{});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const announce=m=>{const l=$("#live");l.textContent="";setTimeout(()=>l.textContent=m,30);};
+const W=(r,label,pad)=>BIO.svgWrap(r.svg,r.w,r.h,label,pad);
+$("#stubart").innerHTML=(()=>{const c=BIO.chain("carb",4,{x0:16,y0:34});return c.svg;})();
+
+/* ---------- content ---------- */
+const FAM={
+ carb:{name:"Carbohydrates",c:"#c27c00",mono:"Monosaccharides (simple sugars) like glucose",look:"Rings (hexagons) linked into chains",jobs:["Quick energy for cells","Short-term energy storage (starch in plants, glycogen in animals)","Structure: cellulose builds plant cell walls"],foods:"Bread, pasta, rice, fruit, potatoes",
+  mpic:()=>BIO.svgWrap(BIO.glucose(24,22),48,44,"A glucose ring"),ppic:()=>W(BIO.chain("carb",5),"A chain of glucose rings (starch)")},
+ lipid:{name:"Lipids",c:"#8a6d00",mono:"Glycerol and fatty acids (a fat is 1 glycerol + 3 fatty acids)",look:"Long zigzag tails attached to a glycerol, like the letter E",jobs:["Long-term energy storage","Insulation and protection","Make up cell membranes"],foods:"Butter, oils, nuts, avocado",
+  mpic:()=>BIO.svgWrap(BIO.fatty(4,20,84),92,40,"A fatty acid zigzag"),ppic:()=>W(BIO.lipid(1,3),"A glycerol with three fatty acid tails (a fat)")},
+ protein:{name:"Proteins",c:"#1f7f7a",mono:"Amino acids (20 different kinds)",look:"A chain of amino acids that folds into a 3-D shape",jobs:["Enzymes speed up chemical reactions","Build muscle, hair, and skin","Carry things, like hemoglobin carrying oxygen"],foods:"Meat, eggs, beans, fish, milk",
+  mpic:()=>BIO.svgWrap(BIO.amino(20,40,0),40,58,"An amino acid with an R group"),ppic:()=>W(BIO.chain("protein",7,{folded:true}),"A folded chain of amino acids")},
+ nucleic:{name:"Nucleic acids",c:"#6d4fa3",mono:"Nucleotides (phosphate + sugar + base)",look:"A chain of nucleotides with bases sticking out, like DNA's ladder",jobs:["Store genetic information (DNA)","Help make proteins (RNA)","Pass traits from parents to offspring"],foods:"Every living cell, so it's in almost everything you eat",
+  mpic:()=>BIO.svgWrap(BIO.nucleotide(26,12,0),46,50,"A nucleotide: phosphate, sugar, and base"),ppic:()=>W(BIO.chain("nucleic",5),"A strand of nucleotides")}
+};
+const ORDER=["carb","lipid","protein","nucleic"];
+
+/* ---------- state ---------- */
+const S={stu:null,step:0,maxStep:0,wonder:"",seen:{carb:false,lipid:false,protein:false,nucleic:false},mtab:"carb",
+  sim:null,log:{},ch:{i:0,res:[null,null,null],tries:[0,0,0],guess:""},quiz:[null,null,null,null],qpl:[{},{},{},{}],reflect:"",done:false};
+const STEPS=["Phenomenon","Building blocks","Meet the four","Molecule builder","Build challenges","Check yourself","Wrap-up"];
+function newSim(){return{mode:null,n:0,g:0,fa:0,folded:false,broken:false};}
+S.sim=newSim();
+
+/* ---------- sign in ---------- */
+$("#period").innerHTML=`<option value="">Choose</option>`+CFG.PERIODS.map(p=>`<option>${esc(p)}</option>`).join("");
+$("#teacherslot").outerHTML=CFG.TEACHERS.length?`<label for="teacher">Teacher<select id="teacher"><option value="">Choose your teacher</option>${CFG.TEACHERS.map(t=>`<option>${esc(t)}</option>`).join("")}</select></label>`:`<label for="teacher">Teacher<input id="teacher" type="text" autocomplete="off"></label>`;
+function start(){
+  const f={first:$("#first"),last:$("#last"),sid:$("#sid"),sid2:$("#sid2"),period:$("#period"),teacher:$("#teacher")};
+  Object.values(f).forEach(el=>el.classList.remove("error"));
+  const v=k=>f[k].value.trim();let msg="";
+  for(const k of Object.keys(f))if(!v(k)){f[k].classList.add("error");msg=msg||"Fill in every box before you start.";}
+  const sid=v("sid").replace(/\s+/g,""),sid2=v("sid2").replace(/\s+/g,"");
+  if(!msg&&!/^\d+$/.test(sid)){f.sid.classList.add("error");msg="Use only numbers in your student ID. No letters, dashes, or other symbols.";}
+  if(!msg&&sid.length>15){f.sid.classList.add("error");msg="That student ID is too long. Check your ID number.";}
+  if(!msg&&sid!==sid2){f.sid2.classList.add("error");msg="The two student ID boxes don't match. Check your ID number.";}
+  if(msg){$("#signerr").textContent=msg;const b=document.querySelector(".fields .error");if(b)b.focus();return;}
+  S.stu={first:v("first"),last:v("last"),id:sid,period:v("period"),teacher:v("teacher")};
+  $("#whoami").textContent=`${S.stu.first} ${S.stu.last}, Period ${S.stu.period}`;
+  $("#signin").hidden=true;$("#lesson").hidden=false;go(0);
+}
+$("#startbtn").addEventListener("click",start);
+$("#signform").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();start();}});
+
+/* ---------- navigation ---------- */
+function canLeave(){
+  const m=(id,t)=>{const el=$("#"+id);if(el)el.textContent=t;announce(t);return false;};
+  if(S.step===0&&S.wonder.trim().length<5)return m("wonderMsg","Write your first idea before you move on. There's no wrong answer yet.");
+  if(S.step===2&&ORDER.some(k=>!S.seen[k]))return m("meetMsg","Open all four tabs before you move on.");
+  if(S.step===4&&S.ch.res.some(r=>r===null))return m("chMsg","Finish (or skip) all three challenges first.");
+  if(S.step===5&&S.quiz.some(x=>x===null))return m("quizMsg","Answer and check all four questions first.");
+  return true;
+}
+function go(i){
+  if(i>S.step&&!canLeave())return;
+  S.step=i;S.maxStep=Math.max(S.maxStep,i);
+  $("#steps").innerHTML=STEPS.map((n,k)=>`<button type="button" data-step="${k}" class="${k===i?"cur":k<=S.maxStep?"done":""}"${k>S.maxStep||S.done?" disabled":""}${k===i?' aria-current="step"':""}>${k+1}. ${n}</button>`).join("");
+  $("#prog").style.width=`${(i/(STEPS.length-1))*100}%`;
+  $("#main").innerHTML=[step0,step1,step2,step3,step4,step5,step6][i]();
+  window.scrollTo({top:0});
+  const h=$("#main h2");if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+}
+const nav=i=>`<div class="nav no-print">${i>0?`<button class="btn secondary" type="button" data-go="${i-1}">Back</button>`:"<span></span>"}${i<STEPS.length-1?`<button class="btn" type="button" data-go="${i+1}">Next</button>`:""}</div>`;
+
+/* ---------- step 0: phenomenon ---------- */
+function cracker(){let s=`<rect x="30" y="20" width="200" height="200" rx="14" fill="#f2c879" stroke="#c9963c" stroke-width="5"/>`;for(let i=0;i<4;i++)for(let j=0;j<4;j++)s+=`<circle cx="${70+i*40}" cy="${60+j*40}" r="5" fill="#c9963c"/>`;return `<svg viewBox="0 0 260 240" role="img" aria-label="A square cracker">${s}</svg>`;}
+function step0(){return `<div class="card step"><div class="kicker">Step 1 of 7: The phenomenon</div><h2>Why does a cracker start to taste sweet?</h2>
+ <div class="two"><div><div class="figure" style="max-width:300px">${cracker()}</div>
+  <p>Plain crackers are made mostly of <b>starch</b>. They don't taste sweet at first. But if you chew one for a long time without swallowing, it starts to taste sweeter and sweeter.</p></div>
+ <div><table class="data"><caption style="text-align:left;font-weight:700;margin-bottom:4px">One student's chewing test</caption><thead><tr><th>Time chewing (seconds)</th><th>Sweetness (1 to 5)</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>30</td><td>2</td></tr><tr><td>60</td><td>3</td></tr><tr><td>90</td><td>4</td></tr></tbody></table>
+ <label for="wonder" style="display:block;margin-top:14px"><b>Your first idea:</b> Where could the sweet taste be coming from? What might your mouth be doing to the cracker?</label>
+ <textarea id="wonder" style="margin-top:6px">${esc(S.wonder)}</textarea><p class="hint">Just write your best guess. You'll come back to it at the end.</p><div class="err" id="wonderMsg" role="alert"></div></div></div>${nav(0)}</div>`;}
+
+/* ---------- step 1: building blocks ---------- */
+function step1(){
+  const two=BIO.glucose(24,24)+BIO.glucose(84,24);const mal=BIO.chain("carb",2,{x0:24,y0:24});
+  return `<div class="card step"><div class="kicker">Step 2 of 7: Building blocks</div><h2>Big molecules are built from small pieces</h2>
+ <p>Living things are made of four kinds of <b>macromolecules</b> (giant molecules). Most of them are <b>polymers</b>: long chains built from many small, repeating pieces called <b>monomers</b>. Think of monomers as beads and the polymer as the necklace. (Lipids are a little different: a fat is built from one glycerol and three fatty acids.)</p>
+ <div class="rxn"><div><svg viewBox="0 0 110 50" role="img" aria-label="Two separate glucose rings">${two}</svg><div class="lbl">2 monomers</div></div><div class="arrow">Join<b>→</b>releases H₂O</div><div><svg viewBox="0 0 140 50" role="img" aria-label="Two glucose rings joined plus one water molecule">${mal.svg}${BIO.water(124,24)}</svg><div class="lbl">1 bigger molecule + water</div></div></div>
+ <div class="rxn"><div><svg viewBox="0 0 140 50" role="img" aria-label="Two joined glucose rings plus one water molecule">${mal.svg}${BIO.water(124,24)}</svg><div class="lbl">bigger molecule + water</div></div><div class="arrow">Break<b>→</b>uses H₂O</div><div><svg viewBox="0 0 110 50" role="img" aria-label="Two separate glucose rings">${two}</svg><div class="lbl">2 monomers again</div></div></div>
+ <div class="rule"><h3>Two words to know</h3><ul><li><b>Dehydration synthesis:</b> joining monomers. Each new bond <b>gives off one water</b> molecule.</li><li><b>Hydrolysis:</b> breaking a polymer apart. Each bond broken <b>uses one water</b> molecule.</li></ul></div>${nav(1)}</div>`;}
+
+/* ---------- step 2: meet the four ---------- */
+function step2(){S.seen[S.mtab]=true;const k=S.mtab,F=FAM[k];
+ return `<div class="card step"><div class="kicker">Step 3 of 7: Meet the four</div><h2>The four macromolecules</h2><p>Open each tab. Pay attention to the monomer, what it looks like, and what it does.</p>
+ <div class="mtabs" role="tablist">${ORDER.map(x=>`<button class="mtab" role="tab" aria-selected="${x===k}" data-mtab="${x}" style="--c:${FAM[x].c}">${FAM[x].name}<span class="seen">${S.seen[x]?"✓":""}</span></button>`).join("")}</div>
+ <div class="mcard" role="tabpanel" style="--c:${F.c}"><div><h3>${F.name}</h3><div class="k">Monomer</div><p style="margin:0 0 6px">${F.mono}</p><div class="pic">${F.mpic()}</div>
+  <div class="k">Jobs in living things</div><ul>${F.jobs.map(j=>`<li>${j}</li>`).join("")}</ul><div class="k">Found in</div><p>${F.foods}</p></div>
+  <div><div class="k">What the polymer looks like</div><p style="margin:0 0 6px">${F.look}</p><div class="pic">${F.ppic()}</div></div></div>
+ <div class="err" id="meetMsg" role="alert"></div>${nav(2)}</div>`;}
+
+/* ---------- molecule builder ---------- */
+const MONO={glucose:{fam:"carb",label:"Glucose",pic:()=>BIO.glucose(22,22)},amino:{fam:"protein",label:"Amino acid",pic:()=>BIO.amino(22,40,0)},nucleotide:{fam:"nucleic",label:"Nucleotide",pic:()=>BIO.nucleotide(26,10,0)},glycerol:{fam:"lipid",label:"Glycerol",pic:()=>BIO.glycerol(14,36)},fatty:{fam:"lipid",label:"Fatty acid",pic:()=>BIO.fatty(4,22,80)}};
+const PICBOX={glucose:"0 0 44 44",amino:"0 0 44 58",nucleotide:"0 0 46 48",glycerol:"0 0 30 72",fatty:"0 0 90 44"};
+function bonds(s){return s.broken?0:s.mode==="lipid"?(s.g?s.fa:0):Math.max(0,s.n-1);}
+function bondsBefore(s){return s.mode==="lipid"?(s.g?s.fa:0):Math.max(0,s.n-1);}
+function simName(s){
+  if(!s.mode)return["Nothing yet","Pick a monomer to start building."];
+  if(s.broken)return["Separate monomers","Hydrolysis broke every bond."];
+  if(s.mode==="carb")return s.n===1?["Glucose","A monosaccharide (one sugar)"]:s.n===2?["Maltose","A disaccharide (two sugars)"]:["Starch-like polysaccharide","Many sugars joined"];
+  if(s.mode==="protein")return s.folded?["Folded protein","Its shape lets it do a job, like an enzyme"]:s.n===1?["Amino acid","One protein building block"]:s.n===2?["Dipeptide","Two amino acids joined"]:["Polypeptide","A protein chain. Try folding it!"];
+  if(s.mode==="nucleic")return s.n===1?["Nucleotide","One nucleic acid building block"]:["Nucleic acid strand","Like a piece of DNA or RNA"];
+  if(s.g&&s.fa===3)return["Triglyceride","A fat or oil: 1 glycerol + 3 fatty acids"];
+  if(s.g)return s.fa?["Unfinished fat","Add fatty acids until there are 3"]:["Glycerol","Add fatty acids to build a fat"];
+  return["Fatty acid"+(s.fa>1?"s":""),"These need a glycerol to attach to"];
+}
+const JOB={carb:"Carbohydrate: quick energy, and cellulose builds plant cell walls.",protein:"Protein: enzymes speed up reactions, and proteins build muscle and carry oxygen. Shape decides the job.",nucleic:"Nucleic acid: stores and passes on genetic information.",lipid:"Lipid: long-term energy storage, insulation, and cell membranes."};
+function workSVG(s){
+  if(!s.mode)return `<div class="empty">Your workspace is empty.<br>Click a monomer above to add it.</div>`;
+  let r;if(s.mode==="lipid")r=BIO.lipid(s.g,s.fa,{broken:s.broken});else r=BIO.chain(s.mode,s.n,{broken:s.broken,folded:s.folded});
+  const nb=bondsBefore(s);let extra="",h=r.h,w=r.w;
+  if(nb>0){const y=r.h+26;for(let k=0;k<nb;k++)extra+=BIO.water(18+k*24,y);extra+=`<text x="${18+nb*24}" y="${y+5}" font-size="13" font-weight="700" fill="${s.broken?"#b8403a":"#1f5f96"}" font-family="system-ui,sans-serif">${s.broken?"water used":"water released"}</text>`;h=y+14;w=Math.max(w,30+nb*24+120);}
+  let body=r.svg+extra;const Wmin=420,Hmin=130;if(w<Wmin){body=`<g transform="translate(${(Wmin-w)/2},0)">${body}</g>`;w=Wmin;}if(h<Hmin){body=`<g transform="translate(0,${(Hmin-h)/2})">${body}</g>`;h=Hmin;}
+  return BIO.svgWrap(body,w,h,`${simName(s)[0]}, ${nb} water molecules ${s.broken?"used":"released"}`,10);
+}
+function simHTML(locked){const s=S.sim,[nm,sub]=simName(s),nb=bondsBefore(s);
+  return `<div class="sim"><div>
+   <div class="palette" role="group" aria-label="Monomers">${Object.entries(MONO).map(([k,m])=>`<button type="button" class="pbtn" data-add="${k}"${locked?" disabled":""}><svg viewBox="${PICBOX[k]}" aria-hidden="true">${m.pic()}</svg>${m.label}</button>`).join("")}</div>
+   <div class="work" id="work">${workSVG(s)}</div>
+   <div class="toast" id="toast" role="status"></div>
+   <div class="btn-row"><button class="btn" type="button" id="fold"${s.mode==="protein"&&s.n>=3&&!s.broken?"":" disabled"}>${s.folded?"Unfold":"Fold it"}</button><button class="btn" type="button" id="breakit"${bonds(s)>0?"":" disabled"}>Break it apart (add water)</button><button class="btn secondary" type="button" id="simclear"${locked?" disabled":""}>Clear</button></div>
+  </div><div><div class="readout"><div class="el">${nm}</div><div class="hint">${sub}</div>
+   <dl><dt>Macromolecule</dt><dd>${s.mode?FAM[s.mode].name:"—"}</dd><dt>Monomers</dt><dd>${s.mode==="lipid"?`${s.g} glycerol, ${s.fa} fatty acid${s.fa===1?"":"s"}`:s.n||"—"}</dd><dt>Bonds</dt><dd>${s.broken?0:nb}</dd><dt>Water</dt><dd>${nb?(s.broken?`${nb} used`:`${nb} released`):"—"}</dd></dl>
+   ${s.mode?`<p class="hint" style="margin:10px 0 0">${JOB[s.mode]}</p>`:""}<div class="note" id="note" role="status"></div></div>
+   ${logHTML()}</div></div>`;}
+function logHTML(){const rows=Object.values(S.log);return `<div style="margin-top:12px"><h3 style="font-size:17px">My molecule table</h3>${rows.length?`<table class="data"><thead><tr><th>Molecule</th><th>Monomers</th><th>Water</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.name}</td><td>${r.mono}</td><td>${r.water}</td></tr>`).join("")}</tbody></table>`:`<p class="hint">Build molecules to fill in this table.</p>`}</div>`;}
+function logIt(){const s=S.sim;if(!s.mode||s.broken)return;const nb=bondsBefore(s);if(!nb)return;const nm=simName(s)[0];S.log[nm]={name:nm,mono:s.mode==="lipid"?`${s.g} glycerol + ${s.fa} fatty acid${s.fa===1?"":"s"}`:`${s.n} ${{carb:"glucose",protein:"amino acids",nucleic:"nucleotides"}[s.mode]}`,water:`${nb} released`};}
+function simRefresh(msg,note){const w=$("#simwrap");if(!w)return;w.innerHTML=simHTML(false);if(msg){$("#toast").textContent=msg;announce(msg);}if(note){$("#note").textContent=note;announce(note);}}
+function addMono(k){const s=S.sim,m=MONO[k];
+  if(s.broken)return simRefresh("These pieces are already broken apart. Press Clear to build something new.");
+  if(s.mode&&s.mode!==m.fam)return simRefresh(`A ${m.label.toLowerCase()} can't join ${FAM[s.mode].name.toLowerCase()}. Each macromolecule is built from its own kind of monomer. Press Clear to start a new one.`);
+  if(m.fam==="lipid"){if(k==="glycerol"){if(s.g)return simRefresh("A fat has only one glycerol.");s.g=1;}else{if(s.fa>=3)return simRefresh("Glycerol has room for only 3 fatty acids.");s.fa++;}}
+  else{if(s.n>=8)return simRefresh("This builder holds up to 8 monomers. That's enough to see the pattern!");s.n++;s.folded=false;}
+  s.mode=m.fam;logIt();simRefresh("",bondsBefore(s)?`Bond formed: 1 water molecule released.`:"");
+  const b=document.querySelector(`[data-add="${k}"]`);if(b)b.focus();
+}
+function breakIt(){const s=S.sim,nb=bonds(s);if(!nb)return;s.broken=true;s.folded=false;
+  const extra=s.mode==="carb"&&s.n>=2?" That's what amylase in your saliva does to starch!":"";
+  simRefresh("",`Hydrolysis: ${nb} water molecule${nb>1?"s":""} used to break ${nb} bond${nb>1?"s":""}.${extra}`);if(S.step===4)chAfterBreak();}
+
+/* ---------- step 3: free builder ---------- */
+function step3(){return `<div class="card step"><div class="kicker">Step 4 of 7: Molecule builder</div><h2>Build and break macromolecules</h2>
+ <p>Click monomers to join them. Watch the water molecules that get released. Then try <b>Break it apart</b> to see hydrolysis.</p>
+ <div class="rule"><h3>Try these</h3><ul><li>Join 2 glucose. Then make a chain of 6. How many waters were released each time?</li><li>Build a fat: 1 glycerol and 3 fatty acids.</li><li>Build a chain of 6 amino acids and fold it.</li><li>Try adding a glucose to a protein chain. What happens?</li></ul></div>
+ <div id="simwrap">${simHTML(false)}</div>${nav(3)}</div>`;}
+
+/* ---------- step 4: challenges ---------- */
+const CH=[{name:"Maltose",task:"Build maltose, a disaccharide made of two glucose molecules.",check:s=>s.mode==="carb"&&s.n===2&&!s.broken},
+ {name:"A fat",task:"Build a triglyceride (a fat): one glycerol with three fatty acids.",check:s=>s.mode==="lipid"&&s.g===1&&s.fa===3&&!s.broken},
+ {name:"Digest starch",task:"This starch has 6 glucose. <b>Predict:</b> how many water molecules will it take to break it into single glucose? Type your answer and check it. Then press Break it apart to see.",guess:true,answer:5}];
+function chPoints(k){const r=S.ch.res[k];return r==="skip"||r===null?0:Math.max(1,4-r);}
+function step4(){
+  const i=S.ch.i,c=CH[i],allDone=S.ch.res.every(r=>r!==null);
+  if(c.guess&&S.sim.mode===null&&!allDone){S.sim={...newSim(),mode:"carb",n:6};}
+  const chips=CH.map((x,k)=>`<span class="${S.ch.res[k]!==null&&S.ch.res[k]!=="skip"?"ok":k===i&&!allDone?"on":""}">${k+1}. ${x.name}${S.ch.res[k]==="skip"?" (skipped)":S.ch.res[k]!==null?" ✓":""}</span>`).join("");
+  return `<div class="card step"><div class="kicker">Step 5 of 7: Build challenges</div><h2>Your turn</h2>
+  <p>You get 3 points for getting each challenge right on the first try, 2 on the second, and 1 after that.</p><div class="chips">${chips}</div>
+  ${allDone?`<div class="challenge"><h3>All three challenges are done!</h3><p style="margin:0">Press Next to check your understanding.</p></div>`:
+  `<div class="challenge"><h3>Challenge ${i+1}: ${c.name}</h3><p style="margin:0">${c.task}</p>
+   ${c.guess?`<p style="margin:10px 0 0"><label for="guess"><b>Water molecules needed:</b></label> <input id="guess" class="n" type="text" inputmode="numeric" value="${esc(S.ch.guess)}"></p>`:""}
+   <div class="btn-row"><button class="btn" type="button" id="chCheck">${c.guess?"Check my prediction":"Check my molecule"}</button>${S.ch.tries[i]>=3?`<button class="btn secondary" type="button" id="chSkip">Skip this one</button>`:""}</div><div class="feedback" id="chFb" role="status"></div></div>`}
+  <div class="err" id="chMsg" role="alert"></div><div id="simwrap">${simHTML(false)}</div>${nav(4)}</div>`;
+}
+function chAfterBreak(){}
+function checkChallenge(){
+  const i=S.ch.i,c=CH[i];S.ch.tries[i]++;let ok,tip;
+  if(c.guess){const v=parseInt(($("#guess").value||"").trim(),10);S.ch.guess=$("#guess").value;ok=v===c.answer;
+    tip=isNaN(v)?"Type a number first.":v===6?"Close! Count the bonds between the 6 glucose, not the glucose themselves.":"Hint: each bond needs one water to break. How many bonds connect 6 glucose in a row?";}
+  else{ok=c.check(S.sim);const s=S.sim;
+    if(i===0)tip=s.mode&&s.mode!=="carb"?"Maltose is a carbohydrate. Clear and use glucose.":s.n>2?"Too many glucose. A disaccharide has exactly 2.":s.broken?"It's broken apart. Clear and build it again.":"A disaccharide has exactly 2 glucose joined together.";
+    else tip=s.mode&&s.mode!=="lipid"?"Fats are lipids. Clear and use glycerol and fatty acids.":!s.g?"Every fat needs one glycerol.":s.fa<3?`You have ${s.fa} fatty acid${s.fa===1?"":"s"}. A triglyceride needs 3.`:"Check that it isn't broken apart.";}
+  if(ok){S.ch.res[i]=S.ch.tries[i];const pts=chPoints(i);$("#chFb").innerHTML=`<span class="good">✓ Correct! +${pts} point${pts>1?"s":""}.${c.guess?" 6 glucose are held together by 5 bonds, and each bond takes 1 water to break.":""}</span>`;announce(`Correct! ${pts} points.`);
+    setTimeout(()=>{S.ch.i=S.ch.res.findIndex(r=>r===null);if(S.ch.i<0)S.ch.i=2;S.sim=newSim();go(4);},c.guess?2600:1400);return;}
+  $("#chFb").innerHTML=`<span class="warn">Not quite. ${tip}</span>`;
+  if(S.ch.tries[i]===3&&!$("#chSkip"))$("#chCheck").insertAdjacentHTML("afterend",`<button class="btn secondary" type="button" id="chSkip">Skip this one</button>`);
+}
+
+/* ---------- step 5: check yourself ---------- */
+const QFIG=(()=>{const xs=[65,195,325,455];let s="";const pics=[BIO.glucose(65,52,22),BIO.amino(195,74,1,15),BIO.nucleotide(330,40,2),BIO.fatty(405,58,100)];
+  ["A","B","C","D"].forEach((L,k)=>{s+=`<circle cx="${xs[k]-50}" cy="20" r="13" fill="#1d2b36"/><text x="${xs[k]-50}" y="25" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif">${L}</text>`;});
+  return `<svg viewBox="0 0 520 132" role="img" aria-label="Four monomer pictures: A is a hexagon ring, B is a circle with an R group on a stem, C is a phosphate, pentagon sugar, and a base, D is a long zigzag line">${s}${pics.join("")}</svg>`;})();
+const QZ=[
+ {type:"drag",layout:"rows",q:"Match each macromolecule to its monomer.",chips:["Monosaccharides (like glucose)","Glycerol and fatty acids","Amino acids","Nucleotides","Water"],
+  zones:[{id:"m1",label:"Carbohydrates",answer:0},{id:"m2",label:"Lipids",answer:1},{id:"m3",label:"Proteins",answer:2},{id:"m4",label:"Nucleic acids",answer:3}],
+  x:"Carbohydrates are built from simple sugars, lipids from glycerol and fatty acids, proteins from amino acids, and nucleic acids from nucleotides. Water isn't a monomer."},
+ {type:"drag",layout:"label",figure:QFIG,q:"What does each monomer look like? Drag a name under each picture.",chips:["Glucose","Amino acid","Nucleotide","Fatty acid"],
+  zones:[{id:"p1",name:"Picture A",answer:0,x:2,y:86,w:22},{id:"p2",name:"Picture B",answer:1,x:27,y:86,w:22},{id:"p3",name:"Picture C",answer:2,x:52,y:86,w:22},{id:"p4",name:"Picture D",answer:3,x:77,y:86,w:22}],
+  x:"Glucose is a ring (A). An amino acid has an R group that makes each kind different (B). A nucleotide has a phosphate, a sugar, and a base (C). A fatty acid is a long zigzag tail (D)."},
+ {type:"drag",layout:"sort",q:"Sort each job into the macromolecule that does it.",chips:["Quick energy","Plant cell walls","Long-term energy storage","Cell membranes","Speed up reactions (enzymes)","Store genetic information"],
+  zones:[{id:"c",label:"Carbohydrates",answer:[0,1]},{id:"l",label:"Lipids",answer:[2,3]},{id:"p",label:"Proteins",answer:[4]},{id:"n",label:"Nucleic acids",answer:[5]}],
+  x:"Carbohydrates give quick energy and build plant cell walls (cellulose). Lipids store energy long-term and make cell membranes. Proteins such as enzymes speed up reactions. Nucleic acids store genetic information."},
+ {type:"drag",layout:"fill",q:"Drag words into the blanks.",chips:["polymers","water","hydrolysis","oxygen","glucose","photosynthesis"],
+  sentence:["Monomers join together to make ",{z:"f1"},". Each new bond releases one molecule of ",{z:"f2"},". Adding water to break a polymer apart is called ",{z:"f3"},"."],
+  zones:[{id:"f1",name:"Blank 1",answer:0},{id:"f2",name:"Blank 2",answer:1},{id:"f3",name:"Blank 3",answer:2}],
+  x:"Monomers join into polymers by dehydration synthesis, which releases water. Hydrolysis uses water to break the bonds again."}];
+const QMAX=QZ.map(z=>z.layout==="sort"?z.chips.length:z.zones.length);
+function step5(){return `<div class="card step"><div class="kicker">Step 6 of 7: Check yourself</div><h2>Check your understanding</h2><p>Your first answer counts, so check your work before you press <b>Check</b>.</p>
+ ${QZ.map((z,k)=>{const done=S.quiz[k]!==null;return `<div class="q"><p class="qp">${k+1}. ${z.q}</p>${DND.mount("M"+k,z,S.qpl[k],{locked:done,marks:true})}
+  ${done?`<div class="explain"><b>${S.quiz[k]===QMAX[k]?"All correct!":`${S.quiz[k]} of ${QMAX[k]} correct.`}</b> ${z.x}</div>`:`<div class="btn-row"><button class="btn secondary" type="button" data-qcheck="${k}">Check</button></div><div class="err" id="qerr${k}" role="alert"></div>`}</div>`;}).join("")}
+ <div class="err" id="quizMsg" role="alert"></div>${nav(5)}</div>`;}
+function checkQ(k){const z=QZ[k];if(!DND.complete(z,S.qpl[k])){$("#qerr"+k).textContent="Place every card before you check.";return;}
+  const g=DND.grade(z,S.qpl[k]);S.quiz[k]=g.pts;const y=window.scrollY;go(5);window.scrollTo({top:y});announce(g.pts===g.max?"All correct!":`${g.pts} of ${g.max} correct.`);}
+
+/* ---------- step 6: wrap-up ---------- */
+function step6(){if(S.done)return resultsHTML();
+ const starch=BIO.chain("carb",5,{x0:20,y0:24}),pieces=BIO.chain("carb",4,{broken:true,x0:20,y0:24});
+ return `<div class="card step"><div class="kicker">Step 7 of 7: Wrap-up</div><h2>Back to the cracker</h2>
+ <div class="two"><div><p>Starch is a <b>polysaccharide</b>: a long polymer of glucose. It's too big to fit the sweet taste sensors on your tongue, so it doesn't taste sweet.</p>
+ <p>Your saliva contains <b>amylase</b>, an <b>enzyme</b>. Enzymes are proteins! Amylase uses water to break starch apart (<b>hydrolysis</b>) into small sugars like maltose. Small sugars fit your sweet sensors, so the longer you chew, the sweeter it tastes.</p>
+ <div class="rxn"><div><svg viewBox="0 0 230 50" role="img" aria-label="Starch chain">${starch.svg}</svg><div class="lbl">starch</div></div><div class="arrow">amylase<b>→</b>+ water</div><div><svg viewBox="0 0 230 50" role="img" aria-label="Separate sugar pieces">${pieces.svg}</svg><div class="lbl">sweet sugars</div></div></div>
+ <div class="rule"><h3>Your first idea was</h3><p style="margin:0;white-space:pre-wrap">${esc(S.wonder)||"<i>(blank)</i>"}</p></div></div>
+ <div><label for="reflect"><b>Look back at your first idea.</b> What would you change or add now? Use the words <i>polymer</i>, <i>monomer</i>, and <i>enzyme</i>.</label>
+ <textarea id="reflect" style="margin-top:6px;min-height:140px">${esc(S.reflect)}</textarea>
+ <div class="btn-row"><button class="btn" type="button" id="finish">Finish lesson</button></div><div class="err" id="finMsg" role="alert"></div></div></div>
+ <div class="nav no-print"><button class="btn secondary" type="button" data-go="5">Back</button><span></span></div></div>`;}
+let RESULT=null;
+function finish(){
+  if(S.reflect.trim().length<10){$("#finMsg").textContent="Write your updated idea before you finish.";return;}
+  const chPts=[0,1,2].map(chPoints),qPts=S.quiz.map(v=>v||0);
+  const pts=chPts.concat(qPts).reduce((a,b)=>a+b,0),max=9+QMAX.reduce((a,b)=>a+b,0);
+  const s=S.stu,now=new Date();
+  const header=["Student ID","# Correct","Last Name","First Name","Period","Teacher","Points Possible","Percent","Lesson","Submitted","Challenge 1 (Maltose)","Challenge 2 (Fat)","Challenge 3 (Digest)","Q1 Match monomers","Q2 Label pictures","Q3 Sort jobs","Q4 Fill-in","First Idea","Updated Idea"];
+  const row=[s.id,pts,s.last,s.first,s.period,s.teacher,max,Math.round(pts/max*1000)/10,"Macromolecules",now.toLocaleString()].concat(chPts,qPts,[S.wonder.trim(),S.reflect.trim()]);
+  RESULT={header,row,tab:`Macromolecules Lesson${CFG.TEACHERS.length>1?" "+s.teacher.split(/\s+/).pop():""} P${s.period}`,pts,max,chPts,qPts,now};
+  S.done=true;go(6);send();
+}
+function resultsHTML(){const R=RESULT,s=S.stu;
+  return `<div class="card step"><div class="kicker">Lesson complete</div><h2>Nice work, ${esc(s.first)}!</h2><div class="score">${R.pts}<small> / ${R.max}</small></div>
+  <div class="hint" style="margin-top:6px">${esc(s.first)} ${esc(s.last)}, ID ${esc(s.id)}, Period ${esc(s.period)}, ${esc(s.teacher)}. ${R.now.toLocaleString()}</div>
+  <div id="sendbox" class="sendbox wait no-print">Sending your score to your teacher…</div>
+  <table class="summary"><tbody>${CH.map((c,k)=>`<tr><td>Challenge ${k+1}: ${c.name}</td><td>${R.chPts[k]} / 3${S.ch.res[k]==="skip"?" (skipped)":S.ch.res[k]?` (${S.ch.res[k]} ${S.ch.res[k]===1?"try":"tries"})`:""}</td></tr>`).join("")}${QZ.map((z,k)=>`<tr><td>Question ${k+1}</td><td>${R.qPts[k]} / ${QMAX[k]}</td></tr>`).join("")}</tbody></table>
+  <div class="rule"><h3>Your updated idea</h3><p style="margin:0;white-space:pre-wrap">${esc(S.reflect)}</p></div>
+  <div class="btn-row no-print"><button class="btn" type="button" id="print">Print</button><button class="btn secondary" type="button" id="dlcsv">Download my results (CSV)</button></div></div>`;}
+function send(){const box=$("#sendbox");if(!box)return;
+  if(!CFG.SHEET_URL){box.className="sendbox bad no-print";box.innerHTML="This lesson isn't connected to your teacher's gradebook yet. Click <b>Download my results (CSV)</b> and turn in the file the way your teacher asks.";return;}
+  box.className="sendbox wait no-print";box.textContent="Sending your score to your teacher…";
+  fetch(CFG.SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({header:RESULT.header,row:RESULT.row,tab:RESULT.tab})})
+   .then(()=>{box.className="sendbox ok no-print";box.textContent="✓ Your score was sent to your teacher.";})
+   .catch(()=>{box.className="sendbox bad no-print";box.innerHTML=`Your score didn't send. Check your internet, then <button type="button" class="btn secondary" id="resend" style="padding:4px 12px;font-size:15px">try again</button>. If it still won't send, download your results.`;});}
+function csvCell(v){v=String(v);return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v;}
+function downloadCSV(){const csv=[RESULT.header,RESULT.row].map(r=>r.map(csvCell).join(",")).join("\r\n");const u=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));const a=document.createElement("a");a.href=u;a.download=`Macromolecules-Lesson_${S.stu.last}_${S.stu.first}_${S.stu.id}.csv`.replace(/[^\w.-]/g,"");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{const t=e.target;
+  const g=t.closest("[data-go]");if(g){go(+g.dataset.go);return;}
+  const sp=t.closest("[data-step]");if(sp&&!sp.disabled){const k=+sp.dataset.step;if(k<=S.maxStep)go(k);return;}
+  const mt=t.closest("[data-mtab]");if(mt){S.mtab=mt.dataset.mtab;$("#main").innerHTML=step2();const b=document.querySelector(`[data-mtab="${S.mtab}"]`);if(b)b.focus();return;}
+  const ad=t.closest("[data-add]");if(ad&&!ad.disabled){addMono(ad.dataset.add);return;}
+  if(t.closest("#fold")){S.sim.folded=!S.sim.folded;logIt();simRefresh("",S.sim.folded?"Folded! A protein's shape decides its job.":"");$("#fold")&&$("#fold").focus();return;}
+  if(t.closest("#breakit")){breakIt();return;}
+  if(t.closest("#simclear")){S.sim=newSim();simRefresh();return;}
+  if(t.closest("#chCheck")){checkChallenge();return;}
+  if(t.closest("#chSkip")){const i=S.ch.i;S.ch.res[i]="skip";S.ch.i=S.ch.res.findIndex(r=>r===null);if(S.ch.i<0)S.ch.i=2;S.sim=newSim();go(4);return;}
+  const qc=t.closest("[data-qcheck]");if(qc){checkQ(+qc.dataset.qcheck);return;}
+  if(t.closest("#finish")){finish();return;}
+  if(t.closest("#print")){window.print();return;}
+  if(t.closest("#dlcsv")){downloadCSV();return;}
+  if(t.closest("#resend")){send();return;}
+});
+document.addEventListener("input",e=>{const t=e.target;
+  if(t.id==="wonder"){S.wonder=t.value;$("#wonderMsg").textContent="";}
+  if(t.id==="reflect")S.reflect=t.value;
+  if(t.id==="guess")S.ch.guess=t.value;
+  if(t.classList)t.classList.remove("error");});
+window.addEventListener("beforeunload",e=>{if(S.stu&&!S.done){e.preventDefault();e.returnValue="";}});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From Atoms To Ecosystems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<script>
+/* =====================================================================
+   YOUR SITE'S CONTENT
+   To add an activity: copy a line like
+       { title: "Homeostasis", file: "homeostasis-lesson.html" },
+   paste it into the right unit and section (warmups, labs, lessons, or formative),
+   and change the title and file.
+   The file must be uploaded to GitHub in the SAME place as this index.html.
+   ===================================================================== */
+const SITE = {
+  title: "From Atoms To Ecosystems",
+  subtitle: "Pick your class, then your unit.",
+  subjects: [
+    { name: "Biology", color: "#3f7a2e", soft: "#e8f2e3", art: "dna", units: [
+      { name: "Homeostasis, Macromolecules, and Enzymes",
+        warmups: [],
+        labs: [],
+        lessons: [
+          { title: "Homeostasis", file: "homeostasis-lesson.html" },
+          { title: "Macromolecules", file: "macromolecules-lesson.html" },
+          { title: "Enzymes", file: "enzymes-lesson.html" } ],
+        formative: [
+          { title: "Homeostasis Exit Ticket", file: "exit-ticket-homeostasis.html" },
+          { title: "Macromolecules Exit Ticket", file: "exit-ticket-macromolecules.html" },
+          { title: "Enzymes Exit Ticket", file: "exit-ticket-enzymes.html" } ] },
+      { name: "Cell Transport, Photosynthesis, and Cellular Respiration",
+        warmups: [ { title: "Cell Transport Vocab Warm-Up", file: "cell-transport-vocab-warmup.html" } ],
+        labs: [],
+        lessons: [
+          { title: "The Cell Membrane", file: "cell-membrane-lesson.html" },
+          { title: "Cell Transport", file: "cell-transport-lesson.html" },
+          { title: "ATP: The Cell's Energy", file: "atp-lesson.html" },
+          { title: "Photosynthesis", file: "photosynthesis-lesson.html" },
+          { title: "Cellular Respiration", file: "cellular-respiration-lesson.html" },
+          { title: "Photosynthesis and Respiration Together", file: "photosynthesis-and-respiration-lesson.html" } ],
+        formative: [
+          { title: "ATP Exit Ticket", file: "exit-ticket-atp.html" },
+          { title: "Photosynthesis Exit Ticket", file: "exit-ticket-photosynthesis.html" },
+          { title: "Cellular Respiration Exit Ticket", file: "exit-ticket-cellular-respiration.html" },
+          { title: "Photosynthesis and Respiration Exit Ticket", file: "exit-ticket-photosynthesis-and-respiration.html" } ] },
+      { name: "DNA and Protein Synthesis",
+        warmups: [],
+        labs: [],
+        lessons: [
+          { title: "DNA Replication", file: "dna-replication-lesson.html" },
+          { title: "Transcription", file: "transcription-lesson.html" },
+          { title: "Translation", file: "translation-lesson.html" } ],
+        formative: [
+          { title: "DNA Replication Exit Ticket", file: "exit-ticket-dna-replication.html" },
+          { title: "Transcription Exit Ticket", file: "exit-ticket-transcription.html" },
+          { title: "Translation Exit Ticket", file: "exit-ticket-translation.html" } ] },
+      { name: "Genetics",
+        warmups: [],
+        labs: [],
+        lessons: [ { title: "Chromosomes and Karyotypes", file: "chromosomes-karyotypes-lesson.html" } ],
+        formative: [ { title: "Chromosomes and Karyotypes Exit Ticket", file: "exit-ticket-chromosomes-karyotypes.html" } ] },
+      { name: "Evolution", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Ecology", warmups: [],
+        labs: [], lessons: [], formative: [] } ] },
+
+    { name: "Chemistry", color: "#1f7f7a", soft: "#e3f3f1", art: "flask", units: [
+      { name: "Atomic Structure, Isotopes, and Nuclear Chemistry",
+        warmups: [],
+        labs: [],
+        lessons: [
+          { title: "Bohr Models: Build an Atom", file: "bohr-models-lesson.html" },
+          { title: "Bohr Models (original)", file: "bohr-model-lesson.html" } ],
+        formative: [
+          { title: "Atomic Structure Exit Ticket", file: "exit-ticket-1-atomic-structure.html" },
+          { title: "Isotopes Exit Ticket", file: "exit-ticket-3-isotopes.html" },
+          { title: "Nuclear Decay, Fission, and Fusion Exit Ticket", file: "exit-ticket-2-nuclear-chemistry.html" },
+          { title: "Bohr Models Exit Ticket", file: "exit-ticket-bohr-models-2.html" },
+          { title: "Bohr Models Exit Ticket (original)", file: "exit-ticket-5-bohr-models.html" } ] },
+      { name: "Ions, Periodic Trends, and Bonding",
+        warmups: [],
+        labs: [],
+        lessons: [
+          { title: "Periodic Table Families", file: "periodic-table-families-lesson.html" },
+          { title: "Periodic Trends", file: "periodic-trends-lesson.html" },
+          { title: "Ions", file: "ions-lesson.html" },
+          { title: "Ionic Bonding", file: "ionic-bonding-lesson.html" },
+          { title: "Covalent Bonding", file: "covalent-bonding-lesson.html" },
+          { title: "Metallic Bonding", file: "metallic-bonding-lesson.html" } ],
+        formative: [
+          { title: "The Periodic Table Exit Ticket", file: "exit-ticket-4-periodic-table.html" },
+          { title: "Periodic Table Families Exit Ticket", file: "exit-ticket-periodic-table-families.html" },
+          { title: "Periodic Trends Exit Ticket", file: "exit-ticket-periodic-trends.html" },
+          { title: "Ions Exit Ticket", file: "exit-ticket-ions.html" },
+          { title: "Ionic Bonding Exit Ticket", file: "exit-ticket-ionic-bonding.html" },
+          { title: "Covalent Bonding Exit Ticket", file: "exit-ticket-covalent-bonding.html" },
+          { title: "Metallic Bonding Exit Ticket", file: "exit-ticket-metallic-bonding.html" } ] },
+      { name: "Counting Atoms and Balanced Equations",
+        warmups: [],
+        labs: [],
+        lessons: [
+          { title: "Counting Atoms", file: "counting-atoms-lesson.html" },
+          { title: "Types of Reactions", file: "types-of-reactions-lesson.html" },
+          { title: "Balancing Equations", file: "balancing-equations-lesson.html" } ],
+        formative: [
+          { title: "Counting Atoms Exit Ticket", file: "exit-ticket-counting-atoms.html" },
+          { title: "Types of Reactions Exit Ticket", file: "exit-ticket-types-of-reactions.html" },
+          { title: "Balancing Equations Exit Ticket", file: "exit-ticket-balancing-equations.html" } ] },
+      { name: "Dimensional Analysis and Stoichiometry", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Thermochemistry", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Solutions, Acids, and Bases", warmups: [],
+        labs: [], lessons: [], formative: [] } ] },
+
+    { name: "AP Chemistry", color: "#8a3b5c", soft: "#f7e8ef", art: "molecule", units: [
+      { name: "Intro to AP Chem", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Stoichiometry", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Chemical Reactions", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Basic Solutions", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Gases", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Thermochemistry", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Electrons and Periodicity", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Bonding and Forces", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Advanced Solutions", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Chemical Kinetics", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "General Equilibrium", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Acid-Base Equilibrium", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Ksp Equilibrium", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Advanced Thermochemistry", warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Electrochemistry", warmups: [], labs: [], lessons: [], formative: [] } ] },
+
+    { name: "Physics", color: "#2f5d9b", soft: "#e6eef9", art: "pendulum", units: [
+      { name: "1D Kinematics",
+        warmups: [],
+        labs: [],
+        lessons: [ { title: "1D Kinematics", file: "1d-kinematics-lesson.html" } ],
+        formative: [ { title: "1D Kinematics Exit Ticket", file: "exit-ticket-1d-kinematics.html" } ] },
+      { name: "2D Kinematics",
+        warmups: [],
+        labs: [],
+        lessons: [
+          { title: "Vectors", file: "vectors-lesson.html" },
+          { title: "Projectile Motion", file: "projectile-motion-lesson.html" } ],
+        formative: [
+          { title: "Vectors Exit Ticket", file: "exit-ticket-vectors.html" },
+          { title: "Projectile Motion Exit Ticket", file: "exit-ticket-projectile-motion.html" } ] },
+      { name: "Forces", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Circular Motion", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Gravitational Fields", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Energy", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Nuclear Energy", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Momentum", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Waves and Sound", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Optics", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Wave Nature of Light", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Static Electricity", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Current Electricity", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "EM Induction", warmups: [],
+        labs: [], lessons: [], formative: [] },
+      { name: "Electric and Magnetic Fields", warmups: [],
+        labs: [], lessons: [], formative: [] } ] }
+  ]
+};
+/* ===================================================================== */
+</script>
+<style>
+:root{--ink:#1d2b36;--muted:#56666f;--paper:#f3f6f5;--line:#d3dedb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px 48px}
+header{padding:30px 0 6px}
+header h1{font-size:clamp(34px,6vw,52px);font-weight:800;letter-spacing:-.02em}
+header p{margin:6px 0 0;color:var(--muted)}
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:18px 0 6px;font-size:15px}
+.crumbs a{color:var(--muted);text-decoration:none;font-weight:700}.crumbs a:hover{text-decoration:underline}
+.crumbs span{color:var(--muted)}
+/* subject tiles */
+.subjects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:22px 0}
+@media (max-width:980px){.subjects{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.subj{border:3px solid var(--c);background:#fff;border-radius:18px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;transition:transform .12s,box-shadow .12s}
+.subj:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(29,43,54,.12)}
+.subj .art{background:var(--s);display:flex;align-items:center;justify-content:center;aspect-ratio:16/10}
+.subj .art svg{width:60%;height:auto}
+.subj .lab{padding:12px 16px;display:flex;flex-direction:column;gap:2px}
+.subj .lab b{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;color:var(--c)}
+.subj .lab span{color:var(--muted);font-size:14px}
+@media (max-width:720px){.subjects{grid-template-columns:1fr}.subj{flex-direction:row}.subj .art{aspect-ratio:auto;width:120px;flex:none}.subj .lab{flex-direction:column;justify-content:center}}
+/* search */
+.search{margin:6px 0 4px}
+.search input{width:100%;font:inherit;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:#fff}
+.results{display:grid;gap:8px;margin-top:10px}
+/* subject page */
+.subhead{display:flex;align-items:center;gap:14px;margin:6px 0 16px}
+.subhead .icon{width:64px;height:64px;border-radius:14px;background:var(--s);border:2px solid var(--c);display:flex;align-items:center;justify-content:center;flex:none}
+.subhead .icon svg{width:80%}
+.subhead h2{font-size:clamp(28px,4.5vw,40px);color:var(--c)}
+.units{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.unit{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:6px solid var(--c);border-radius:14px;padding:14px 16px;text-decoration:none;transition:box-shadow .12s,transform .12s}
+.unit:hover{box-shadow:0 8px 18px rgba(29,43,54,.1);transform:translateY(-2px)}
+.unit .num{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:28px;color:var(--c);min-width:36px;line-height:1}
+.unit h3{font-size:18px}
+.unit p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.unit.empty{opacity:.65}
+/* unit page */
+.sections{display:grid;gap:16px}
+.section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.section h3{font-size:21px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.section h3 .badge{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--s);color:var(--c)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.item{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:12px;padding:10px 12px;text-decoration:none;background:#fff;transition:border-color .12s,background .12s}
+.item:hover{border-color:var(--c);background:var(--s)}
+.item .dot{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.item b{font-weight:700}
+.item small{display:block;color:var(--muted);font-size:13px}
+.none{color:var(--muted);font-style:italic;margin:0}
+footer{color:var(--muted);font-size:13px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1 id="title"></h1><p id="subtitle"></p></header>
+  <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+  <main id="main"></main>
+  <footer>Tip: use your browser's back button to go back a page.</footer>
+</div>
+<script>
+const ART={
+ flask:c=>`<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M48 12h24M52 12v26L28 82a6 6 0 0 0 5 9h54a6 6 0 0 0 5-9L68 38V12" fill="#fff" stroke="${c}" stroke-width="5" stroke-linejoin="round"/><path d="M38 66h44l10 17a4 4 0 0 1-3 6H31a4 4 0 0 1-3-6z" fill="${c}" opacity=".85"/><circle cx="52" cy="76" r="4" fill="#fff"/><circle cx="66" cy="70" r="3" fill="#fff"/><circle cx="60" cy="54" r="3.5" fill="none" stroke="${c}" stroke-width="2.5"/><circle cx="66" cy="44" r="2.5" fill="none" stroke="${c}" stroke-width="2.5"/><circle cx="57" cy="32" r="2" fill="${c}"/></svg>`,
+ pendulum:c=>`<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M18 12h84" stroke="${c}" stroke-width="6" stroke-linecap="round"/><path d="M60 12 84 70" stroke="${c}" stroke-width="3"/><path d="M60 12 36 70" stroke="${c}" stroke-width="2" stroke-dasharray="4 4" opacity=".45"/><path d="M30 76q30 22 60 0" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="3 6" stroke-linecap="round"/><circle cx="36" cy="72" r="10" fill="${c}" opacity=".3"/><circle cx="86" cy="74" r="12" fill="${c}"/><path d="M100 64h12M102 74h14M100 84h12" stroke="${c}" stroke-width="3" stroke-linecap="round"/></svg>`,
+ molecule:c=>{const hx=(cx,cy,r)=>Array.from({length:6},(_,k)=>{const a=Math.PI/6+k*Math.PI/3;return (cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1);}).join(" ");
+   return `<svg viewBox="0 0 120 100" aria-hidden="true"><polygon points="${hx(48,52,26)}" fill="#fff" stroke="${c}" stroke-width="5" stroke-linejoin="round"/><polygon points="${hx(48,52,15)}" fill="none" stroke="${c}" stroke-width="3" opacity=".55"/><line x1="70.5" y1="39" x2="86" y2="30" stroke="${c}" stroke-width="5" stroke-linecap="round"/><circle cx="90" cy="28" r="7" fill="${c}"/><line x1="48" y1="78" x2="48" y2="92" stroke="${c}" stroke-width="5" stroke-linecap="round"/><rect x="74" y="58" width="38" height="28" rx="7" fill="${c}"/><text x="93" y="78" font-size="17" font-weight="800" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif">AP</text></svg>`;},
+ dna:c=>{let s="";for(let i=0;i<=10;i++){const y=8+i*8.4,x1=60+26*Math.sin(i*.62),x2=60-26*Math.sin(i*.62);s+=`<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="3" opacity=".55"/><circle cx="${x1.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="${c}"/><circle cx="${x2.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="#fff" stroke="${c}" stroke-width="2.5"/>`;}return `<svg viewBox="0 0 120 100" aria-hidden="true">${s}</svg>`;}};
+const ICON={warmups:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 18a5 5 0 0 1 10 0" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 5v3M5.6 8.6l2.1 2.1M18.4 8.6l-2.1 2.1M3 13h2M19 13h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+ labs:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7.5 15h9" stroke="currentColor" stroke-width="2"/></svg>`,
+ lessons:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z M4 19V5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 7h7M8 11h7" stroke="currentColor" stroke-width="2"/></svg>`,
+ formative:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`};
+const SECT=[["warmups","Warm-Ups"],["labs","Labs"],["lessons","Self-Taught Lessons"],["formative","Formative Assessments"]];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const $=s=>document.querySelector(s);
+const count=u=>SECT.reduce((a,[k])=>a+(u[k]||[]).length,0);
+const sty=s=>`--c:${s.color};--s:${s.soft}`;
+document.title=SITE.title;$("#title").textContent=SITE.title;$("#subtitle").textContent=SITE.subtitle;
+function crumbs(parts){$("#crumbs").innerHTML=parts.map((p,i)=>i<parts.length-1?`<a href="${p[1]}" data-go="${p[1].slice(1)}">${esc(p[0])}</a><span aria-hidden="true">›</span>`:`<b aria-current="page">${esc(p[0])}</b>`).join("");}
+function home(){crumbs([["Home","#"]]);
+  $("#main").innerHTML=`<div class="subjects">${SITE.subjects.map(s=>{const n=s.units.reduce((a,u)=>a+count(u),0);return `<a class="subj" href="#${slug(s.name)}" data-go="${slug(s.name)}" style="${sty(s)}"><span class="art">${ART[s.art](s.color)}</span><span class="lab"><b>${esc(s.name)}</b><span>${s.units.length} units · ${n} activities</span></span></a>`;}).join("")}</div>
+   <div class="search"><label for="q"><b>Looking for something?</b></label><input id="q" type="search" placeholder="Type a topic, like photosynthesis or vectors" autocomplete="off"><div class="results" id="results"></div></div>`;
+  $("#q").addEventListener("input",e=>{const q=e.target.value.trim().toLowerCase();if(q.length<2){$("#results").innerHTML="";return;}const hits=[];
+    SITE.subjects.forEach(s=>s.units.forEach((u,ui)=>SECT.forEach(([k,lab])=>(u[k]||[]).forEach(it=>{if(it.title.toLowerCase().includes(q)||u.name.toLowerCase().includes(q))hits.push({s,u,ui,lab,it});}))));
+    $("#results").innerHTML=hits.length?hits.slice(0,30).map(h=>`<a class="item" style="${sty(h.s)}" href="${esc(h.it.file)}"><span class="dot"></span><span><b>${esc(h.it.title)}</b><small>${esc(h.s.name)} · Unit ${h.ui+1} · ${esc(h.lab)}</small></span></a>`).join(""):`<p class="none">No matches yet.</p>`;});}
+function subject(s){crumbs([["Home","#"],[s.name,"#"+slug(s.name)]]);
+  $("#main").innerHTML=`<div class="subhead" style="${sty(s)}"><span class="icon">${ART[s.art](s.color)}</span><h2>${esc(s.name)}</h2></div>
+   <div class="units">${s.units.map((u,i)=>{const n=count(u);return `<a class="unit${n?"":" empty"}" style="${sty(s)}" href="#${slug(s.name)}/${i+1}" data-go="${slug(s.name)}/${i+1}"><span class="num">${i+1}</span><span><h3>${esc(u.name)}</h3><p>${n?SECT.map(([k,l])=>(u[k]||[]).length?`${u[k].length} ${({warmups:"warm-up",labs:"lab",lessons:"lesson",formative:"assessment"})[k]}${u[k].length>1?"s":""}`:"").filter(Boolean).join(" · "):"Coming soon"}</p></span></a>`;}).join("")}</div>`;}
+function unit(s,i){const u=s.units[i];crumbs([["Home","#"],[s.name,"#"+slug(s.name)],[`Unit ${i+1}`,`#${slug(s.name)}/${i+1}`]]);
+  $("#main").innerHTML=`<div class="subhead" style="${sty(s)}"><span class="icon">${ART[s.art](s.color)}</span><div><p style="margin:0;color:var(--muted);font-weight:700">${esc(s.name)} · Unit ${i+1}</p><h2>${esc(u.name)}</h2></div></div>
+   <div class="sections">${SECT.map(([k,l])=>`<section class="section" style="${sty(s)}" aria-labelledby="h-${k}"><h3 id="h-${k}"><span class="badge">${ICON[k]}</span>${l}</h3>${(u[k]||[]).length?`<div class="items">${u[k].map(it=>`<a class="item" href="${esc(it.file)}"><span class="dot"></span><span><b>${esc(it.title)}</b></span></a>`).join("")}</div>`:`<p class="none">Nothing posted here yet.</p>`}</section>`).join("")}</div>`;}
+function route(target){let raw=target;if(raw==null){try{raw=decodeURIComponent(location.hash.slice(1));}catch(e){raw="";}}const h=raw.split("/");const s=SITE.subjects.find(x=>slug(x.name)===h[0]);
+  if(!s)home();else if(h[1]&&s.units[+h[1]-1])unit(s,+h[1]-1);else subject(s);window.scrollTo(0,0);const t=$("#main h2");if(t){t.setAttribute("tabindex","-1");t.focus({preventScroll:true});}}
+/* Navigation works by clicking, even inside previews that block page links */
+document.addEventListener("click",e=>{const a=e.target.closest("[data-go]");if(!a)return;e.preventDefault();const t=a.dataset.go;
+  try{history.pushState(null,"","#"+t);}catch(err){}route(t);});
+window.addEventListener("popstate",()=>route());
+window.addEventListener("hashchange",()=>route());
+route();
+</script>
+</body>
+</html>

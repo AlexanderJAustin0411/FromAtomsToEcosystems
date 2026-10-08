@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building Bohr Models Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b36;--muted:#56666f;--paper:#f3f6f5;--line:#d3dedb;--accent:#a23b72;--accent-soft:#f7e6ef;--ok:#2e7d4f;--ok-bg:#e7f4ec;--bad:#b8403a;--bad-bg:#f9e8e6;--pro:#d9574f;--neu:#9aa8ab;--night:#171d33}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{border:0;border-radius:10px;padding:11px 22px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;font-size:17px}
+.btn.secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.err{color:var(--bad);font-weight:700;margin-top:10px}
+.hint{color:var(--muted);font-size:15px}
+
+/* sign-in */
+.signin{max-width:640px;margin:28px auto;padding:0 16px}
+.ticket{background:#fff;border-radius:14px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(29,43,54,.07);overflow:hidden}
+.stub{background:var(--night);color:#fff;padding:22px 26px 24px;position:relative;overflow:hidden}
+.stub .unit{font-size:15px;opacity:.85}
+.stub h1{font-size:clamp(30px,6vw,42px);font-weight:800;letter-spacing:-.015em;margin-top:2px;position:relative}
+.stub .time{margin-top:6px;font-size:15px;opacity:.9;position:relative}
+.stub svg{position:absolute;right:-10px;top:-6px;width:230px;opacity:.9}
+.tbody{padding:22px 26px 28px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+.fields input,.fields select{border:2px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;font-weight:400;min-width:0}
+.fields .error{border-color:var(--bad);background:var(--bad-bg)}
+
+/* lesson shell */
+.bar{background:var(--night);color:#fff}
+.bar .inner{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.bar h1{font-size:21px;font-weight:800}
+.bar .who{font-size:15px;opacity:.85;margin-right:auto}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+.steps button{border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.steps button.done{background:rgba(255,255,255,.18)}
+.steps button.cur{background:#fff;color:var(--night);border-color:#fff}
+.steps button:disabled{opacity:.4;cursor:default}
+.progress{height:5px;background:rgba(255,255,255,.15)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#f4b400,#e0562b,#a23b72);transition:width .3s}
+main{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.kicker{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.step h2{font-size:clamp(26px,4vw,34px);font-weight:800;margin-bottom:10px}
+.step p{max-width:68ch;margin:0 0 12px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.figure svg{width:100%;height:auto;display:block;border-radius:12px}
+.cap{font-size:14px;color:var(--muted);margin-top:6px}
+textarea{width:100%;min-height:96px;border:2px solid #9fb4b0;border-radius:10px;padding:10px 12px;resize:vertical}
+.rule{border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 12px 12px 0;padding:12px 16px;margin:0 0 12px}
+.rule h3{font-size:18px;margin-bottom:6px}
+.rule ol,.rule ul{margin:0;padding-left:22px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+table.data{border-collapse:collapse;font-size:16px;margin:6px 0}
+table.data th,table.data td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+table.data th{background:#f4f8f7}
+table.data td:first-child{font-weight:700;text-align:left}
+.swatch{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:-3px;margin-right:6px;border:1px solid rgba(0,0,0,.2)}
+
+/* worked example */
+.stepper{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:20px;align-items:center}
+.stepper .say{font-size:18px}
+.stepper .say b.num{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:0 8px;margin-right:6px}
+.dots{display:flex;gap:6px;margin:10px 0}
+.dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots span.on{background:var(--accent)}
+
+/* simulator */
+.sim{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+.stage{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px;transition:background .4s}
+.stage.dark{background:var(--night)}
+.stage svg{width:100%;height:auto;display:block;max-height:440px;aspect-ratio:1}
+.glowmsg{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-weight:700;color:#fff;font-size:18px;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.controls{display:flex;flex-direction:column;gap:10px}
+.ctl{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:#fff}
+.ctl .nm{font-weight:700;min-width:92px;display:flex;align-items:center;gap:6px}
+.ctl .dot{width:14px;height:14px;border-radius:50%}
+.ctl button{width:38px;height:38px;border-radius:8px;border:2px solid var(--accent);background:#fff;color:var(--accent);font-size:20px;font-weight:700;cursor:pointer;line-height:1}
+.ctl button:disabled{opacity:.35;cursor:default}
+.ctl output{min-width:30px;text-align:center;font-size:20px;font-weight:700}
+.ctl .cap2{margin-left:auto;font-size:13px;color:var(--muted)}
+.readout{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.readout .el{font-family:"Bricolage Grotesque",sans-serif;font-size:28px;font-weight:800}
+.readout dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:8px 0 0}
+.readout dt{color:var(--muted)}.readout dd{margin:0;font-weight:700}
+.checks{list-style:none;padding:0;margin:10px 0 0}
+.checks li{padding:3px 0}
+.checks .good{color:var(--ok)}.checks .warn{color:var(--bad)}
+.toast{min-height:24px;color:var(--bad);font-weight:700;font-size:15px}
+.mini{display:grid;grid-template-columns:repeat(18,minmax(0,1fr));gap:2px;margin-top:10px;font-size:11px}
+.mini span{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid #d6e0de;border-radius:3px;font-weight:700;color:#8a979c}
+.mini span.here{background:var(--accent);color:#fff;border-color:var(--accent)}
+.flames{margin-top:12px}
+.challenge{border:2px solid var(--accent);background:var(--accent-soft);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.challenge h3{font-size:20px}
+.feedback{margin-top:8px;font-weight:700}
+.feedback .good{color:var(--ok)}.feedback .warn{color:var(--bad)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chips span{border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;border:2px solid var(--line);background:#fff}
+.chips span.on{border-color:var(--accent);color:var(--accent)}
+.chips span.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+
+/* quiz */
+.q{border:0;margin:0 0 18px;padding:0}
+.q legend{font-weight:700;font-size:18px;margin-bottom:8px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:10px;align-items:center;border:2px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;background:#fff}
+.opt:hover{border-color:var(--accent)}
+.opt input{accent-color:var(--accent);width:18px;height:18px;margin:0}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrongpick{border-color:var(--bad);background:var(--bad-bg)}
+.explain{background:#f7fbfa;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:16px}
+
+/* ---- drag-and-drop questions ---- */
+.dnd{margin-top:4px}
+.dbank{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:54px;padding:10px;border:2px dashed #b9c9c6;border-radius:10px;background:#f7fbfa;margin-bottom:12px}
+.dbank .dhint{color:var(--muted);font-size:14px}
+.dchip{touch-action:none;-webkit-user-select:none;user-select:none;border:2px solid var(--accent);background:#fff;color:var(--ink);font-weight:700;padding:6px 12px;border-radius:8px;cursor:grab;line-height:1.3;text-align:left;font-size:15px}
+.dchip:hover{background:var(--accent-soft)}
+.dchip.on{background:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+.dchip:disabled{cursor:default;opacity:1}
+.dchip.lift{opacity:.35}
+.dghost{position:fixed;left:0;top:0;z-index:1000;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);box-shadow:0 8px 18px rgba(0,0,0,.25);margin:0}
+.dzone{min-height:44px;border:2px dashed #9fb4b0;border-radius:8px;background:#fff;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 6px;cursor:pointer}
+.dzone .dph{color:#8a979c;font-size:14px;padding:0 4px}
+.dzone.target{border-color:var(--accent);background:#fdf7fa}
+.dzone.hover{border-color:var(--accent);border-style:solid;background:var(--accent-soft)}
+.dzone.filled{border-style:solid;border-color:#b7cfcb}
+.dzone.right{border-color:var(--ok);background:var(--ok-bg);border-style:solid}
+.dzone.wrong{border-color:var(--bad);background:var(--bad-bg);border-style:solid}
+.dchip.right{border-color:var(--ok);background:var(--ok-bg)}
+.dchip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.dlabel{position:relative}
+.dlabel .dfig svg{width:100%;height:auto;display:block}
+.dlabel .dzone{position:absolute;transform:translateY(-50%);min-height:38px;padding:2px 4px}
+.dlabel .dzone .dph{font-size:12px}
+.dlabel .dzone .dchip{font-size:13px;padding:4px 8px}
+.dfig2{margin:0 0 12px;max-width:560px}
+.dfig2 svg{width:100%;height:auto;display:block}
+.drows{display:flex;flex-direction:column;gap:8px}
+.drow{display:grid;grid-template-columns:minmax(110px,30%) 1fr;gap:12px;align-items:center}
+.drow>span{font-weight:700}
+.dorder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dorder li{display:flex;gap:10px;align-items:center}
+.dorder .onum{flex:0 0 32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.dorder .dzone{flex:1}
+.dbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.dbin{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.dbin .bt{background:var(--accent-soft);color:var(--ink);font-weight:700;padding:6px 10px;font-size:15px}
+.dbin .dzone{border:0;border-radius:0;min-height:120px;align-content:flex-start;padding:8px}
+.dbin .dzone.hover,.dbin .dzone.target{outline:2px dashed var(--accent);outline-offset:-4px}
+.dfill{line-height:2.6;margin:0;font-size:17px}
+.dfill .dzone{display:inline-flex;vertical-align:middle;min-width:120px;min-height:38px;margin:0 2px;padding:2px 4px}
+@media (max-width:520px){.dlabel .dzone .dchip{font-size:11px;padding:2px 5px}.dlabel .dzone .dph{font-size:10px}}
+/* results */
+.score{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:56px;line-height:1}
+.score small{font-size:24px;color:var(--muted)}
+.sendbox{border-radius:10px;padding:10px 14px;margin:10px 0;font-weight:700}
+.sendbox.ok{background:var(--ok-bg);color:var(--ok)}.sendbox.wait{background:#eef3f2;color:var(--muted)}.sendbox.bad{background:var(--bad-bg);color:var(--bad)}
+.summary{border-collapse:collapse;margin:10px 0}
+.summary td,.summary th{border:1px solid var(--line);padding:6px 12px;text-align:left}
+
+@media (max-width:900px){.two,.sim,.stepper{grid-template-columns:1fr}}
+@media (max-width:520px){.fields{grid-template-columns:1fr}.tbody,.stub{padding-left:18px;padding-right:18px}.stub svg{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.bar,.nav,.no-print{display:none!important}body{background:#fff}.card{border:0}}
+</style>
+</head>
+<body>
+
+<section class="signin" id="signin">
+ <div class="ticket">
+  <div class="stub">
+   <svg viewBox="0 0 230 120" aria-hidden="true" id="stubfw"></svg>
+   <div class="unit">Unit 1: The Atom lesson</div>
+   <h1>Building Bohr Models</h1>
+   <div class="time">7 short steps with an atom simulator. About 35 minutes.</div>
+  </div>
+  <div class="tbody">
+   <div id="signform">
+    <div class="fields">
+     <label for="first">First name<input id="first" type="text" autocomplete="given-name"></label>
+     <label for="last">Last name<input id="last" type="text" autocomplete="family-name"></label>
+     <label for="sid">Student ID number<input id="sid" type="text" inputmode="numeric" autocomplete="off"></label>
+     <label for="sid2">Type your ID again<input id="sid2" type="text" inputmode="numeric" autocomplete="off"></label>
+     <label for="period">Period<select id="period"><option value="">Choose</option></select></label>
+     <span id="teacherslot"></span>
+    </div>
+    <div class="btn-row" style="margin-top:20px"><button class="btn" type="button" id="startbtn">Start the lesson</button></div>
+    <div class="err" id="signerr" role="alert"></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="lesson" hidden>
+ <div class="bar"><div class="inner"><h1>Building Bohr Models</h1><span class="who" id="whoami"></span><nav class="steps" id="steps" aria-label="Lesson steps"></nav></div><div class="progress"><i id="prog" style="width:0"></i></div></div>
+ <main id="main"></main>
+</section>
+<div id="live" class="sr-only" aria-live="polite"></div>
+
+<script src="exit-ticket-config.js"></script>
+<script>
+(function(){
+"use strict";
+/* ===== Drag-and-drop question engine (drag, or tap a word then tap a spot) ===== */
+const DND=(function(){
+  const S={};let sel=null,drag=null,lastDrag=false,changeFn=null;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const plain=h=>String(h).replace(/<[^>]+>/g,"").trim();
+  const zoneById=(q,id)=>q.zones.find(z=>z.id===id);
+  function where(qid,ci){const P=S[qid].pl;for(const z in P)if(P[z].includes(ci))return z;return null;}
+  function chip(qid,ci,mark){const s=S[qid],on=sel&&sel.qid===qid&&sel.ci===ci;
+    return `<button type="button" class="dchip${on?" on":""}${mark?" "+mark:""}" data-dq="${qid}" data-ci="${ci}" aria-pressed="${on}"${s.locked?" disabled":""}>${s.q.chips[ci]}</button>`;}
+  function zone(qid,z,style){const s=S[qid],items=s.pl[z.id]||[],q=s.q;let mark="";
+    if(s.locked&&s.marks&&!z.multi)mark=items[0]===z.answer?" right":" wrong";
+    const tgt=sel&&sel.qid===qid&&!s.locked&&(z.multi||!items.length)?" target":"";
+    const inner=items.map(ci=>chip(qid,ci,s.locked&&s.marks&&z.multi?(z.answer.includes(ci)?"right":"wrong"):"")).join("")||`<span class="dph">${z.ph||"Drop here"}</span>`;
+    const name=z.name||z.label||"Drop spot";
+    return `<div class="dzone${z.multi?" multi":""}${items.length?" filled":""}${tgt}${mark}" data-dq="${qid}" data-dz="${z.id}"${s.locked?"":' tabindex="0" role="button"'} aria-label="${esc(plain(name))}: ${items.length?esc(items.map(ci=>plain(q.chips[ci])).join(", ")):"empty"}"${style?` style="${style}"`:""}>${inner}</div>`;}
+  function inner(qid){
+    const s=S[qid],q=s.q;
+    const placed=new Set(Object.values(s.pl).flat());
+    const bank=q.chips.map((c,ci)=>ci).filter(ci=>!placed.has(ci));
+    let h=s.locked?"":`<div class="dbank" data-dq="${qid}" data-dbank="1" aria-label="Word bank">${bank.map(ci=>chip(qid,ci)).join("")||'<span class="dhint">Every card is placed. Drag one back here to remove it.</span>'}</div>`;
+    if(q.figure&&q.layout!=="label")h+=`<div class="dfig2">${q.figure}</div>`;
+    if(q.layout==="label")h+=`<div class="dlabel"><div class="dfig">${q.figure}</div>${q.zones.map(z=>zone(qid,z,`left:${z.x}%;top:${z.y}%;width:${z.w}%`)).join("")}</div>`;
+    else if(q.layout==="rows")h+=`<div class="drows">${q.zones.map(z=>`<div class="drow"><span>${z.label}</span>${zone(qid,z)}</div>`).join("")}</div>`;
+    else if(q.layout==="order")h+=`<ol class="dorder">${q.zones.map((z,k)=>`<li><span class="onum" aria-hidden="true">${k+1}</span>${zone(qid,z)}</li>`).join("")}</ol>`;
+    else if(q.layout==="sort")h+=`<div class="dbins">${q.zones.map(z=>`<div class="dbin"><div class="bt">${z.label}</div>${zone(qid,{...z,multi:true})}</div>`).join("")}</div>`;
+    else if(q.layout==="fill")h+=`<div class="dfill">${q.sentence.map(p=>typeof p==="string"?p:zone(qid,zoneById(q,p.z))).join("")}</div>`;
+    if(!s.locked)h+=`<p class="dhow" style="font-size:14px;color:var(--muted);margin:8px 0 0">Drag a card to a spot, or tap a card and then tap the spot.</p>`;
+    return h;
+  }
+  function refresh(qid){const el=document.getElementById("dnd-"+qid);if(el)el.innerHTML=inner(qid);}
+  function focusChip(qid,ci){const b=document.querySelector(`.dchip[data-dq="${qid}"][data-ci="${ci}"]`);if(b)b.focus({preventScroll:true});}
+  function place(qid,ci,zid){
+    const s=S[qid],P=s.pl;for(const z in P)P[z]=P[z].filter(x=>x!==ci);
+    if(zid){const z=zoneById(s.q,zid);if(!(z.multi||s.q.layout==="sort"))P[zid]=[];P[zid]=(P[zid]||[]).concat(ci);}
+    sel=null;refresh(qid);if(changeFn)changeFn(qid);focusChip(qid,ci);
+  }
+  function mount(qid,q,pl,opts){
+    opts=opts||{};q.zones.forEach(z=>{if(!pl[z.id])pl[z.id]=[];});
+    S[qid]={q,pl,locked:!!opts.locked,marks:!!opts.marks};
+    return `<div class="dnd" id="dnd-${qid}">${inner(qid)}</div>`;
+  }
+  function lock(qid,marks){if(!S[qid])return;S[qid].locked=true;S[qid].marks=!!marks;if(sel&&sel.qid===qid)sel=null;refresh(qid);}
+  function complete(q,pl){if(q.layout==="sort")return Object.values(pl).flat().length===q.chips.length;return q.zones.every(z=>(pl[z.id]||[]).length>0);}
+  function grade(q,pl){
+    if(q.layout==="sort"){let pts=0;const lines=q.chips.map((c,ci)=>{const right=q.zones.find(z=>z.answer.includes(ci));const w=Object.keys(pl).find(z=>(pl[z]||[]).includes(ci));const ok=w===right.id;if(ok)pts++;return{label:c,ok,yours:w?zoneById(q,w).label:"not placed",right:right.label};});return{pts,max:q.chips.length,lines};}
+    let pts=0;const lines=q.zones.map(z=>{const got=(pl[z.id]||[])[0];const ok=got===z.answer;if(ok)pts++;return{label:z.name||z.label,ok,yours:got===undefined?"empty":q.chips[got],right:q.chips[z.answer]};});
+    return{pts,max:q.zones.length,lines};
+  }
+  function linesHTML(g){return `<ul>${g.lines.map(l=>`<li>${l.label}: <b class="${l.ok?"good":"wrong"}">${l.yours}</b>${l.ok?" ✓":` (correct: <b>${l.right}</b>)`}</li>`).join("")}</ul>`;}
+  /* ---- events ---- */
+  function clearHover(){document.querySelectorAll(".dzone.hover").forEach(e=>e.classList.remove("hover"));}
+  document.addEventListener("pointerdown",e=>{lastDrag=false;const c=e.target.closest(".dchip");if(!c||c.disabled||e.button!==0)return;drag={qid:c.dataset.dq,ci:+c.dataset.ci,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId,el:c,g:null};});
+  document.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;
+    if(!drag.moved){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;drag.moved=true;const g=drag.el.cloneNode(true);g.classList.remove("on");g.classList.add("dghost");document.body.appendChild(g);drag.g=g;drag.el.classList.add("lift");}
+    drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px";
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone");clearHover();if(z&&z.dataset.dq===drag.qid)z.classList.add("hover");e.preventDefault();},{passive:false});
+  function end(e,cancel){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(!d.moved)return;lastDrag=true;d.g.remove();d.el.classList.remove("lift");clearHover();if(cancel)return;
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone"),b=u&&u.closest("[data-dbank]");
+    if(z&&z.dataset.dq===d.qid)place(d.qid,d.ci,z.dataset.dz);else if(b&&b.dataset.dq===d.qid)place(d.qid,d.ci,null);}
+  document.addEventListener("pointerup",e=>end(e,false));document.addEventListener("pointercancel",e=>end(e,true));
+  document.addEventListener("click",e=>{
+    const t=e.target;if(!t.closest||!t.closest(".dnd"))return;
+    if(lastDrag){lastDrag=false;return;}
+    const c=t.closest(".dchip");
+    if(c){if(c.disabled)return;const qid=c.dataset.dq,ci=+c.dataset.ci,z=c.closest(".dzone");
+      if(z&&sel&&sel.qid===qid&&sel.ci!==ci){place(qid,sel.ci,z.dataset.dz);return;}
+      sel=(sel&&sel.qid===qid&&sel.ci===ci)?null:{qid,ci};refresh(qid);focusChip(qid,ci);return;}
+    const z=t.closest(".dzone");if(z&&sel&&sel.qid===z.dataset.dq&&!S[z.dataset.dq].locked){place(z.dataset.dq,sel.ci,z.dataset.dz);return;}
+    const b=t.closest("[data-dbank]");if(b&&sel&&sel.qid===b.dataset.dq){place(b.dataset.dq,sel.ci,null);}
+  });
+  document.addEventListener("keydown",e=>{
+    lastDrag=false;
+    const z=e.target.classList&&e.target.classList.contains("dzone")?e.target:null;
+    if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(sel&&sel.qid===z.dataset.dq)place(z.dataset.dq,sel.ci,z.dataset.dz);}
+    if(e.key==="Escape"&&sel){const q=sel.qid;sel=null;refresh(q);}
+  });
+  return{mount,lock,complete,grade,linesHTML,onChange:f=>{changeFn=f;}};
+})();
+
+const CFG=Object.assign({SHEET_URL:"",TEACHERS:[],PERIODS:[1,2,3,4,5,6,7]},window.EXIT_TICKET_CONFIG||{});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const announce=m=>{const l=$("#live");l.textContent="";setTimeout(()=>l.textContent=m,30);};
+const REDUCED=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- element data (1 to 20) ---------- */
+const EL=[["H","Hydrogen",1],["He","Helium",4],["Li","Lithium",7],["Be","Beryllium",9],["B","Boron",11],["C","Carbon",12],["N","Nitrogen",14],["O","Oxygen",16],["F","Fluorine",19],["Ne","Neon",20],["Na","Sodium",23],["Mg","Magnesium",24],["Al","Aluminum",27],["Si","Silicon",28],["P","Phosphorus",31],["S","Sulfur",32],["Cl","Chlorine",35],["Ar","Argon",40],["K","Potassium",39],["Ca","Calcium",40]];
+const GROUP=[1,18,1,2,13,14,15,16,17,18,1,2,13,14,15,16,17,18,1,2];
+const FLAME={3:["#e0213f","crimson red"],5:["#3fbf4f","bright green"],11:["#ffb300","bright yellow-orange"],12:["#ffffff","dazzling white"],19:["#c38bff","lilac (light purple)"],20:["#ff6a2b","orange-red"]};
+const CAP=[2,8,8,2];
+
+/* ---------- drawing ---------- */
+function nucleusPts(n){const pts=[];for(let i=-6;i<=6;i++)for(let j=-6;j<=6;j++){const x=(i+(j%2?0.5:0))*10.4,y=j*9;pts.push([Math.hypot(x,y),x,y]);}return pts.sort((a,b)=>a[0]-b[0]).slice(0,n);}
+/* First shell: a pair at the top. Other shells: one electron at top, right, bottom, left,
+   then electrons 5 to 8 pair up in that same order. */
+function pairSpots(n,r,first){const d=7.2/r,out=[],top=-Math.PI/2;
+  if(first)return n===0?out:n===1?[top]:[top-d,top+d];
+  for(let j=0;j<4;j++){const a=top+j*Math.PI/2,c=(j<n?1:0)+(j<n-4?1:0);if(c===2)out.push(a-d,a+d);else if(c===1)out.push(a);}
+  return out;}
+function drawAtom(st,o){
+  o=o||{};const C=160,p=st.p,n=st.n,N=p+n;
+  const pts=nucleusPts(N);
+  const nr=N?Math.max(12,pts[pts.length-1][0]+7):10;
+  const base=Math.max(nr+16,40),R=[0,1,2,3].map(k=>base+k*26);
+  const dark=!!o.dark;
+  const used=st.sh.reduce((m,v,k)=>v?k+1:m,0);
+  const fit=o.fit||Math.min(4,Math.max(2,used+1));
+  const rr=R[fit-1]+(o.excite&&used>=4?40:20);
+  let s="";
+  if(o.glow)s+=`<defs><radialGradient id="gl"><stop offset="0" stop-color="${o.glow}" stop-opacity=".95"/><stop offset=".55" stop-color="${o.glow}" stop-opacity=".45"/><stop offset="1" stop-color="${o.glow}" stop-opacity="0"/></radialGradient></defs><circle cx="${C}" cy="${C}" r="${rr}" fill="url(#gl)"/>`;
+  const rings=Math.max(o.showRings||0,used,o.excite?used+1:0);
+  for(let k=0;k<Math.min(rings,4);k++)s+=`<circle cx="${C}" cy="${C}" r="${R[k]}" fill="none" stroke="${dark?"#5b6a8f":"#9fb4b0"}" stroke-width="2"${o.excite&&k===used?' stroke-dasharray="5 5"':""}/>`;
+  // nucleus: interleave protons and neutrons
+  const kinds=Array(p).fill(1).concat(Array(n).fill(0));let seed=p*131+n*7+1;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+  for(let i=kinds.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[kinds[i],kinds[j]]=[kinds[j],kinds[i]];}
+  pts.forEach((q,i)=>{const isP=kinds[i]===1;
+    s+=`<circle cx="${(C+q[1]).toFixed(1)}" cy="${(C+q[2]).toFixed(1)}" r="5.4" fill="${isP?"var(--pro)":"var(--neu)"}" stroke="#fff" stroke-width="1"/>`;});
+  if(!N)s+=`<circle cx="${C}" cy="${C}" r="10" fill="none" stroke="${dark?"#5b6a8f":"#c7d3d0"}" stroke-dasharray="3 3"/>`;
+  // electrons in pairs
+  st.sh.forEach((cnt,k)=>{let c=cnt;if(o.excite&&k===used-1)c=cnt-1;
+    pairSpots(c,R[k],k===0).forEach(a=>s+=`<circle cx="${(C+R[k]*Math.cos(a)).toFixed(1)}" cy="${(C+R[k]*Math.sin(a)).toFixed(1)}" r="6" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>`);});
+  if(o.excite&&used>0&&used<=4){const r=R[Math.min(used,3)]+(used>=4?22:0);s+=`<circle cx="${C+r*Math.cos(-Math.PI/4)}" cy="${C+r*Math.sin(-Math.PI/4)}" r="7" fill="#ffd35c" stroke="#fff" stroke-width="2"/>`;}
+  return `<svg viewBox="${(C-rr).toFixed(1)} ${(C-rr).toFixed(1)} ${(2*rr).toFixed(1)} ${(2*rr).toFixed(1)}" role="img" aria-label="Bohr model with ${p} protons, ${n} neutrons, and electrons ${st.sh.filter(x=>x).join(", ")||"none"}">${s}</svg>`;
+}
+function fireworks(w,h,big){
+  const B=[[.22,.42,"#e0213f"],[.52,.3,"#ffb300"],[.8,.45,"#3fbf4f"],[.62,.72,"#4d8bff"]];
+  let s=big?`<rect width="${w}" height="${h}" fill="#171d33"/>`:"";
+  B.forEach(([x,y,c],i)=>{const cx=x*w,cy=y*h,r=(big?58:26)*(i===1?1.15:1);
+    for(let k=0;k<16;k++){const a=k*Math.PI/8,r1=r*.35,r2=r;s+=`<line x1="${(cx+r1*Math.cos(a)).toFixed(1)}" y1="${(cy+r1*Math.sin(a)).toFixed(1)}" x2="${(cx+r2*Math.cos(a)).toFixed(1)}" y2="${(cy+r2*Math.sin(a)).toFixed(1)}" stroke="${c}" stroke-width="${big?3:2}" stroke-linecap="round"/><circle cx="${(cx+r2*1.08*Math.cos(a)).toFixed(1)}" cy="${(cy+r2*1.08*Math.sin(a)).toFixed(1)}" r="${big?2.6:1.6}" fill="${c}"/>`;}
+    s+=`<circle cx="${cx}" cy="${cy}" r="${big?5:3}" fill="#fff"/>`;});
+  return s;
+}
+$("#stubfw").innerHTML=fireworks(230,120,false);
+
+/* ---------- state ---------- */
+const S={stu:null,step:0,maxStep:0,wonder:"",flames:{},sim:{p:0,n:0,sh:[0,0,0,0]},ex:0,ch:{i:0,res:[null,null,null],tries:[0,0,0]},quiz:[null,null,null,null],qa:[null,null,null,null],qpl:[{},{},{},{}],reflect:"",done:false,busy:false};
+const STEPS=["Phenomenon","Bohr's big idea","How to build one","Atom simulator","Build challenges","Check yourself","Wrap-up"];
+
+/* ---------- sign in ---------- */
+$("#period").innerHTML=`<option value="">Choose</option>`+CFG.PERIODS.map(p=>`<option>${esc(p)}</option>`).join("");
+$("#teacherslot").outerHTML=CFG.TEACHERS.length?`<label for="teacher">Teacher<select id="teacher"><option value="">Choose your teacher</option>${CFG.TEACHERS.map(t=>`<option>${esc(t)}</option>`).join("")}</select></label>`:`<label for="teacher">Teacher<input id="teacher" type="text" autocomplete="off"></label>`;
+function start(){
+  const f={first:$("#first"),last:$("#last"),sid:$("#sid"),sid2:$("#sid2"),period:$("#period"),teacher:$("#teacher")};
+  Object.values(f).forEach(el=>el.classList.remove("error"));
+  const v=k=>f[k].value.trim();let msg="";
+  for(const k of Object.keys(f))if(!v(k)){f[k].classList.add("error");msg=msg||"Fill in every box before you start.";}
+  const sid=v("sid").replace(/\s+/g,""),sid2=v("sid2").replace(/\s+/g,"");
+  if(!msg&&!/^\d+$/.test(sid)){f.sid.classList.add("error");msg="Use only numbers in your student ID. No letters, dashes, or other symbols.";}
+  if(!msg&&sid.length>15){f.sid.classList.add("error");msg="That student ID is too long. Check your ID number.";}
+  if(!msg&&sid!==sid2){f.sid2.classList.add("error");msg="The two student ID boxes don't match. Check your ID number.";}
+  if(msg){$("#signerr").textContent=msg;const b=document.querySelector(".fields .error");if(b)b.focus();return;}
+  S.stu={first:v("first"),last:v("last"),id:sid,period:v("period"),teacher:v("teacher")};
+  $("#whoami").textContent=`${S.stu.first} ${S.stu.last}, Period ${S.stu.period}`;
+  $("#signin").hidden=true;$("#lesson").hidden=false;go(0);
+}
+$("#startbtn").addEventListener("click",start);
+$("#signform").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();start();}});
+
+/* ---------- navigation ---------- */
+function canLeave(){
+  if(S.step===0&&S.wonder.trim().length<5){announce("Write your first idea before moving on.");$("#wonderMsg").textContent="Write your first idea before you move on. There's no wrong answer yet.";return false;}
+  if(S.step===4&&S.ch.res.some(r=>r===null)){$("#chMsg").textContent="Finish (or skip) all three challenges first.";return false;}
+  if(S.step===5&&S.quiz.some(x=>x===null)){$("#quizMsg").textContent="Answer and check all four questions first.";return false;}
+  return true;
+}
+function go(i){
+  if(i>S.step&&!canLeave())return;
+  S.step=i;S.maxStep=Math.max(S.maxStep,i);
+  $("#steps").innerHTML=STEPS.map((n,k)=>`<button type="button" data-step="${k}" class="${k===i?"cur":k<=S.maxStep?"done":""}"${k>S.maxStep||S.done?" disabled":""}${k===i?' aria-current="step"':""}>${k+1}. ${n}</button>`).join("");
+  $("#prog").style.width=`${(i/(STEPS.length-1))*100}%`;
+  $("#main").innerHTML=[step0,step1,step2,step3,step4,step5,step6][i]();
+  after[i]&&after[i]();
+  window.scrollTo({top:0});
+  const h=$("#main h2");if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+}
+const nav=(i,next="Next")=>`<div class="nav no-print">${i>0?`<button class="btn secondary" type="button" data-go="${i-1}">Back</button>`:"<span></span>"}${i<STEPS.length-1?`<button class="btn" type="button" data-go="${i+1}">${next}</button>`:""}</div>`;
+
+/* ---------- step 0: phenomenon ---------- */
+function step0(){return `<div class="card step"><div class="kicker">Step 1 of 7: The phenomenon</div><h2>Why do fireworks come in different colors?</h2>
+ <div class="two"><div class="figure"><svg viewBox="0 0 520 300" role="img" aria-label="Fireworks bursting in red, yellow, green, and blue">${fireworks(520,300,true)}</svg><p class="cap">Every color comes from a different metal packed inside the firework.</p></div>
+ <div><table class="data"><thead><tr><th>Metal in firework</th><th>Color</th></tr></thead><tbody>
+  <tr><td>Strontium</td><td><span class="swatch" style="background:#e0213f"></span>Red</td></tr>
+  <tr><td>Sodium</td><td><span class="swatch" style="background:#ffb300"></span>Yellow</td></tr>
+  <tr><td>Barium</td><td><span class="swatch" style="background:#3fbf4f"></span>Green</td></tr>
+  <tr><td>Copper</td><td><span class="swatch" style="background:#4d8bff"></span>Blue</td></tr></tbody></table>
+ <p style="margin-top:12px">Heat makes each metal glow its own color. Nothing is painted or dyed.</p>
+ <label for="wonder"><b>Your first idea:</b> What do you think is happening inside the atoms to make light? Why would each metal make a different color?</label>
+ <textarea id="wonder" style="margin-top:6px">${esc(S.wonder)}</textarea><p class="hint">Just write your best guess. You'll come back to it at the end.</p><div class="err" id="wonderMsg" role="alert"></div></div></div>${nav(0)}</div>`;}
+
+/* ---------- step 1: Bohr's big idea ---------- */
+function step1(){return `<div class="card step"><div class="kicker">Step 2 of 7: Bohr's big idea</div><h2>Electrons live on energy levels</h2>
+ <div class="two"><div class="figure"><svg viewBox="0 0 520 250" role="img" aria-label="A ball on a ramp can stop at any height. A ball on a staircase can only rest on a step.">
+  <rect width="520" height="250" fill="#fff"/>
+  <path d="M30 210 L230 70 L230 210 Z" fill="#e6eef9" stroke="#2f5d9b" stroke-width="3"/><circle cx="140" cy="122" r="12" fill="#2f5d9b"/>
+  <text x="130" y="238" text-anchor="middle" font-size="15" font-weight="700" fill="#1d2b36">Ramp: any height</text>
+  <path d="M290 210 h50 v-35 h50 v-35 h50 v-35 h40 v105 z" fill="${"#f7e6ef"}" stroke="#a23b72" stroke-width="3"/><circle cx="365" cy="163" r="12" fill="#a23b72"/>
+  <text x="400" y="238" text-anchor="middle" font-size="15" font-weight="700" fill="#1d2b36">Staircase: only on steps</text>
+  <path d="M423 96 q-30 -40 -58 55" fill="none" stroke="#a23b72" stroke-width="2.5" stroke-dasharray="5 5"/>
+ </svg></div>
+ <div><p>In 1913, Niels Bohr said electrons are like a ball on a <b>staircase</b>, not a ramp. An electron can only sit on certain levels around the nucleus. Bohr called these <b>energy levels</b>, or <b>shells</b>.</p>
+ <p>Electrons fill the lowest shells first. To jump up to a higher shell, an electron must <b>absorb energy</b>, like heat. When it falls back down, it <b>gives that energy off as light</b>.</p>
+ <div class="rule"><h3>Remember this for later</h3>Keep the jump-up, fall-down idea in mind. It explains the firework colors.</div></div></div>${nav(1)}</div>`;}
+
+/* ---------- step 2: worked example ---------- */
+const EX=[
+ {st:{p:6,n:0,sh:[0,0,0,0]},say:"Find the atomic number on the periodic table. Carbon's is 6, so carbon has <b>6 protons</b>. Put them in the nucleus."},
+ {st:{p:6,n:6,sh:[0,0,0,0]},say:"Find the neutrons: mass number minus atomic number. For carbon-12, 12 − 6 = <b>6 neutrons</b>."},
+ {st:{p:6,n:6,sh:[0,0,0,0]},rings:2,say:"A neutral atom has as many electrons as protons. Carbon needs <b>6 electrons</b>. Draw shells to hold them."},
+ {st:{p:6,n:6,sh:[2,0,0,0]},rings:2,say:"Fill the first shell. It holds <b>only 2</b> electrons, drawn as a pair at the top."},
+ {st:{p:6,n:6,sh:[2,4,0,0]},say:"Put the other 4 in the second shell. Place them <b>one at a time</b>: top, right, bottom, left. Electrons only pair up once all four spots have one (the 5th pairs with the top)."},
+ {st:{p:6,n:6,sh:[2,4,0,0]},say:"Carbon is <b>2, 4</b>. The 4 electrons in its outer shell are its <b>valence electrons</b>."}];
+function step2(){const e=EX[S.ex];return `<div class="card step"><div class="kicker">Step 3 of 7: How to build a Bohr model</div><h2>Watch one get built: carbon-12</h2>
+ <div class="stepper"><div class="figure" style="border:1px solid var(--line);border-radius:14px">${drawAtom(e.st,{showRings:e.rings||0,fit:2})}</div>
+ <div><div class="dots" aria-hidden="true">${EX.map((x,k)=>`<span class="${k<=S.ex?"on":""}"></span>`).join("")}</div>
+ <p class="say" aria-live="polite"><b class="num">${S.ex<5?`Step ${S.ex+1}`:"Done"}</b>${e.say}</p>
+ <div class="btn-row"><button class="btn secondary" type="button" id="exBack"${S.ex===0?" disabled":""}>Previous step</button><button class="btn" type="button" id="exNext"${S.ex===EX.length-1?" disabled":""}>Next step</button></div>
+ <div class="rule"><h3>The Bohr model recipe</h3><ol><li><b>Protons</b> = atomic number</li><li><b>Neutrons</b> = mass number − atomic number</li><li><b>Electrons</b> = protons (for a neutral atom)</li><li>Fill shells from the inside out: <b>2, 8, 8, 2</b></li><li>Place electrons one at a time at <b>top, right, bottom, left</b>. The 5th to 8th <b>pair up</b> in the same order.</li></ol></div></div></div>
+ <p class="cap"><span class="swatch" style="background:var(--pro)"></span>proton <span class="swatch" style="background:var(--neu);margin-left:12px"></span>neutron <span class="swatch" style="background:var(--accent);margin-left:12px"></span>electron</p>${nav(2)}</div>`;}
+
+/* ---------- simulator ---------- */
+function simInfo(st){
+  const e=st.sh.reduce((a,b)=>a+b,0);const el=st.p?EL[st.p-1]:null;
+  let order=true;
+  for(let k=1;k<4;k++)if(st.sh[k]>0&&st.sh[k-1]<CAP[k-1]){order=false;break;}
+  const used=st.sh.reduce((m,v,k)=>v?k+1:m,0);
+  const val=used?st.sh[used-1]:0;
+  const charge=st.p-e;
+  return{e,el,order,used,val,charge};
+}
+function simHTML(){
+  const st=S.sim,info=simInfo(st);
+  const row=(key,label,col,val,cap,capTxt)=>`<div class="ctl"><span class="nm"><span class="dot" style="background:${col}"></span>${label}</span><button type="button" data-sim="${key}" data-d="-1" aria-label="Remove one ${label.toLowerCase()}"${val<=0?" disabled":""}>−</button><output>${val}</output><button type="button" data-sim="${key}" data-d="1" aria-label="Add one ${label.toLowerCase()}">+</button>${capTxt?`<span class="cap2">${capTxt}</span>`:""}</div>`;
+  const mini=EL.map((x,k)=>{const g=GROUP[k],per=k<2?1:k<10?2:k<18?3:4;return `<span style="grid-column:${g};grid-row:${per}" class="${st.p===k+1?"here":""}">${x[0]}</span>`;}).join("");
+  const iso=info.el?`${info.el[1]}-${st.p+st.n}`:"";
+  return `<div class="sim"><div><div class="stage" id="stage">${drawAtom(st,{})}<div class="glowmsg" id="glowmsg"></div></div>
+   <div class="btn-row"><button class="btn" type="button" id="heat"${info.el&&info.e&&info.order?"":" disabled"}>🔥 Heat it (flame test)</button><button class="btn secondary" type="button" id="simReset">Clear atom</button></div>
+   <p class="hint">Heating works once your atom has electrons in the right order.</p></div>
+  <div class="controls">
+   ${row("p","Protons","var(--pro)",st.p)}${row("n","Neutrons","var(--neu)",st.n)}
+   ${[0,1,2,3].map(k=>row("e"+k,`Shell ${k+1}`,"var(--accent)",st.sh[k],CAP[k],`holds ${CAP[k]}`)).join("")}
+   <div class="toast" id="toast" role="status"></div>
+   <div class="readout"><div class="el">${info.el?`${info.el[1]} (${info.el[0]})`:"No element yet"}</div><div class="hint">${info.el?`Isotope: ${iso}`:"Add protons to make an element."}</div>
+    <dl><dt>Mass number</dt><dd>${st.p+st.n}</dd><dt>Charge</dt><dd>${info.charge===0?"0 (neutral)":(info.charge>0?"+":"−")+Math.abs(info.charge)}</dd><dt>Electron shells</dt><dd>${st.sh.filter(x=>x).join(", ")||"none"}</dd><dt>Valence electrons</dt><dd>${info.order&&info.e?info.val:"—"}</dd></dl>
+    <ul class="checks">${info.el||info.e?"":`<li>Start by adding protons.</li>`}${(()=>{const c=[];const e=info.e;for(let k=1;k<4;k++)if(st.sh[k]>0&&st.sh[k-1]<CAP[k-1]){c.push(`<li class="warn">Fill shell ${k} before you use shell ${k+1}.</li>`);break;}
+      if(e&&info.order)c.push(`<li class="good">✓ Electrons fill the shells in order.</li>`);
+      if(info.el&&e===st.p)c.push(`<li class="good">✓ Neutral: electrons match protons.</li>`);else if(info.el&&e)c.push(`<li class="warn">Electrons (${e}) don't match protons (${st.p}), so this is an ion.</li>`);
+      if(info.el&&info.order&&e===st.p&&info.val===(info.used===1?2:8))c.push(`<li class="good">✓ Full outer shell: very stable.</li>`);return c.join("");})()}</ul>
+    <div class="mini" aria-hidden="true">${mini}</div></div>
+  </div></div>`;
+}
+function simChange(key,d){
+  const st=S.sim,t=$("#toast");let msg="";
+  if(key==="p"){if(d>0&&st.p>=20)msg="This simulator goes up to 20 protons (calcium).";st.p=Math.max(0,Math.min(20,st.p+d));}
+  else if(key==="n")st.n=Math.max(0,Math.min(24,st.n+d));
+  else{const k=+key.slice(1);if(d>0&&st.sh[k]>=CAP[k])msg=`Shell ${k+1} is full. It holds only ${CAP[k]} electrons.`;else st.sh[k]=Math.max(0,st.sh[k]+d);}
+  const wrap=$("#simwrap");wrap.innerHTML=simHTML();if(msg){$("#toast").textContent=msg;announce(msg);}
+  const b=document.querySelector(`[data-sim="${key}"][data-d="${d}"]`);if(b&&!b.disabled)b.focus();else{const o=document.querySelector(`[data-sim="${key}"]:not([disabled])`);if(o)o.focus();}
+}
+function heat(){
+  if(S.busy)return;const st=S.sim,info=simInfo(st);if(!info.el||!info.e||!info.order)return;
+  S.busy=true;$("#heat").disabled=true;const stage=$("#stage"),msg=$("#glowmsg");
+  const fl=FLAME[st.p];
+  const finish=()=>{
+    stage.classList.add("dark");stage.innerHTML=drawAtom(st,{dark:true,glow:fl?fl[0]:null})+`<div class="glowmsg" id="glowmsg">${fl?`${info.el[1]} gives off ${fl[1]} light!`:`${info.el[1]} gives off no visible color in a flame.`}</div>`;
+    S.flames[st.p]=fl?fl[1]:"no visible color";renderFlames();
+    announce(fl?`${info.el[1]} gives off ${fl[1]} light.`:`${info.el[1]} gives off no visible color.`);
+    setTimeout(()=>{S.busy=false;if(S.step===3||S.step===4){const w=$("#simwrap");if(w)w.innerHTML=simHTML();}},REDUCED?1800:2600);
+  };
+  if(REDUCED){finish();return;}
+  stage.classList.add("dark");stage.innerHTML=drawAtom(st,{dark:true,excite:true})+`<div class="glowmsg">Energy in: an electron jumps up a level…</div>`;
+  setTimeout(()=>{stage.innerHTML=drawAtom(st,{dark:true})+`<div class="glowmsg">…and falls back down, giving off light.</div>`;setTimeout(finish,500);},1100);
+}
+function renderFlames(){
+  const box=$("#flames");if(!box)return;
+  const keys=Object.keys(S.flames).map(Number).sort((a,b)=>a-b);
+  box.innerHTML=`<h3 style="font-size:18px">My flame test results</h3>`+(keys.length?`<table class="data"><thead><tr><th>Element</th><th>Electron shells</th><th>Color</th></tr></thead><tbody>${keys.map(z=>`<tr><td>${EL[z-1][1]}</td><td>${fillShells(z).join(", ")}</td><td>${FLAME[z]?`<span class="swatch" style="background:${FLAME[z][0]}"></span>`:""}${esc(S.flames[z])}</td></tr>`).join("")}</tbody></table>`:`<p class="hint">Build an atom and heat it. Your results show up here.</p>`);
+}
+function fillShells(e){const out=[];let left=e;for(const c of CAP){if(left<=0)break;const t=Math.min(c,left);out.push(t);left-=t;}return out;}
+
+/* ---------- step 3: free simulator ---------- */
+function step3(){return `<div class="card step"><div class="kicker">Step 4 of 7: Atom simulator</div><h2>Build atoms and test their colors</h2>
+ <p>Use the + and − buttons to build atoms. The simulator tells you which element you made and whether your electrons are in the right shells. Then press <b>Heat it</b> to run a flame test.</p>
+ <div class="rule"><h3>Try these</h3><ul><li>Build <b>helium-4</b>. What makes its outer shell special?</li><li>Build <b>lithium</b>, <b>sodium</b>, and <b>potassium</b> and heat each one. How many valence electrons does each have?</li><li>Try putting a 3rd electron in shell 1. What happens?</li></ul></div>
+ <div id="simwrap">${simHTML()}</div><div class="flames" id="flames"></div>${nav(3)}</div>`;}
+
+/* ---------- step 4: challenges ---------- */
+const CH=[{name:"nitrogen-14",p:7,n:7,sh:[2,5,0,0]},{name:"sodium-23",p:11,n:12,sh:[2,8,1,0]},{name:"calcium-40",p:20,n:20,sh:[2,8,8,2]}];
+function chPoints(k){const r=S.ch.res[k];return r==="skip"?0:r===null?0:Math.max(1,4-r);}
+function step4(){
+  const i=S.ch.i,c=CH[i],allDone=S.ch.res.every(r=>r!==null);
+  const chips=CH.map((x,k)=>`<span class="${S.ch.res[k]!==null?(S.ch.res[k]==="skip"?"":"ok"):k===i?"on":""}">${k+1}. ${x.name}${S.ch.res[k]!==null&&S.ch.res[k]!=="skip"?" ✓":S.ch.res[k]==="skip"?" (skipped)":""}</span>`).join("");
+  return `<div class="card step"><div class="kicker">Step 5 of 7: Build challenges</div><h2>Your turn to build</h2>
+  <p>Build each atom in the simulator, then press <b>Check my atom</b>. You get 3 points for getting it right on the first try, 2 on the second, and 1 after that.</p>
+  <div class="chips">${chips}</div>
+  ${allDone?`<div class="challenge"><h3>All three challenges are done!</h3><p style="margin:0">Press Next to check your understanding.</p></div>`:
+  `<div class="challenge"><h3>Challenge ${i+1}: Build a neutral ${c.name} atom</h3><p style="margin:0">Use a periodic table to find the atomic number.</p>
+   <div class="btn-row"><button class="btn" type="button" id="chCheck">Check my atom</button>${S.ch.tries[i]>=3?`<button class="btn secondary" type="button" id="chSkip">Skip this one</button>`:""}</div><div class="feedback" id="chFb" role="status"></div></div>`}
+  <div class="err" id="chMsg" role="alert"></div>
+  <div id="simwrap">${simHTML()}</div><div class="flames" id="flames"></div>${nav(4)}</div>`;
+}
+function checkChallenge(){
+  const i=S.ch.i,c=CH[i],st=S.sim;S.ch.tries[i]++;
+  const okP=st.p===c.p,okN=st.n===c.n,okE=st.sh.every((v,k)=>v===c.sh[k]);
+  if(okP&&okN&&okE){S.ch.res[i]=S.ch.tries[i];const pts=chPoints(i);announce(`Correct! ${pts} points.`);
+    const fb=$("#chFb");fb.innerHTML=`<span class="good">✓ Correct! That's ${c.name}. +${pts} point${pts>1?"s":""}.</span>`;
+    setTimeout(()=>{S.ch.i=S.ch.res.findIndex(r=>r===null);if(S.ch.i<0)S.ch.i=2;S.sim={p:0,n:0,sh:[0,0,0,0]};go(4);},1400);return;}
+  const tips=[];
+  if(!okP)tips.push(st.p<c.p?"You need more protons. Check the atomic number.":"You have too many protons. Check the atomic number.");
+  if(!okN)tips.push("Check your neutrons: mass number − atomic number.");
+  if(!okE){const e=st.sh.reduce((a,b)=>a+b,0);tips.push(e!==c.p?`A neutral atom needs as many electrons as protons (${okP?"":"once your protons are right"}).`.replace(" ()",""):"You have the right number of electrons, but check which shells they're in. Fill from the inside out.");}
+  $("#chFb").innerHTML=`<span class="warn">Not quite. ${tips.join(" ")}</span>`;
+  if(S.ch.tries[i]===3){const b=$("#chCheck");b.insertAdjacentHTML("afterend",`<button class="btn secondary" type="button" id="chSkip">Skip this one</button>`);}
+}
+
+/* ---------- step 5: quiz ---------- */
+const QZ=[
+ {type:"drag",layout:"fill",q:"Drag the words into the blanks.",chips:["protons","electrons","neutrons","shells"],
+  sentence:["The atomic number tells you the number of ",{z:"b1"},". In a neutral atom, the number of ",{z:"b2"}," is the same. To find the number of ",{z:"b3"},", subtract the atomic number from the mass number."],
+  zones:[{id:"b1",name:"Blank 1",answer:0},{id:"b2",name:"Blank 2",answer:1},{id:"b3",name:"Blank 3",answer:2}],
+  x:"Protons = atomic number. A neutral atom has the same number of electrons as protons. Neutrons = mass number − atomic number."},
+ {type:"drag",layout:"order",q:"Put the steps of a flame test in order, from first to last.",
+  chips:["The electron falls back down to its shell","Heat gives an electron extra energy","The atom gives off colored light","The electron jumps up to a higher energy level"],
+  zones:[{id:"s1",name:"Step 1",answer:1},{id:"s2",name:"Step 2",answer:3},{id:"s3",name:"Step 3",answer:0},{id:"s4",name:"Step 4",answer:2}],
+  x:"Heat adds energy, so an electron jumps up a level. It can't stay there, so it falls back down and gives off the extra energy as light."},
+ {type:"drag",layout:"sort",q:"Sort these atoms by their number of valence electrons. Use the simulator if you need to.",
+  chips:["Lithium (3)","Sodium (11)","Beryllium (4)","Magnesium (12)"],
+  zones:[{id:"v1",label:"1 valence electron",answer:[0,1]},{id:"v2",label:"2 valence electrons",answer:[2,3]}],
+  x:"Lithium (2, 1) and sodium (2, 8, 1) each have 1 valence electron. Beryllium (2, 2) and magnesium (2, 8, 2) each have 2."},
+ {type:"mc",q:"Which electrons decide how an atom reacts with other atoms?",o:["The valence electrons in the outer shell","The electrons in the first shell","The electrons closest to the nucleus","All electrons equally"],a:0,x:"Valence electrons are in the outermost shell. They're the ones that get gained, lost, or shared."}];
+const QMAX=QZ.map(z=>z.type==="mc"?1:(z.layout==="sort"?z.chips.length:z.zones.length));
+function step5(){return `<div class="card step"><div class="kicker">Step 6 of 7: Check yourself</div><h2>Check your understanding</h2><p>Your first answer counts, so check your work before you press <b>Check</b>.</p>
+ ${QZ.map((z,k)=>{const done=S.quiz[k]!==null;
+  if(z.type==="mc"){const a=S.qa[k];return `<fieldset class="q"><legend>${k+1}. ${z.q}</legend><div class="opts">${z.o.map((o,j)=>`<label class="opt${done&&j===z.a?" right":""}${done&&a===j&&j!==z.a?" wrongpick":""}"><input type="radio" name="qz${k}" data-qz="${k}" value="${j}"${a===j?" checked":""}${done?" disabled":""}><span>${o}</span></label>`).join("")}</div>${done?`<div class="explain"><b>${S.quiz[k]===1?"Correct!":"Not quite."}</b> ${z.x}</div>`:""}</fieldset>`;}
+  return `<div class="q"><p style="font-weight:700;font-size:18px;margin:0 0 8px">${k+1}. ${z.q}</p>${DND.mount("L"+k,z,S.qpl[k],{locked:done,marks:true})}
+   ${done?`<div class="explain"><b>${S.quiz[k]===QMAX[k]?"All correct!":`${S.quiz[k]} of ${QMAX[k]} correct.`}</b> ${z.x}</div>`:`<div class="btn-row"><button class="btn secondary" type="button" data-qcheck="${k}">Check</button></div><div class="err" id="qerr${k}" role="alert"></div>`}</div>`;}).join("")}
+ <div class="err" id="quizMsg" role="alert"></div>${nav(5)}</div>`;}
+function checkQ(k){const z=QZ[k];
+  if(!DND.complete(z,S.qpl[k])){$("#qerr"+k).textContent="Place every card before you check.";return;}
+  const g=DND.grade(z,S.qpl[k]);S.quiz[k]=g.pts;const y=window.scrollY;go(5);window.scrollTo({top:y});
+  announce(g.pts===g.max?"All correct!":`${g.pts} of ${g.max} correct.`);}
+
+/* ---------- step 6: wrap-up ---------- */
+function step6(){
+  if(S.done)return resultsHTML();
+  return `<div class="card step"><div class="kicker">Step 7 of 7: Wrap-up</div><h2>Back to the fireworks</h2>
+ <div class="two"><div><p>Heat gives a metal's electrons extra energy, so they <b>jump up</b> to a higher shell. They can't stay there. When they <b>fall back down</b>, they give off the extra energy as light.</p>
+ <p>Each element has its own number of protons and its own electron shells. So the jumps are a different size for each element, and each one gives off its <b>own color</b>. That's why strontium makes red fireworks and sodium makes yellow ones.</p>
+ <div class="rule"><h3>Your first idea was</h3><p style="margin:0;white-space:pre-wrap">${esc(S.wonder)||"<i>(blank)</i>"}</p></div></div>
+ <div><label for="reflect"><b>Look back at your first idea.</b> What would you change or add now? Use the words <i>energy level</i>, <i>electron</i>, and <i>light</i>.</label>
+ <textarea id="reflect" style="margin-top:6px;min-height:130px">${esc(S.reflect)}</textarea>
+ <div class="btn-row"><button class="btn" type="button" id="finish">Finish lesson</button></div><div class="err" id="finMsg" role="alert"></div></div></div>
+ <div class="nav no-print"><button class="btn secondary" type="button" data-go="5">Back</button><span></span></div></div>`;}
+let RESULT=null;
+function finish(){
+  if(S.reflect.trim().length<10){$("#finMsg").textContent="Write your updated idea before you finish.";return;}
+  const chPts=[0,1,2].map(chPoints),qPts=S.quiz.map(v=>v||0);
+  const pts=chPts.reduce((a,b)=>a+b,0)+qPts.reduce((a,b)=>a+b,0),max=9+QMAX.reduce((a,b)=>a+b,0);
+  const s=S.stu,now=new Date();
+  const header=["Student ID","# Correct","Last Name","First Name","Period","Teacher","Points Possible","Percent","Lesson","Submitted","Challenge 1 (N-14)","Challenge 2 (Na-23)","Challenge 3 (Ca-40)","Q1 Fill-in","Q2 Order","Q3 Sort","Q4 Multiple choice","First Idea","Updated Idea"];
+  const row=[s.id,pts,s.last,s.first,s.period,s.teacher,max,Math.round(pts/max*1000)/10,"Building Bohr Models",now.toLocaleString()].concat(chPts,qPts,[S.wonder.trim(),S.reflect.trim()]);
+  RESULT={header,row,tab:`Bohr Lesson${CFG.TEACHERS.length>1?" "+s.teacher.split(/\s+/).pop():""} P${s.period}`,pts,max,chPts,qPts,now};
+  S.done=true;go(6);send();
+}
+function resultsHTML(){
+  const R=RESULT,s=S.stu;
+  return `<div class="card step"><div class="kicker">Lesson complete</div><h2>Nice work, ${esc(s.first)}!</h2>
+  <div class="score">${R.pts}<small> / ${R.max}</small></div>
+  <div class="hint" style="margin-top:6px">${esc(s.first)} ${esc(s.last)}, ID ${esc(s.id)}, Period ${esc(s.period)}, ${esc(s.teacher)}. ${R.now.toLocaleString()}</div>
+  <div id="sendbox" class="sendbox wait no-print">Sending your score to your teacher…</div>
+  <table class="summary"><tbody>${CH.map((c,k)=>`<tr><td>Challenge ${k+1}: ${c.name}</td><td>${R.chPts[k]} / 3${S.ch.res[k]==="skip"?" (skipped)":S.ch.res[k]?` (${S.ch.res[k]} ${S.ch.res[k]===1?"try":"tries"})`:""}</td></tr>`).join("")}
+  ${QZ.map((z,k)=>`<tr><td>Question ${k+1}</td><td>${R.qPts[k]} / ${QMAX[k]}</td></tr>`).join("")}</tbody></table>
+  <div class="rule"><h3>Your updated idea</h3><p style="margin:0;white-space:pre-wrap">${esc(S.reflect)}</p></div>
+  <div class="btn-row no-print"><button class="btn" type="button" id="print">Print</button><button class="btn secondary" type="button" id="dlcsv">Download my results (CSV)</button></div></div>`;
+}
+function send(){
+  const box=$("#sendbox");if(!box)return;
+  if(!CFG.SHEET_URL){box.className="sendbox bad no-print";box.innerHTML="This lesson isn't connected to your teacher's gradebook yet. Click <b>Download my results (CSV)</b> and turn in the file the way your teacher asks.";return;}
+  box.className="sendbox wait no-print";box.textContent="Sending your score to your teacher…";
+  fetch(CFG.SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({header:RESULT.header,row:RESULT.row,tab:RESULT.tab})})
+   .then(()=>{box.className="sendbox ok no-print";box.textContent="✓ Your score was sent to your teacher.";})
+   .catch(()=>{box.className="sendbox bad no-print";box.innerHTML=`Your score didn't send. Check your internet, then <button type="button" class="btn secondary" id="resend" style="padding:4px 12px;font-size:15px">try again</button>. If it still won't send, download your results.`;});
+}
+function csvCell(v){v=String(v);return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v;}
+function downloadCSV(){const csv=[RESULT.header,RESULT.row].map(r=>r.map(csvCell).join(",")).join("\r\n");const u=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));const a=document.createElement("a");a.href=u;a.download=`Bohr-Lesson_${S.stu.last}_${S.stu.first}_${S.stu.id}.csv`.replace(/[^\w.-]/g,"");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+
+/* ---------- step hooks ---------- */
+const after={3:renderFlames,4:renderFlames};
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target;
+  const g=t.closest("[data-go]");if(g){go(+g.dataset.go);return;}
+  const sp=t.closest("[data-step]");if(sp&&!sp.disabled){const k=+sp.dataset.step;if(k<=S.maxStep)go(k);return;}
+  const sb=t.closest("[data-sim]");if(sb&&!sb.disabled&&!S.busy){simChange(sb.dataset.sim,+sb.dataset.d);return;}
+  if(t.closest("#heat")){heat();return;}
+  if(t.closest("#simReset")){S.sim={p:0,n:0,sh:[0,0,0,0]};$("#simwrap").innerHTML=simHTML();return;}
+  if(t.closest("#exNext")){S.ex=Math.min(EX.length-1,S.ex+1);go(2);$("#exNext")&&!$("#exNext").disabled?$("#exNext").focus():$("#exBack").focus();return;}
+  if(t.closest("#exBack")){S.ex=Math.max(0,S.ex-1);go(2);$("#exBack")&&!$("#exBack").disabled?$("#exBack").focus():$("#exNext").focus();return;}
+  if(t.closest("#chCheck")){checkChallenge();return;}
+  if(t.closest("#chSkip")){const i=S.ch.i;S.ch.res[i]="skip";S.ch.i=S.ch.res.findIndex(r=>r===null);if(S.ch.i<0)S.ch.i=2;S.sim={p:0,n:0,sh:[0,0,0,0]};go(4);return;}
+  const qc=t.closest("[data-qcheck]");if(qc){checkQ(+qc.dataset.qcheck);return;}
+  if(t.closest("#finish")){finish();return;}
+  if(t.closest("#print")){window.print();return;}
+  if(t.closest("#dlcsv")){downloadCSV();return;}
+  if(t.closest("#resend")){send();return;}
+});
+document.addEventListener("input",e=>{
+  if(e.target.id==="wonder"){S.wonder=e.target.value;$("#wonderMsg").textContent="";}
+  if(e.target.id==="reflect"){S.reflect=e.target.value;}
+  if(e.target.classList)e.target.classList.remove("error");
+});
+document.addEventListener("change",e=>{
+  const t=e.target;if(t.dataset.qz!==undefined){const k=+t.dataset.qz;if(S.quiz[k]===null){S.qa[k]=+t.value;S.quiz[k]=(+t.value===QZ[k].a)?1:0;const y=window.scrollY;go(5);window.scrollTo({top:y});}}
+});
+window.addEventListener("beforeunload",e=>{if(S.stu&&!S.done){e.preventDefault();e.returnValue="";}});
+})();
+</script>
+</body>
+</html>

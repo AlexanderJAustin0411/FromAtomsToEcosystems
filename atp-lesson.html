@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATP: The Cell's Energy Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b36;--muted:#56666f;--paper:#f3f6f5;--line:#d3dedb;--accent:#c27c00;--accent-soft:#fdf0d5;--ok:#2e7d4f;--ok-bg:#e7f4ec;--bad:#b8403a;--bad-bg:#f9e8e6;--night:#2b2008}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.15;margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{border:0;border-radius:10px;padding:11px 22px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff;font-size:17px}
+.btn.secondary{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.err{color:var(--bad);font-weight:700;margin-top:10px}
+.hint{color:var(--muted);font-size:15px}
+.signin{max-width:640px;margin:28px auto;padding:0 16px}
+.ticket{background:#fff;border-radius:14px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(29,43,54,.07);overflow:hidden}
+.stub{background:var(--night);color:#fff;padding:22px 26px 24px;position:relative;overflow:hidden}
+.stub .unit{font-size:15px;opacity:.85}
+.stub h1{font-size:clamp(30px,6vw,42px);font-weight:800;letter-spacing:-.015em;margin-top:2px;position:relative}
+.stub .time{margin-top:6px;font-size:15px;opacity:.9;position:relative}
+.stub svg{position:absolute;right:8px;top:12px;width:210px;opacity:.95}
+.tbody{padding:22px 26px 28px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+.fields input,.fields select{border:2px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;font-weight:400;min-width:0}
+.fields .error{border-color:var(--bad);background:var(--bad-bg)}
+.bar{background:var(--night);color:#fff}
+.bar .inner{max-width:1180px;margin:0 auto;padding:10px 18px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.bar h1{font-size:21px;font-weight:800}
+.bar .who{font-size:15px;opacity:.85;margin-right:auto}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+.steps button{border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.steps button.done{background:rgba(255,255,255,.18)}
+.steps button.cur{background:#fff;color:var(--night);border-color:#fff}
+.steps button:disabled{opacity:.4;cursor:default}
+.progress{height:5px;background:rgba(255,255,255,.15)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#b8403a,#a23b72,#2f5d9b);transition:width .3s}
+main{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.kicker{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.step h2{font-size:clamp(26px,4vw,34px);font-weight:800;margin-bottom:10px}
+.step p{max-width:68ch;margin:0 0 12px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.figure svg{width:100%;height:auto;display:block}
+.cap{font-size:14px;color:var(--muted);margin-top:6px}
+textarea{width:100%;min-height:96px;border:2px solid #9fb4b0;border-radius:10px;padding:10px 12px;resize:vertical}
+.rule{border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 12px 12px 0;padding:12px 16px;margin:0 0 12px}
+.rule h3{font-size:18px;margin-bottom:6px}
+.rule ul,.rule ol{margin:0;padding-left:22px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+table.data{border-collapse:collapse;font-size:16px;margin:6px 0}
+table.data th,table.data td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+table.data th{background:#f4f8f7}
+table.data td:first-child{font-weight:700}
+.rxn{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:12px}
+.rxn .arrow{font-weight:700;color:var(--accent);text-align:center;font-size:15px}
+.rxn .arrow b{display:block;font-size:26px;line-height:1}
+.rxn svg{width:100%;height:auto;max-height:90px}
+.rxn .lbl{font-size:14px;color:var(--muted);text-align:center}
+/* four macromolecules */
+.mtabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.mtab{border:2px solid var(--c);background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer;font-weight:700;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.mtab[aria-selected="true"]{background:var(--c);color:#fff}
+.mtab .seen{font-size:13px}
+.mcard{border:3px solid var(--c);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.mcard h3{font-size:24px;color:var(--c);margin-bottom:6px}
+.mcard .pic{background:#fafcfb;border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:10px}
+.mcard .pic svg{width:100%;height:auto;max-height:120px;display:block}
+.mcard .k{font-size:14px;font-weight:700;color:var(--muted);margin-top:4px}
+.mcard ul{margin:4px 0 10px;padding-left:20px}
+/* simulator */
+.sim{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.pbtn{display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:6px 8px;cursor:pointer;min-width:92px;font-weight:700;font-size:14px}
+.pbtn:hover{border-color:var(--accent)}
+.pbtn svg{height:44px;width:auto}
+.work{background:#fff;border:2px solid var(--line);border-radius:14px;min-height:220px;padding:10px;display:flex;align-items:center;justify-content:center}
+.work svg{width:100%;height:auto;max-height:300px}
+.work .empty{color:var(--muted);text-align:center}
+.toast{min-height:24px;color:var(--bad);font-weight:700;font-size:15px;margin-top:6px}
+.note{min-height:24px;color:var(--ok);font-weight:700;font-size:15px}
+.readout{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.readout .el{font-family:"Bricolage Grotesque",sans-serif;font-size:24px;font-weight:800}
+.readout dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:8px 0 0}
+.readout dt{color:var(--muted)}.readout dd{margin:0;font-weight:700}
+.challenge{border:2px solid var(--accent);background:var(--accent-soft);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.challenge h3{font-size:20px}
+.feedback{margin-top:8px;font-weight:700}
+.feedback .good{color:var(--ok)}.feedback .warn{color:var(--bad)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chips span{border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700;border:2px solid var(--line);background:#fff}
+.chips span.on{border-color:var(--accent);color:var(--accent)}
+.chips span.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+input.n{width:110px;border:2px solid #9fb4b0;border-radius:8px;padding:7px 10px}
+.q{border:0;margin:0 0 22px;padding:0}
+.q legend,.q .qp{font-weight:700;font-size:18px;margin:0 0 8px}
+.explain{background:#f7fbfa;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:16px}
+.score{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:56px;line-height:1}
+.score small{font-size:24px;color:var(--muted)}
+.sendbox{border-radius:10px;padding:10px 14px;margin:10px 0;font-weight:700}
+.sendbox.ok{background:var(--ok-bg);color:var(--ok)}.sendbox.wait{background:#eef3f2;color:var(--muted)}.sendbox.bad{background:var(--bad-bg);color:var(--bad)}
+.summary{border-collapse:collapse;margin:10px 0}
+.summary td{border:1px solid var(--line);padding:6px 12px}
+/* ---- drag-and-drop questions ---- */
+.dnd{margin-top:4px}
+.dbank{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:54px;padding:10px;border:2px dashed #b9c9c6;border-radius:10px;background:#f7fbfa;margin-bottom:12px}
+.dbank .dhint{color:var(--muted);font-size:14px}
+.dchip{touch-action:none;-webkit-user-select:none;user-select:none;border:2px solid var(--accent);background:#fff;color:var(--ink);font-weight:700;padding:6px 12px;border-radius:8px;cursor:grab;line-height:1.3;text-align:left;font-size:15px}
+.dchip:hover{background:var(--accent-soft)}
+.dchip.on{background:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-soft)}
+.dchip:disabled{cursor:default;opacity:1}
+.dchip.lift{opacity:.35}
+.dghost{position:fixed;left:0;top:0;z-index:1000;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);box-shadow:0 8px 18px rgba(0,0,0,.25);margin:0}
+.dzone{min-height:44px;border:2px dashed #9fb4b0;border-radius:8px;background:#fff;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 6px;cursor:pointer}
+.dzone .dph{color:#8a979c;font-size:14px;padding:0 4px}
+.dzone.target{border-color:var(--accent);background:#fdf7fa}
+.dzone.hover{border-color:var(--accent);border-style:solid;background:var(--accent-soft)}
+.dzone.filled{border-style:solid;border-color:#b7cfcb}
+.dzone.right{border-color:var(--ok);background:var(--ok-bg);border-style:solid}
+.dzone.wrong{border-color:var(--bad);background:var(--bad-bg);border-style:solid}
+.dchip.right{border-color:var(--ok);background:var(--ok-bg)}
+.dchip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.dlabel{position:relative}
+.dlabel .dfig svg{width:100%;height:auto;display:block}
+.dlabel .dzone{position:absolute;transform:translateY(-50%);min-height:38px;padding:2px 4px}
+.dlabel .dzone .dph{font-size:12px}
+.dlabel .dzone .dchip{font-size:13px;padding:4px 8px}
+.dfig2{margin:0 0 12px;max-width:560px}
+.dfig2 svg{width:100%;height:auto;display:block}
+.drows{display:flex;flex-direction:column;gap:8px}
+.drow{display:grid;grid-template-columns:minmax(110px,30%) 1fr;gap:12px;align-items:center}
+.drow>span{font-weight:700}
+.dorder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.dorder li{display:flex;gap:10px;align-items:center}
+.dorder .onum{flex:0 0 32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.dorder .dzone{flex:1}
+.dbins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.dbin{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.dbin .bt{background:var(--accent-soft);color:var(--ink);font-weight:700;padding:6px 10px;font-size:15px}
+.dbin .dzone{border:0;border-radius:0;min-height:120px;align-content:flex-start;padding:8px}
+.dbin .dzone.hover,.dbin .dzone.target{outline:2px dashed var(--accent);outline-offset:-4px}
+.dfill{line-height:2.6;margin:0;font-size:17px}
+.dfill .dzone{display:inline-flex;vertical-align:middle;min-width:120px;min-height:38px;margin:0 2px;padding:2px 4px}
+@media (max-width:520px){.dlabel .dzone .dchip{font-size:11px;padding:2px 5px}.dlabel .dzone .dph{font-size:10px}}
+
+/* enzyme lab */
+.simgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+.panelw{background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px}
+.panelw svg{width:100%;height:auto;display:block}
+.log{list-style:none;margin:8px 0 0;padding:0;font-size:15px;max-height:190px;overflow:auto}
+.log li{padding:3px 0;border-top:1px solid #edf2f1}
+.log li b{color:var(--accent)}
+.toggle{display:flex;gap:8px;align-items:center;font-weight:700;margin-top:8px}
+.toggle input{width:20px;height:20px;accent-color:var(--accent)}
+.cast{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start;margin-top:12px}
+.stimpanel{position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px}
+.phenbox{margin:12px 14px 0;padding:10px 12px;border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+.phenbox b{display:block;color:var(--accent);font-size:15px}
+.stabs{display:flex;gap:2px;padding:10px 10px 0;border-bottom:2px solid var(--line);overflow-x:auto}
+.stab{border:0;background:none;padding:7px 12px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;border-radius:6px 6px 0 0}
+.stab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-soft)}
+.stimbody{padding:12px 16px 16px}
+.stimbody p{margin:0 0 10px}
+.stimbody h3{font-size:17px;margin:2px 0 8px}
+.stimbody svg{width:100%;height:auto;display:block}
+.castq{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.usetab{border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;cursor:pointer}
+@media (max-width:900px){.simgrid,.cast{grid-template-columns:1fr}.stimpanel{position:static;max-height:none}}
+
+.lab{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.stage{background:#fbfaff;border:2px solid var(--line);border-radius:14px;padding:6px}
+.stage svg{width:100%;height:auto;display:block}
+.ctrlbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px}
+.seg{display:inline-flex;border:2px solid var(--accent);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:#fff;color:var(--accent);font-weight:700;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.slider{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-top:10px}
+.slider input{width:100%;accent-color:var(--accent)}
+.slider output{font-weight:700;min-width:64px;text-align:right}
+.shape{font-weight:700}.shape.ok{color:var(--ok)}.shape.mid{color:#a86a00}.shape.bad{color:var(--bad)}
+.graphs{display:grid;grid-template-columns:1fr;gap:10px}
+.graphs svg{width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pair .panel2{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;text-align:center}
+.pair svg{width:100%;height:auto}
+.legend2{font-size:14px;color:var(--muted)}
+@media (max-width:900px){.lab,.pair{grid-template-columns:1fr}}
+
+@media (max-width:900px){.two,.sim,.mcard{grid-template-columns:1fr}.mtabs{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.fields{grid-template-columns:1fr}.tbody,.stub{padding-left:18px;padding-right:18px}.stub svg{display:none}.rxn{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{.bar,.nav,.no-print{display:none!important}body{background:#fff}.card{border:0}}
+</style>
+</head>
+<body>
+<section class="signin" id="signin">
+ <div class="ticket">
+  <div class="stub"><svg viewBox="0 0 260 70" aria-hidden="true" id="stubart"></svg>
+   <div class="unit">Biology lesson</div><h1>ATP: The Cell's Energy</h1>
+   <div class="time">6 short steps with an energy lab simulator. About 35 minutes.</div></div>
+  <div class="tbody"><div id="signform">
+   <div class="fields">
+    <label for="first">First name<input id="first" type="text" autocomplete="given-name"></label>
+    <label for="last">Last name<input id="last" type="text" autocomplete="family-name"></label>
+    <label for="sid">Student ID number<input id="sid" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="sid2">Type your ID again<input id="sid2" type="text" inputmode="numeric" autocomplete="off"></label>
+    <label for="period">Period<select id="period"></select></label>
+    <span id="teacherslot"></span>
+   </div>
+   <div class="btn-row" style="margin-top:20px"><button class="btn" type="button" id="startbtn">Start the lesson</button></div>
+   <div class="err" id="signerr" role="alert"></div>
+  </div></div>
+ </div>
+</section>
+<section id="lesson" hidden>
+ <div class="bar"><div class="inner"><h1>ATP: The Cell's Energy</h1><span class="who" id="whoami"></span><nav class="steps" id="steps" aria-label="Lesson steps"></nav></div><div class="progress"><i id="prog" style="width:0"></i></div></div>
+ <main id="main"></main>
+</section>
+<div id="live" class="sr-only" aria-live="polite"></div>
+<script src="exit-ticket-config.js"></script>
+<script>window.LOCKDOWN_OVERRIDE={LOCK_ON_EXIT:false};</script>
+<script>
+/* ===== Lockdown mode: full screen + leave-the-page detection + teacher unlock code =====
+   Settings come from exit-ticket-config.js (LOCKDOWN, UNLOCK_CODE, LOCK_ON_EXIT). */
+(function(){
+  const C=Object.assign({LOCKDOWN:true,UNLOCK_CODE:"Austin",LOCK_ON_EXIT:true},window.EXIT_TICKET_CONFIG||{},window.LOCKDOWN_OVERRIDE||{});
+  const L={active:false,count:0,away:0,locked:false,fsOK:false,ignoreUntil:0,leftAt:null,log:[]};
+  window.LOCKDOWN=L;
+  L.enabled=!!C.LOCKDOWN;
+  L.summary=()=>({count:L.count,away:Math.round(L.away)});
+  L.confirm=msg=>{L.ignoreUntil=Date.now()+1500;const r=window.confirm(msg);L.ignoreUntil=Date.now()+800;return r;};
+  if(!L.enabled){L.start=()=>{};L.stop=()=>{};return;}
+  const css=document.createElement("style");
+  css.textContent=`#ldOverlay{position:fixed;inset:0;z-index:99999;background:rgba(21,27,51,.97);color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif}
+#ldOverlay[hidden],#ldBadge[hidden]{display:none!important}
+#ldOverlay .box{max-width:520px;text-align:center}
+#ldOverlay h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:32px;margin:0 0 10px}
+#ldOverlay p{font-size:18px;line-height:1.5;margin:0 0 14px}
+#ldOverlay input{font:inherit;font-size:22px;padding:10px 12px;border-radius:10px;border:2px solid #9fb4b0;width:220px;text-align:center;letter-spacing:2px}
+#ldOverlay button{font:inherit;font-weight:700;font-size:18px;border:0;border-radius:10px;padding:11px 22px;margin:10px 6px 0;cursor:pointer;background:#ffd35c;color:#1d2b36}
+#ldOverlay .err{color:#ffb4a8;font-weight:700;min-height:24px;margin-top:8px}
+#ldBadge{position:fixed;right:10px;bottom:10px;z-index:9999;background:#151b33;color:#fff;border-radius:999px;padding:5px 12px;font:700 13px system-ui,sans-serif;opacity:.85}
+body.ld-active .tabpanel,body.ld-active .prompt,body.ld-active .opts,body.ld-active .dnd{-webkit-user-select:none;user-select:none}`;
+  document.head.appendChild(css);
+  const ov=document.createElement("div");ov.id="ldOverlay";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");document.body.appendChild(ov);
+  const badge=document.createElement("div");badge.id="ldBadge";badge.hidden=true;document.body.appendChild(badge);
+  const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+  function goFS(){const el=document.documentElement,fn=el.requestFullscreen||el.webkitRequestFullscreen;if(!fn)return;try{const p=fn.call(el);if(p&&p.then)p.then(()=>{L.fsOK=true;}).catch(()=>{});else L.fsOK=true;}catch(e){}}
+  function setBadge(){badge.hidden=!L.active;badge.textContent=`🔒 Lockdown on${L.count?` · left ${L.count}×`:""}`;}
+  function showLock(reason){
+    ov.hidden=false;
+    if(C.LOCK_ON_EXIT){L.locked=true;
+      ov.innerHTML=`<div class="box"><h2>🔒 Locked</h2><p>You ${reason}. Leaving is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><p>Raise your hand. Your teacher will type the unlock code.</p><input id="ldCode" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Teacher unlock code"><br><button type="button" id="ldUnlock">Unlock</button><div class="err" id="ldErr" role="alert"></div></div>`;
+      setTimeout(()=>{const i=document.getElementById("ldCode");if(i)i.focus();},50);}
+    else{ov.innerHTML=`<div class="box"><h2>⚠ Stay on this page</h2><p>You ${reason}. This is recorded and shows up on your results (${L.count} time${L.count>1?"s":""} so far).</p><button type="button" id="ldBack">Go back</button></div>`;
+      setTimeout(()=>{const b=document.getElementById("ldBack");if(b)b.focus();},50);}
+  }
+  function violation(reason){
+    if(!L.active||Date.now()<L.ignoreUntil)return;
+    if(L.locked||!ov.hidden)return;           // already counted this exit
+    L.count++;L.log.push({t:new Date().toLocaleTimeString(),reason});setBadge();showLock(reason);
+  }
+  document.addEventListener("visibilitychange",()=>{if(!L.active)return;
+    if(document.hidden){L.leftAt=Date.now();violation("switched to another tab or app");}
+    else if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  window.addEventListener("blur",()=>{if(!L.active)return;setTimeout(()=>{if(!document.hasFocus()&&!document.hidden){L.leftAt=L.leftAt||Date.now();violation("clicked outside this page");}},150);});
+  window.addEventListener("focus",()=>{if(L.leftAt&&!document.hidden){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}});
+  const onFS=()=>{if(!L.active)return;if(fsEl()){L.fsOK=true;}else if(L.fsOK){violation("left full screen");}};
+  document.addEventListener("fullscreenchange",onFS);document.addEventListener("webkitfullscreenchange",onFS);
+  ov.addEventListener("click",e=>{
+    if(e.target.id==="ldUnlock"){const v=(document.getElementById("ldCode").value||"").trim();
+      if(v.toLowerCase()===String(C.UNLOCK_CODE).trim().toLowerCase()){L.locked=false;ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+      else{document.getElementById("ldErr").textContent="That code isn't right. Ask your teacher.";}}
+    if(e.target.id==="ldBack"){ov.hidden=true;L.ignoreUntil=Date.now()+1200;goFS();}
+  });
+  ov.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="ldCode"){e.preventDefault();document.getElementById("ldUnlock").click();}});
+  // block copy, paste, right-click, and print shortcuts while the exit ticket is running
+  ["copy","cut","paste","contextmenu","dragstart"].forEach(ev=>document.addEventListener(ev,e=>{if(!L.active)return;if(ev==="dragstart"&&e.target.closest&&e.target.closest(".dchip"))return;e.preventDefault();},true));
+  document.addEventListener("keydown",e=>{if(!L.active)return;const k=(e.key||"").toLowerCase();if((e.ctrlKey||e.metaKey)&&["c","v","x","p","s","u"].includes(k)){e.preventDefault();}},true);
+  L.start=function(){L.active=true;document.body.classList.add("ld-active");setBadge();goFS();};
+  L.stop=function(){if(L.leftAt){L.away+=(Date.now()-L.leftAt)/1000;L.leftAt=null;}L.active=false;L.locked=false;ov.hidden=true;badge.hidden=true;document.body.classList.remove("ld-active");if(fsEl()){const x=document.exitFullscreen||document.webkitExitFullscreen;try{const p=x.call(document);if(p&&p.catch)p.catch(()=>{});}catch(e){}}};
+})();
+</script>
+<script>
+(function(){
+"use strict";
+/* ===== Drag-and-drop question engine (drag, or tap a word then tap a spot) ===== */
+const DND=(function(){
+  const S={};let sel=null,drag=null,lastDrag=false,changeFn=null;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const plain=h=>String(h).replace(/<[^>]+>/g,"").trim();
+  const zoneById=(q,id)=>q.zones.find(z=>z.id===id);
+  function where(qid,ci){const P=S[qid].pl;for(const z in P)if(P[z].includes(ci))return z;return null;}
+  function chip(qid,ci,mark){const s=S[qid],on=sel&&sel.qid===qid&&sel.ci===ci;
+    return `<button type="button" class="dchip${on?" on":""}${mark?" "+mark:""}" data-dq="${qid}" data-ci="${ci}" aria-pressed="${on}"${s.locked?" disabled":""}>${s.q.chips[ci]}</button>`;}
+  function zone(qid,z,style){const s=S[qid],items=s.pl[z.id]||[],q=s.q;let mark="";
+    if(s.locked&&s.marks&&!z.multi)mark=items[0]===z.answer?" right":" wrong";
+    const tgt=sel&&sel.qid===qid&&!s.locked&&(z.multi||!items.length)?" target":"";
+    const inner=items.map(ci=>chip(qid,ci,s.locked&&s.marks&&z.multi?(z.answer.includes(ci)?"right":"wrong"):"")).join("")||`<span class="dph">${z.ph||"Drop here"}</span>`;
+    const name=z.name||z.label||"Drop spot";
+    return `<div class="dzone${z.multi?" multi":""}${items.length?" filled":""}${tgt}${mark}" data-dq="${qid}" data-dz="${z.id}"${s.locked?"":' tabindex="0" role="button"'} aria-label="${esc(plain(name))}: ${items.length?esc(items.map(ci=>plain(q.chips[ci])).join(", ")):"empty"}"${style?` style="${style}"`:""}>${inner}</div>`;}
+  function inner(qid){
+    const s=S[qid],q=s.q;
+    const placed=new Set(Object.values(s.pl).flat());
+    const bank=q.chips.map((c,ci)=>ci).filter(ci=>!placed.has(ci));
+    let h=s.locked?"":`<div class="dbank" data-dq="${qid}" data-dbank="1" aria-label="Word bank">${bank.map(ci=>chip(qid,ci)).join("")||'<span class="dhint">Every card is placed. Drag one back here to remove it.</span>'}</div>`;
+    if(q.figure&&q.layout!=="label")h+=`<div class="dfig2">${q.figure}</div>`;
+    if(q.layout==="label")h+=`<div class="dlabel"><div class="dfig">${q.figure}</div>${q.zones.map(z=>zone(qid,z,`left:${z.x}%;top:${z.y}%;width:${z.w}%`)).join("")}</div>`;
+    else if(q.layout==="rows")h+=`<div class="drows">${q.zones.map(z=>`<div class="drow"><span>${z.label}</span>${zone(qid,z)}</div>`).join("")}</div>`;
+    else if(q.layout==="order")h+=`<ol class="dorder">${q.zones.map((z,k)=>`<li><span class="onum" aria-hidden="true">${k+1}</span>${zone(qid,z)}</li>`).join("")}</ol>`;
+    else if(q.layout==="sort")h+=`<div class="dbins">${q.zones.map(z=>`<div class="dbin"><div class="bt">${z.label}</div>${zone(qid,{...z,multi:true})}</div>`).join("")}</div>`;
+    else if(q.layout==="fill")h+=`<div class="dfill">${q.sentence.map(p=>typeof p==="string"?p:zone(qid,zoneById(q,p.z))).join("")}</div>`;
+    if(!s.locked)h+=`<p class="dhow" style="font-size:14px;color:var(--muted);margin:8px 0 0">Drag a card to a spot, or tap a card and then tap the spot.</p>`;
+    return h;
+  }
+  function refresh(qid){const el=document.getElementById("dnd-"+qid);if(el)el.innerHTML=inner(qid);}
+  function focusChip(qid,ci){const b=document.querySelector(`.dchip[data-dq="${qid}"][data-ci="${ci}"]`);if(b)b.focus({preventScroll:true});}
+  function place(qid,ci,zid){
+    const s=S[qid],P=s.pl;for(const z in P)P[z]=P[z].filter(x=>x!==ci);
+    if(zid){const z=zoneById(s.q,zid);if(!(z.multi||s.q.layout==="sort"))P[zid]=[];P[zid]=(P[zid]||[]).concat(ci);}
+    sel=null;refresh(qid);if(changeFn)changeFn(qid);focusChip(qid,ci);
+  }
+  function mount(qid,q,pl,opts){
+    opts=opts||{};q.zones.forEach(z=>{if(!pl[z.id])pl[z.id]=[];});
+    S[qid]={q,pl,locked:!!opts.locked,marks:!!opts.marks};
+    return `<div class="dnd" id="dnd-${qid}">${inner(qid)}</div>`;
+  }
+  function lock(qid,marks){if(!S[qid])return;S[qid].locked=true;S[qid].marks=!!marks;if(sel&&sel.qid===qid)sel=null;refresh(qid);}
+  function complete(q,pl){if(q.layout==="sort")return Object.values(pl).flat().length===q.chips.length;return q.zones.every(z=>(pl[z.id]||[]).length>0);}
+  function grade(q,pl){
+    if(q.layout==="sort"){let pts=0;const lines=q.chips.map((c,ci)=>{const right=q.zones.find(z=>z.answer.includes(ci));const w=Object.keys(pl).find(z=>(pl[z]||[]).includes(ci));const ok=w===right.id;if(ok)pts++;return{label:c,ok,yours:w?zoneById(q,w).label:"not placed",right:right.label};});return{pts,max:q.chips.length,lines};}
+    let pts=0;const lines=q.zones.map(z=>{const got=(pl[z.id]||[])[0];const ok=got===z.answer;if(ok)pts++;return{label:z.name||z.label,ok,yours:got===undefined?"empty":q.chips[got],right:q.chips[z.answer]};});
+    return{pts,max:q.zones.length,lines};
+  }
+  function linesHTML(g){return `<ul>${g.lines.map(l=>`<li>${l.label}: <b class="${l.ok?"good":"wrong"}">${l.yours}</b>${l.ok?" ✓":` (correct: <b>${l.right}</b>)`}</li>`).join("")}</ul>`;}
+  /* ---- events ---- */
+  function clearHover(){document.querySelectorAll(".dzone.hover").forEach(e=>e.classList.remove("hover"));}
+  document.addEventListener("pointerdown",e=>{lastDrag=false;const c=e.target.closest(".dchip");if(!c||c.disabled||e.button!==0)return;drag={qid:c.dataset.dq,ci:+c.dataset.ci,x:e.clientX,y:e.clientY,moved:false,id:e.pointerId,el:c,g:null};});
+  document.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;
+    if(!drag.moved){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;drag.moved=true;const g=drag.el.cloneNode(true);g.classList.remove("on");g.classList.add("dghost");document.body.appendChild(g);drag.g=g;drag.el.classList.add("lift");}
+    drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px";
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone");clearHover();if(z&&z.dataset.dq===drag.qid)z.classList.add("hover");e.preventDefault();},{passive:false});
+  function end(e,cancel){if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;if(!d.moved)return;lastDrag=true;d.g.remove();d.el.classList.remove("lift");clearHover();if(cancel)return;
+    const u=document.elementFromPoint(e.clientX,e.clientY),z=u&&u.closest(".dzone"),b=u&&u.closest("[data-dbank]");
+    if(z&&z.dataset.dq===d.qid)place(d.qid,d.ci,z.dataset.dz);else if(b&&b.dataset.dq===d.qid)place(d.qid,d.ci,null);}
+  document.addEventListener("pointerup",e=>end(e,false));document.addEventListener("pointercancel",e=>end(e,true));
+  document.addEventListener("click",e=>{
+    const t=e.target;if(!t.closest||!t.closest(".dnd"))return;
+    if(lastDrag){lastDrag=false;return;}
+    const c=t.closest(".dchip");
+    if(c){if(c.disabled)return;const qid=c.dataset.dq,ci=+c.dataset.ci,z=c.closest(".dzone");
+      if(z&&sel&&sel.qid===qid&&sel.ci!==ci){place(qid,sel.ci,z.dataset.dz);return;}
+      sel=(sel&&sel.qid===qid&&sel.ci===ci)?null:{qid,ci};refresh(qid);focusChip(qid,ci);return;}
+    const z=t.closest(".dzone");if(z&&sel&&sel.qid===z.dataset.dq&&!S[z.dataset.dq].locked){place(z.dataset.dq,sel.ci,z.dataset.dz);return;}
+    const b=t.closest("[data-dbank]");if(b&&sel&&sel.qid===b.dataset.dq){place(b.dataset.dq,sel.ci,null);}
+  });
+  document.addEventListener("keydown",e=>{
+    lastDrag=false;
+    const z=e.target.classList&&e.target.classList.contains("dzone")?e.target:null;
+    if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(sel&&sel.qid===z.dataset.dq)place(z.dataset.dq,sel.ci,z.dataset.dz);}
+    if(e.key==="Escape"&&sel){const q=sel.qid;sel=null;refresh(q);}
+  });
+  return{mount,lock,complete,grade,linesHTML,onChange:f=>{changeFn=f;}};
+})();
+
+/* ===== Homeostasis drawings, models, and graphs (shared by the lesson and the exit ticket) ===== */
+const HOM=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  /* ---- line graph with optional band, set-point line, and markers ---- */
+  function graph(o){
+    const W=o.W||520,H=o.H||300,x0=62,x1=W-18,y0=o.title?40:22,y1=H-52,[xa,xb]=o.x,[ya,yb]=o.y;
+    const X=v=>x0+(v-xa)/(xb-xa)*(x1-x0),Y=v=>y1-(v-ya)/(yb-ya)*(y1-y0);
+    let s=o.title?T(W/2,20,o.title,{size:14}):"";
+    if(o.band){const bt=Math.min(o.band[1],yb),bb=Math.max(o.band[0],ya);s+=`<rect x="${x0}" y="${f(Y(bt))}" width="${x1-x0}" height="${f(Y(bb)-Y(bt))}" fill="#e7f4ec"/>`;}if(o.band)s+=""+T(x1-4,Y(o.band[1])-4,o.bandLabel||"normal range",{a:"end",size:11,c:"#2e7d4f",w:400});
+    for(let v=ya;v<=yb+1e-9;v+=o.ystep){s+=`<line x1="${x0}" y1="${f(Y(v))}" x2="${x1}" y2="${f(Y(v))}" stroke="#d6e0de" opacity=".7"/>`+T(x0-8,Y(v)+4,+v.toFixed(2),{a:"end",size:11,w:400,c:"#56666f"});}
+    for(let v=xa;v<=xb+1e-9;v+=o.xstep){s+=`<line x1="${f(X(v))}" y1="${y1}" x2="${f(X(v))}" y2="${y1+5}" stroke="#1d2b36"/>`+T(X(v),y1+19,v,{size:11,w:400});}
+    if(o.setpoint!=null)s+=`<line x1="${x0}" y1="${f(Y(o.setpoint))}" x2="${x1}" y2="${f(Y(o.setpoint))}" stroke="#2e7d4f" stroke-width="2" stroke-dasharray="7 5"/>`+T(x0+6,Y(o.setpoint)+15,o.setLabel||"set point",{a:"start",size:11,c:"#2e7d4f"});
+    s+=`<line x1="${x0}" y1="${y0-6}" x2="${x0}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/><line x1="${x0}" y1="${y1}" x2="${x1}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/>`;
+    s+=`<text transform="translate(16 ${(y0+y1)/2}) rotate(-90)" font-size="12" text-anchor="middle" fill="#56666f" font-family="system-ui,sans-serif">${o.ylabel}</text>`+T((x0+x1)/2,H-10,o.xlabel,{w:400,c:"#56666f"});
+    (o.series||[]).forEach(se=>{if(se.points.length>1)s+=`<polyline points="${se.points.map(p=>f(X(p[0]))+","+f(Y(p[1]))).join(" ")}" fill="none" stroke="${se.color}" stroke-width="${se.width||3}"${se.dash?' stroke-dasharray="6 5"':""} stroke-linejoin="round"/>`;
+      if(se.label){const lp=se.labelAt;s+=T(X(lp[0]),Y(lp[1]),se.label,{c:se.color,size:12});}});
+    (o.markers||[]).forEach(m=>{const px=X(m.x),py=Y(m.y);s+=`<circle cx="${f(px)}" cy="${f(py)}" r="${m.r||7}" fill="${m.fill||"#ffd35c"}" stroke="#1d2b36" stroke-width="2"/>`;
+      if(m.label)s+=T(px+(m.dx||0),py+(m.dy==null?-13:m.dy),m.label,{size:m.size||13,a:m.a||"middle"});});
+    return{svg:`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||o.title||"graph"}">${s}</svg>`,X,Y};
+  }
+  /* ---- feedback loop diagram: nodes around a circle ---- */
+  function loop(o){
+    const W=o.W||520,H=o.H||330,cx=W/2,cy=H/2+4,rx=o.rx||175,ry=o.ry||112,n=o.nodes.length,bw=o.bw||150,bh=o.bh||58;
+    const pos=o.nodes.map((nd,k)=>{const a=-Math.PI/2+k*2*Math.PI/n;return[cx+rx*Math.cos(a),cy+ry*Math.sin(a)];});
+    let s=`<defs><marker id="${o.id||"lp"}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${o.arrow||"#56666f"}"/></marker></defs>`;
+    for(let k=0;k<n;k++){const a1=-Math.PI/2+k*2*Math.PI/n+0.42,a2=-Math.PI/2+(k+1)*2*Math.PI/n-0.42;
+      const p1=[cx+rx*Math.cos(a1),cy+ry*Math.sin(a1)],p2=[cx+rx*Math.cos(a2),cy+ry*Math.sin(a2)],am=(a1+a2)/2,c=[cx+rx*1.18*Math.cos(am),cy+ry*1.18*Math.sin(am)];
+      if(k===n-1&&o.open)continue;
+      s+=`<path d="M${f(p1[0])},${f(p1[1])} Q${f(c[0])},${f(c[1])} ${f(p2[0])},${f(p2[1])}" fill="none" stroke="${o.arrow||"#56666f"}" stroke-width="3" marker-end="url(#${o.id||"lp"}a)"/>`;}
+    if(o.center)s+=T(cx,cy-4,o.center[0],{size:16,c:o.centerColor||"#1d2b36"})+(o.center[1]?T(cx,cy+16,o.center[1],{size:12,w:400,c:"#56666f"}):"");
+    o.nodes.forEach((nd,k)=>{const[x,y]=pos[k],on=o.hi===k;
+      s+=`<rect x="${f(x-bw/2)}" y="${f(y-bh/2)}" width="${bw}" height="${bh}" rx="10" fill="${on?(nd.color||"#2f5d9b"):"#fff"}" stroke="${nd.color||"#2f5d9b"}" stroke-width="${on?3:2}"/>`;
+      if(nd.title)s+=T(x,y-(nd.lines&&nd.lines.length?8:-4),nd.title,{size:13,c:on?"#fff":(nd.color||"#2f5d9b")});
+      (nd.lines||[]).forEach((ln,j)=>{s+=T(x,y+(nd.lineY||8)+j*13,ln,{size:11,w:400,c:on?"#fff":"#1d2b36"});});});
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||"feedback loop"}">${s}</svg>`;
+  }
+  /* ---- models ---- */
+  // Body temperature with negative feedback. event: "hot" or "cold"; effectorOn: can the effector respond?
+  function tempRun(event,effectorOn,opts){opts=opts||{};const dt=0.1,end=opts.end||30,start=2,len=10,inp=event==="hot"?0.3:-0.3;
+    let Tb=37,k=0,detect=null,ctrl=null,eff=null,back=null,peak=null;const pts=[],ks=[];
+    for(let t=0;t<=end+1e-9;t+=dt){const ev=t>=start&&t<start+len?inp:0;const dev=Tb-37;
+      if(detect===null&&Math.abs(dev)>0.3)detect=+t.toFixed(1);
+      if(detect!==null&&ctrl===null&&t>=detect+0.8)ctrl=+t.toFixed(1);
+      if(ctrl!==null&&effectorOn)k=Math.min(1,k+dt/2.5);
+      if(eff===null&&k>=0.99)eff=+t.toFixed(1);
+      const dT=ev-k*1.4*dev-0.03*dev;Tb+=dT*dt;
+      if(peak===null||Math.abs(Tb-37)>Math.abs(peak[1]-37))peak=[+t.toFixed(1),Tb];
+      if(eff!==null&&back===null&&t>start+len&&Math.abs(Tb-37)<0.06)back=+t.toFixed(1);
+      pts.push([+t.toFixed(1),+Tb.toFixed(3)]);ks.push([+t.toFixed(1),k]);}
+    const at=tt=>{const p=pts.find(q=>q[0]>=tt);return p?p[1]:37;};
+    return{pts,ks,stim:[start,at(start)],detect:detect!=null?[detect,at(detect)]:null,ctrl:ctrl!=null?[ctrl,at(ctrl)]:null,eff:eff!=null?[eff,at(eff)]:null,back:back!=null?[back,at(back)]:null,peak,start,len};}
+  // Childbirth: positive feedback. Contraction strength 0-100.
+  function birthRun(opts){opts=opts||{};const dt=0.1,end=opts.end||30,start=2;let C=5,O=1,born=null,detect=null,eff=null;const pts=[];
+    for(let t=0;t<=end+1e-9;t+=dt){
+      if(t>=start&&born===null){if(detect===null&&t>=start+1)detect=+t.toFixed(1);O+=0.12*C*dt;C+=0.35*O*dt;if(eff===null&&t>=start+3)eff=+t.toFixed(1);if(C>=100){C=100;born=+t.toFixed(1);}}
+      else if(born!==null){C=Math.max(4,C-40*dt);}
+      pts.push([+t.toFixed(1),+C.toFixed(2)]);}
+    const at=tt=>{const p=pts.find(q=>q[0]>=tt);return p?p[1]:4;};
+    return{pts,stim:[start,at(start)],detect:[detect,at(detect)],eff:[eff,at(eff)],born:[born,100],start};}
+  return{graph,loop,tempRun,birthRun,T};
+})();
+
+
+/* ===== shared drawing helpers for biology lessons ===== */
+const U=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  function bars(o){const W=o.W||520,H=o.H||300,x0=70,x1=W-16,y0=o.title?44:24,y1=H-56;let s=o.title?T(W/2,20,o.title,{size:14}):"";
+    for(let v=0;v<=o.ymax+1e-9;v+=o.step){const y=y1-v/o.ymax*(y1-y0);s+=`<line x1="${x0}" y1="${f(y)}" x2="${x1}" y2="${f(y)}" stroke="#d6e0de"/>`+T(x0-8,y+4,o.fmt?o.fmt(v):v,{a:"end",size:11,w:400,c:"#56666f"});}
+    s+=`<line x1="${x0}" y1="${y0-6}" x2="${x0}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/><line x1="${x0}" y1="${y1}" x2="${x1}" y2="${y1}" stroke="#1d2b36" stroke-width="1.5"/>`;
+    const n=o.cats.length,slot=(x1-x0)/n,bw=slot*.52;
+    o.cats.forEach((c,i)=>{const cx=x0+slot*(i+.5),h=Math.max(o.vals[i]/o.ymax*(y1-y0),1.5);s+=`<rect x="${f(cx-bw/2)}" y="${f(y1-h)}" width="${f(bw)}" height="${f(h)}" rx="2" fill="${o.color}"/>`+T(cx,y1-h-7,o.labels[i],{size:12})+c.split("\n").map((l,j)=>T(cx,y1+17+j*14,l,{size:12,w:400})).join("");});
+    s+=`<text transform="translate(16 ${(y0+y1)/2}) rotate(-90)" font-size="12" text-anchor="middle" fill="#56666f" font-family="system-ui,sans-serif">${o.ylabel}</text>`;
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||o.title}">${s}</svg>`;}
+  function table(cap,head,rows){return `<h3>${cap}</h3><table class="data"><thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;}
+  function lines(svgW,svgH,targets,boxX,boxW,ys){let s="";targets.forEach((p,k)=>{s+=`<line x1="${f(p[0])}" y1="${f(p[1])}" x2="${boxX}" y2="${ys[k]}" stroke="#1d2b36" stroke-width="1.5"/><circle cx="${f(p[0])}" cy="${f(p[1])}" r="3.2" fill="#1d2b36" stroke="#fff"/>`;});
+    const zones=ys.map(y=>({x:+((boxX+2)/svgW*100).toFixed(1),y:+(y/svgH*100).toFixed(1),w:+(boxW/svgW*100).toFixed(1)}));return{s,zones};}
+  return{f,T,bars,table,lines};
+})();
+
+/* ===== ATP drawings and the ATP battery widget (shared by the ATP lesson and exit ticket) ===== */
+const ATP=(function(){
+  const f=n=>(+n).toFixed(1);
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${f(x)}" y="${f(y)}" font-size="${o.size||12}" font-weight="${o.w||700}" text-anchor="${o.a||"middle"}" fill="${o.c||"#1d2b36"}" font-family="system-ui,sans-serif">${t}</text>`;};
+  const BLU="#2f5d9b",GRN="#3f7a2e",YEL="#f2b632",YELS="#a8741c";
+  function burst(cx,cy,R,label){const pts=[];for(let k=0;k<16;k++){const r=k%2?R*.5:R;pts.push(f(cx+r*Math.cos(k*Math.PI/8))+","+f(cy+r*Math.sin(k*Math.PI/8)));}return `<polygon points="${pts.join(" ")}" fill="#ffd35c" stroke="#b98900" stroke-width="1.5"/>`+(label?T(cx,cy+4,label,{size:R>20?11:9,c:"#5a4300"}):"");}
+  function phos(x,y,r){return `<circle cx="${f(x)}" cy="${f(y)}" r="${r}" fill="${YEL}" stroke="${YELS}" stroke-width="2"/>`+T(x,y+r*.35,"P",{size:r*.95,c:"#5a3d00"});}
+  function bond(x1,x2,y,hi){return hi?`<path d="M${f(x1)},${f(y)} l6,-6 l6,12 l6,-12 l6,12 l${f(x2-x1-24)},-6" fill="none" stroke="#e0562b" stroke-width="3" stroke-linejoin="round"/>`:`<line x1="${f(x1)}" y1="${f(y)}" x2="${f(x2)}" y2="${f(y)}" stroke="#1d2b36" stroke-width="3"/>`;}
+  /* ATP/ADP molecule. o:{nP:3|2, labels:bool, sep:0..1 (third phosphate pulling away), r} */
+  function molecule(x,y,o){o=o||{};const nP=o.nP==null?3:o.nP,r=o.r||17,sep=o.sep||0;let s="";
+    // adenine (double ring)
+    s+=`<polygon points="${f(x-62)},${f(y-38)} ${f(x-44)},${f(y-48)} ${f(x-26)},${f(y-38)} ${f(x-26)},${f(y-18)} ${f(x-44)},${f(y-8)} ${f(x-62)},${f(y-18)}" fill="#cfe0f5" stroke="${BLU}" stroke-width="2.5"/><polygon points="${f(x-26)},${f(y-38)} ${f(x-8)},${f(y-44)} ${f(x)},${f(y-28)} ${f(x-8)},${f(y-12)} ${f(x-26)},${f(y-18)}" fill="#cfe0f5" stroke="${BLU}" stroke-width="2.5"/>`;
+    // ribose
+    s+=`<line x1="${f(x-30)}" y1="${f(y-10)}" x2="${f(x-24)}" y2="${f(y+8)}" stroke="#1d2b36" stroke-width="3"/><polygon points="${f(x-22)},${f(y+6)} ${f(x)},${f(y-4)} ${f(x+20)},${f(y+12)} ${f(x+12)},${f(y+36)} ${f(x-14)},${f(y+34)}" fill="#cfe9c4" stroke="${GRN}" stroke-width="2.5"/>`;
+    // phosphate chain
+    let px=x+20,py=y+14;const gap=2*r+20;
+    for(let k=0;k<nP;k++){const cx=px+gap*(k+1)+(k===2?sep*70:0),prev=k===0?x+20:px+gap*k+(k===2?0:0)+r;
+      const x1=k===0?x+20:px+gap*k+r,x2=cx-r;
+      if(!(k===2&&sep>0.35))s+=bond(x1,x2,py,k>0);
+      s+=phos(cx,py,r);}
+    if(sep>0.35&&nP>=3)s+=burst(px+gap*2+r+20+sep*30,py-30,16+sep*10,"energy");
+    if(o.labels){s+=T(x-44,y-58,"adenine",{size:12,c:BLU})+T(x,y+56,"ribose (sugar)",{size:12,c:GRN})+T(px+gap*2,py+r+22,"phosphate groups",{size:12,c:YELS});}
+    return s;}
+  function width(nP,r){r=r||17;return 62+20+(2*r+20)*nP+r+10;}
+  /* ATP cycle diagram */
+  function cycle(){let s=`<defs><marker id="cyA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2b36"/></marker></defs>`;
+    s+=`<g transform="translate(135,60) scale(.62)">${molecule(0,0,{nP:3})}</g>`+T(165,30,"ATP",{size:18})+T(165,112,"charged",{size:12,w:400,c:"#56666f"});
+    s+=`<g transform="translate(135,250) scale(.62)">${molecule(0,0,{nP:2})}</g>`+`<g transform="translate(262,258)">${phos(0,0,11)}</g>`+T(165,222,"ADP + P",{size:18})+T(165,300,"\"dead battery\"",{size:12,w:400,c:"#56666f"});
+    s+=`<path d="M300,74 C390,90 400,200 330,236" fill="none" stroke="#1d2b36" stroke-width="3.5" marker-end="url(#cyA)"/>`+burst(420,150,30,"energy")+T(420,198,"OUT for work",{size:12,c:"#b5561a"})+T(420,212,"(muscles, pumps)",{size:11,w:400});
+    s+=`<path d="M70,236 C0,200 0,100 70,74" fill="none" stroke="#1d2b36" stroke-width="3.5" marker-end="url(#cyA)"/>`+T(44,140,"energy IN",{size:12,c:GRN})+T(44,156,"from food",{size:11,w:400})+T(44,170,"(glucose)",{size:11,w:400});
+    return `<svg viewBox="-24 0 524 320" role="img" aria-label="The ATP cycle. ATP at the top loses its third phosphate, becoming ADP plus a phosphate and releasing energy for work like muscles and pumps. Energy from food, such as glucose, re-attaches the phosphate to turn ADP back into ATP.">${s}</svg>`;}
+  /* ---- ATP battery widget (manipulable) ---- */
+  function battery(el,opt){opt=opt||{};const st={atp:opt.atp==null?8:opt.atp,total:10,used:0,made:0,anim:null};const id="ab"+Math.floor(Math.random()*1e6);
+    function icons(){let s="";for(let i=0;i<st.total;i++){const x=14+i*48,on=i<st.atp;s+=`<rect x="${x}" y="8" width="36" height="56" rx="6" fill="#fff" stroke="#1d2b36" stroke-width="2"/><rect x="${x+12}" y="2" width="12" height="7" rx="2" fill="#1d2b36"/>${on?`<rect x="${x+4}" y="12" width="28" height="48" rx="3" fill="#6cc070"/>`+T(x+18,42,"ATP",{size:10}):`<rect x="${x+4}" y="50" width="28" height="10" rx="3" fill="#e0562b"/>`+T(x+18,42,"ADP",{size:10,c:"#b8403a"})}`;}return `<svg viewBox="0 0 494 70" role="img" aria-label="${st.atp} of ${st.total} molecules are charged ATP; ${st.total-st.atp} are ADP">${s}</svg>`;}
+    function stage(){const a=st.anim;let s="";if(!a)s=`<g transform="translate(110,92)">${molecule(0,0,{nP:3,labels:true})}</g>`;
+      else if(a.kind==="use")s=`<g transform="translate(110,92)">${molecule(0,0,{nP:3,sep:a.u,labels:true})}</g>`+(a.u>.6?T(250,186,"ATP → ADP + P + energy",{size:15,c:"#b5561a"}):"");
+      else s=`<g transform="translate(110,92)">${molecule(0,0,{nP:3,sep:1-a.u,labels:true})}</g>`+(a.u>.3?T(250,186,"ADP + P + energy from food → ATP",{size:15,c:GRN}):"");
+      return `<svg viewBox="0 0 500 200" role="img" aria-label="An ATP molecule${a?(a.kind==="use"?" losing its third phosphate and releasing energy":" getting its third phosphate back"):""}">${s}</svg>`;}
+    function msg(t){const m=el.querySelector(".abmsg");if(m)m.innerHTML=t;}
+    function draw(){el.querySelector(".abicons").innerHTML=icons();el.querySelector(".abstage").innerHTML=stage();el.querySelector(".abcount").innerHTML=`<b>${st.atp}</b> ATP &nbsp; <b>${st.total-st.atp}</b> ADP &nbsp; Energy used for work: <b>${st.used}</b> &nbsp; ATP rebuilt: <b>${st.made}</b>`;}
+    function animate(kind,done){if(st.anim)return;st.anim={kind,u:0};const dur=REDUCED_?1:900;let t0=null;const step=now=>{if(!t0)t0=now;st.anim.u=Math.min(1,(now-t0)/dur);el.querySelector(".abstage").innerHTML=stage();if(st.anim.u<1)requestAnimationFrame(step);else{st.anim=null;done();draw();}};requestAnimationFrame(step);}
+    el.innerHTML=`<div class="abstage" style="max-width:520px"></div><div class="abicons" style="max-width:520px;margin:6px 0"></div><p class="abcount" style="margin:4px 0 8px"></p>
+     <div class="btn-row" style="margin:6px 0"><button type="button" class="btn" data-abuse="1">${opt.useLabel||"Use energy: contract a muscle"}</button><button type="button" class="btn secondary" data-abmake="1">${opt.makeLabel||"Recharge: break down glucose"}</button></div><p class="abmsg hint" aria-live="polite" style="margin:0">Click a button to see what happens to ATP.</p>`;
+    el.addEventListener("click",e=>{const u=e.target.closest("[data-abuse]"),m=e.target.closest("[data-abmake]");
+      if(u){if(st.atp<=0){msg("<b style='color:#b8403a'>Out of ATP!</b> The muscle can't contract until ATP is rebuilt.");return;}animate("use",()=>{st.atp--;st.used++;msg("The third phosphate broke off. <b>ATP → ADP + P</b>, and the released energy powered the muscle.");});}
+      if(m){if(st.atp>=st.total){msg("Every molecule is already charged ATP.");return;}animate("make",()=>{st.atp++;st.made++;msg("Energy from breaking down glucose re-attached a phosphate. <b>ADP + P → ATP</b>.");});}});
+    draw();return st;}
+  let REDUCED_=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return{molecule,width,cycle,battery,burst,phos,T};
+})();
+
+/* ===== Lesson: ATP ===== */
+const RED="#b8403a",ORG="#b5561a",PUR="#5b3f8f",BLU="#2f5d9b",GRN="#2e7d4f",GOLD="#c27c00";
+const f=U.f,TT=U.T;
+const mol=(o,vb,aria,extra)=>`<svg viewBox="${vb||"0 0 500 200"}" role="img" aria-label="${aria}"><g transform="translate(110,92)">${ATP.molecule(0,0,o)}</g>${extra||""}</svg>`;
+const BUILD=[
+ {tag:"1. Adenine",say:"ATP stands for <b>adenosine triphosphate</b>. It starts with <b>adenine</b>, a nitrogen base. (It's the same \"A\" you'll see in DNA.)",svg:()=>`<svg viewBox="0 0 420 200" role="img" aria-label="The adenine part: a blue double ring">${`<g transform="translate(150,110)"><polygon points="-62,-38 -44,-48 -26,-38 -26,-18 -44,-8 -62,-18" fill="#cfe0f5" stroke="${BLU}" stroke-width="2.5"/><polygon points="-26,-38 -8,-44 0,-28 -8,-12 -26,-18" fill="#cfe0f5" stroke="${BLU}" stroke-width="2.5"/></g>`}${TT(120,40,"adenine",{size:15,c:BLU})}</svg>`},
+ {tag:"2. Ribose",say:"Attached to adenine is <b>ribose</b>, a five-carbon sugar. Adenine plus ribose is called <b>adenosine</b>.",svg:()=>mol({nP:0,labels:false},"0 0 500 200","Adenine attached to a green five-sided ribose sugar",TT(110,160,"adenosine = adenine + ribose",{size:14}))},
+ {tag:"3. Three phosphates",say:"Next comes a chain of <b>three phosphate groups</b>. \"Tri\" means three, so it's adenosine <b>tri</b>phosphate. The bonds between the phosphates are packed with energy.",svg:()=>mol({nP:3,labels:true},"0 0 500 200","A full ATP molecule: adenine, ribose, and three phosphate groups joined by zigzag high-energy bonds")},
+ {tag:"4. Releasing energy",say:"When a cell needs energy, the bond holding the <b>third phosphate</b> breaks. That releases energy the cell can use. What's left has two phosphates: <b>ADP</b>, adenosine <b>di</b>phosphate.",svg:()=>mol({nP:3,sep:0.8,labels:true},"0 0 500 200","The third phosphate breaking away from ATP, with a burst of energy, leaving ADP",TT(250,186,"ATP → ADP + P + energy",{size:15,c:ORG}))}];
+
+/* ---------- cell energy lab ---------- */
+const EL={act:"rest",glu:"plenty",o2:true,atp:90,t:0,hist:[],run:false,raf:null,tried:{},fatigue:false,phase:0};
+const ACT={rest:{name:"Resting",use:0.12},walk:{name:"Walking",use:0.55},sprint:{name:"Sprinting",use:2.2}};
+const GLU={none:{name:"None",k:0},low:{name:"A little",k:0.45},plenty:{name:"Plenty",k:1}};
+function elMake(){const adp=100-EL.atp;const k=GLU[EL.glu].k*(EL.o2?1.0:0.18);return Math.min(adp,k*1.25*(adp/40+0.2));}
+function elTick(){const use=ACT[EL.act].use*(EL.atp>2?1:0)*0.5,make=elMake()*0.5;EL.atp=Math.max(0,Math.min(100,EL.atp-use+make));EL.t+=0.05;EL.phase+=ACT[EL.act].use*(EL.atp>4?1:0)*0.35;
+  if(Math.round(EL.t*20)%10===0){EL.hist.push([+EL.t.toFixed(1),EL.atp]);if(EL.t>60){EL.hist=EL.hist.filter(p=>p[0]>EL.t-60);}}
+  EL.fatigue=EL.atp<=4&&EL.act!=="rest";}
+function arm(){const ang=EL.fatigue?-70:(30+50*(1+Math.sin(EL.phase))/2);const r=ang*Math.PI/180;const ex=150,ey=112,L=72;const hx=ex+L*Math.cos(-r),hy=ey+L*Math.sin(-r);
+  const bulge=EL.fatigue?0.6:0.8+0.6*(1+Math.sin(EL.phase))/2;
+  return `<svg viewBox="0 0 260 180" role="img" aria-label="${EL.fatigue?"The arm muscle has stopped and the arm hangs down: out of ATP":"An arm flexing at the elbow"}"><line x1="50" y1="112" x2="${ex}" y2="${ey}" stroke="#d9a07a" stroke-width="22" stroke-linecap="round"/><ellipse cx="102" cy="${f(100-6*bulge)}" rx="34" ry="${f(10*bulge+4)}" fill="${EL.fatigue?"#c9a28a":"#e07b6a"}"/><line x1="${ex}" y1="${ey}" x2="${f(hx)}" y2="${f(hy)}" stroke="#d9a07a" stroke-width="18" stroke-linecap="round"/><circle cx="${f(hx)}" cy="${f(hy)}" r="12" fill="#d9a07a"/>${TT(130,168,EL.fatigue?"Muscle stopped: no ATP!":ACT[EL.act].name,{size:13,c:EL.fatigue?RED:"#1d2b36"})}</svg>`;}
+function elGraph(){const h=EL.hist.length?EL.hist:[[0,EL.atp]],t0=Math.max(0,EL.t-60);
+  return HOM.graph({W:520,H:250,title:"ATP and ADP in the muscle cell",x:[Math.floor(t0),Math.floor(t0)+60],y:[0,100],xstep:10,ystep:20,xlabel:"Time (seconds)",ylabel:"Percent of total",
+    series:[{color:GRN,points:h.map(p=>[p[0],p[1]]),label:"ATP",labelAt:[Math.floor(t0)+4,Math.min(96,h[h.length-1][1]+8)]},{color:RED,dash:true,points:h.map(p=>[p[0],100-p[1]]),label:"ADP",labelAt:[Math.floor(t0)+4,Math.max(6,100-h[h.length-1][1]-6)]}],aria:`ATP is at ${Math.round(EL.atp)} percent and ADP at ${Math.round(100-EL.atp)} percent`}).svg;}
+function meter(){const a=Math.round(EL.atp);return `<div style="display:flex;height:22px;border-radius:999px;overflow:hidden;border:1px solid var(--line);margin:6px 0"><div style="width:${a}%;background:#6cc070"></div><div style="width:${100-a}%;background:#f3b4a8"></div></div><p style="margin:0"><b style="color:${GRN}">ATP ${a}%</b> &nbsp; <b style="color:${RED}">ADP ${100-a}%</b></p>`;}
+function elStatus(){if(EL.fatigue)return `<b style="color:${RED}">Fatigue!</b> ATP ran out, so the muscle can't contract. ${GLU[EL.glu].k===0?"With no glucose, the cell can't recharge ADP.":!EL.o2?"Without oxygen, the cell recharges ATP very slowly.":"It's using ATP faster than it can rebuild it."}`;
+  const make=elMake(),use=ACT[EL.act].use;return Math.abs(make-use)<0.05?"ATP is being used and rebuilt at about the same rate, so the level holds steady.":make>use?"The cell is rebuilding ATP faster than it uses it, so ATP is climbing.":"The cell is using ATP faster than it can rebuild it, so ATP is dropping.";}
+function elHTML(){return `<div class="ctrlbox" style="margin:0 0 12px"><div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+  <span class="seg" role="group" aria-label="Activity">${Object.entries(ACT).map(([k,v])=>`<button type="button" data-act="${k}" aria-pressed="${EL.act===k}">${v.name}</button>`).join("")}</span>
+  <span class="seg" role="group" aria-label="Glucose supply">${Object.entries(GLU).map(([k,v])=>`<button type="button" data-glu="${k}" aria-pressed="${EL.glu===k}">Glucose: ${v.name}</button>`).join("")}</span></div>
+  <label class="toggle"><input type="checkbox" id="elO2"${EL.o2?" checked":""}> Oxygen available (for cellular respiration)</label>
+  <div class="btn-row" style="margin-bottom:0"><button class="btn" type="button" id="elrun">${EL.run?"Pause":"Start"}</button><button class="btn secondary" type="button" id="elreset">Reset</button></div></div>
+  <div class="simgrid"><div class="panelw" id="elgraph">${elGraph()}</div><div><div class="panelw" id="elarm" style="max-width:300px">${arm()}</div><div class="ctrlbox" id="elmeter">${meter()}</div><div class="ctrlbox" id="elstatus" aria-live="polite">${elStatus()}</div></div></div>`;}
+function elLoop(){if(EL.run){elTick();EL.tried[`${EL.act}|${EL.glu}|${EL.o2}`]=true;}
+  const g=$("#elgraph");if(g){if(Math.round(EL.t*20)%10===0)g.innerHTML=elGraph();$("#elarm").innerHTML=arm();$("#elmeter").innerHTML=meter();const st=$("#elstatus");const msg=elStatus();if(st.innerHTML!==msg)st.innerHTML=msg;}
+  EL.raf=requestAnimationFrame(elLoop);}
+function elRefresh(){const w=$("#elwrap");if(w)w.innerHTML=elHTML();}
+
+/* ---------- investigation figures ---------- */
+const GLOW=HOM.graph({W:520,H:280,title:"Firefly enzyme test",x:[0,10],y:[0,1000],xstep:1,ystep:200,xlabel:"Amount of ATP (picomoles)",ylabel:"Glow (light units)",series:[{color:GOLD,points:[[0,10],[2,200],[4,390],[6,580],[8,770],[10,960]]}],markers:[[0,10],[2,200],[4,390],[6,580],[8,770],[10,960]].map(p=>({x:p[0],y:p[1],r:5,fill:"#fff"})),aria:"Glow rises in a straight line with ATP: about 10 at 0, 200 at 2, 390 at 4, 580 at 6, 770 at 8, and 960 at 10 picomoles."}).svg;
+const QLBL=(()=>{let s=`<g transform="translate(150,90)">${ATP.molecule(0,0,{nP:3})}</g>`;const T2=[[106,52],[150,118],[305,100],[332,104]],bx=[12,138,264,390];
+  T2.forEach((p,k)=>{s+=`<line x1="${p[0]}" y1="${p[1]}" x2="${bx[k]+59}" y2="226" stroke="#1d2b36" stroke-width="1.5"/><circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="#1d2b36" stroke="#fff"/>`;});
+  return{svg:`<svg viewBox="0 0 520 270" role="img" aria-label="An ATP molecule with four label lines going down to boxes. Line 1 points to the blue double ring. Line 2 points to the green five-sided shape. Line 3 points to the zigzag bond between the last two yellow circles. Line 4 points to the last yellow circle.">${s}</svg>`,zones:bx.map(x=>({x:+(x/520*100).toFixed(1),y:+(244/270*100).toFixed(1),w:+(118/520*100).toFixed(1)}))};})();
+
+const LESSON={title:"ATP: The Cell's Energy",short:"ATP Lesson",
+ stub:()=>`<g transform="translate(60,40) scale(.42)">${ATP.molecule(0,0,{nP:3})}</g>`,
+ phen:{title:"How can a firefly's glow tell you a kitchen is dirty?",
+  left:`<div class="figure" style="max-width:320px"><svg viewBox="0 0 300 220" role="img" aria-label="A firefly glowing yellow-green at night next to a handheld meter showing a number"><rect width="300" height="220" rx="12" fill="#151b33"/><circle cx="90" cy="110" r="40" fill="#e6ff7a" opacity=".25"/><circle cx="90" cy="110" r="22" fill="#e6ff7a" opacity=".5"/><ellipse cx="90" cy="112" rx="14" ry="9" fill="#f5ff9a"/><ellipse cx="68" cy="104" rx="14" ry="8" fill="#4a3a2a"/><circle cx="54" cy="100" r="6" fill="#2a2018"/><rect x="180" y="60" width="80" height="120" rx="12" fill="#e8edf0"/><rect x="192" y="74" width="56" height="34" rx="4" fill="#cfe9c4"/>${TT(220,97,"4200",{size:16})}<circle cx="220" cy="140" r="12" fill="#b8403a"/>${TT(220,200,"ATP meter",{size:12,c:"#fff"})}</svg></div>
+  <p>Fireflies glow using an enzyme called luciferase. The enzyme can only make light when it has <b>ATP</b>, the energy molecule found in every living cell. More ATP means a brighter glow.</p>
+  <p>Health inspectors use this trick. They swab a kitchen counter, mix the swab with firefly enzyme, and measure the glow. A bright glow means lots of ATP, which means lots of living cells, like bacteria or food scraps, are on the surface.</p>`,
+  right:U.table("Kitchen swab test",["Surface","Glow reading"],[["Cleaned counter","150"],["Fridge door","600"],["Sink handle","1800"],["Cutting board after raw chicken","4200"]]),
+  prompt:"Why would every living cell have ATP? What do you think cells use it for?"},
+ wrap:{title:"Back to the firefly",words:"<i>ATP</i>, <i>ADP</i>, <i>phosphate</i>, and <i>energy</i>",
+  html:`<p>Every living cell needs energy, and <b>ATP</b> is the molecule cells use to carry it. That's why the firefly test works: anywhere there are living cells, there's ATP.</p>
+  <p>Inside the firefly, luciferase breaks the bond holding ATP's third <b>phosphate</b>. That turns ATP into <b>ADP</b> and releases <b>energy</b>, which the firefly gives off as light. Your muscles use the same reaction to contract, and your cell membranes use it to power pumps.</p>
+  <p>Cells don't throw ADP away. They use energy from breaking down food, like glucose, to attach a phosphate again and rebuild ATP, like recharging a battery.</p>`},
+ clusters:[
+  {title:"Investigation: ATP and the firefly test",phen:"A food inspector swabs four kitchen surfaces and tests them with firefly enzyme. The brighter the glow, the more ATP is on the surface.",
+   stim:[{name:"Passage",html:`<h3>Measuring life with light</h3>
+<p>ATP (adenosine triphosphate) is made of adenine, the sugar ribose, and three phosphate groups. The bonds between the phosphates store energy. When a cell breaks off the third phosphate, ATP becomes ADP and energy is released for work, like contracting muscles or pumping ions.</p>
+<p>Cells rebuild ATP using energy from breaking down food. In cellular respiration, the energy in glucose is used to attach a phosphate back onto ADP. ATP is recycled again and again, like a rechargeable battery.</p>
+<p>Fireflies use ATP to make light. Their enzyme, luciferase, breaks ATP into ADP and turns the released energy into a glow. Scientists discovered that the amount of light depends on how much ATP is present.</p>
+<p>Today, restaurants and hospitals use this to check cleanliness. A swab that glows brightly has lots of ATP, which means living cells or food residue are still there, even if the surface looks clean.</p>`},
+    {name:"Diagram",html:`<h3>The ATP cycle</h3>${ATP.cycle()}`},
+    {name:"Graph",html:GLOW},
+    {name:"Data",html:U.table("Kitchen swab results",["Surface","Glow (light units)"],[["Cleaned counter","150"],["Fridge door","600"],["Sink handle","1800"],["Cutting board after raw chicken","4200"]])+`<p class="cap">Inspectors re-clean any surface over 1,000 light units.</p>`}],
+   items:[
+    {type:"drag",layout:"label",figure:QLBL.svg,uses:["Passage"],q:"Drag each label to the part of the ATP molecule it points to.",chips:["Adenine","Ribose (sugar)","High-energy bond","Phosphate group"],
+     zones:[{id:"z1",name:"Line 1 (blue double ring)",answer:0,...QLBL.zones[0]},{id:"z2",name:"Line 2 (green shape)",answer:1,...QLBL.zones[1]},{id:"z3",name:"Line 3 (zigzag bond)",answer:2,...QLBL.zones[2]},{id:"z4",name:"Line 4 (last yellow circle)",answer:3,...QLBL.zones[3]}],
+     x:"ATP is adenine (blue double ring), ribose (green five-sided sugar), and three phosphate groups (yellow). The zigzag bonds between phosphates store the energy."},
+    {type:"drag",layout:"rows",q:"How many phosphate groups does each molecule have?",chips:["3 phosphates","2 phosphates","1 phosphate"],
+     zones:[{id:"atp",label:"ATP",answer:0},{id:"adp",label:"ADP",answer:1}],
+     x:"ATP is adenosine TRIphosphate (3). ADP is adenosine DIphosphate (2), because it lost one phosphate when energy was released."},
+    {type:"drag",layout:"sort",uses:["Passage","Diagram"],q:"Sort each process. Does it use ATP or rebuild ATP?",chips:["A muscle contracting","A firefly making light","A pump moving ions across a membrane","Breaking down glucose in cellular respiration","Mitochondria using energy from food","Attaching a phosphate to ADP"],
+     zones:[{id:"use",label:"Uses ATP (ATP → ADP + P)",answer:[0,1,2]},{id:"make",label:"Rebuilds ATP (ADP + P → ATP)",answer:[3,4,5]}],
+     x:"Muscles, firefly light, and membrane pumps all spend ATP's energy. Cellular respiration in mitochondria uses energy from food to re-attach a phosphate to ADP, rebuilding ATP."},
+    {type:"drag",layout:"order",uses:["Diagram"],q:"Put the ATP cycle in order, starting with a charged ATP.",chips:["Energy from glucose re-attaches a phosphate","The third phosphate breaks off and energy is released","The cell is left with ADP and a free phosphate","ATP is charged and ready to use"],
+     zones:[{id:"o1",name:"Step 1",answer:3},{id:"o2",name:"Step 2",answer:1},{id:"o3",name:"Step 3",answer:2},{id:"o4",name:"Step 4",answer:0}],
+     x:"Charged ATP loses its third phosphate, releasing energy. That leaves ADP + P. Energy from food then re-attaches the phosphate, and the cycle starts again."},
+    {type:"num",uses:["Graph"],q:"Use the firefly enzyme graph.",fields:[{label:"Glow with 4 picomoles of ATP",answer:390,tol:20,unit:"light units"},{label:"ATP that gives a glow of 770",answer:8,tol:0.3,unit:"picomoles"}],
+     x:"The graph is a straight line: more ATP gives more light. At 4 picomoles the glow is about 390. A glow of 770 matches 8 picomoles."},
+    {type:"ab",uses:["Data","Graph"],q:"This question has two parts.",
+     a:{q:"<b>Part A:</b> Which surface most likely has the most living cells on it?",o:["Cutting board after raw chicken","Cleaned counter","Fridge door","Sink handle"],ans:0},
+     b:{q:"<b>Part B:</b> Which evidence best supports your answer to Part A?",o:["It gave the brightest glow, and more glow means more ATP from living cells","It is the largest surface in the kitchen","Raw chicken has no ATP","It glowed less than 1,000 light units"],ans:0},
+     x:"The cutting board glowed at 4,200, the brightest. The graph shows glow goes up with ATP, and only living cells (or fresh food residue) have ATP."},
+    {type:"drag",layout:"rows",q:"ATP is often compared to a rechargeable battery. Match each part of the comparison.",chips:["ATP","ADP + P","Cellular respiration (energy from food)","Breaking off a phosphate to release energy"],
+     zones:[{id:"full",label:"A fully charged battery",answer:0},{id:"dead",label:"A dead battery",answer:1},{id:"charger",label:"Plugging the battery into a charger",answer:2},{id:"use",label:"Using the battery to run a flashlight",answer:3}],
+     x:"ATP is the charged battery and ADP + P is the dead one. Using energy breaks off a phosphate, and cellular respiration is the charger that rebuilds ATP."},
+    {type:"drag",layout:"fill",q:"Drag words into the blanks.",chips:["phosphate","ADP","glucose","DNA","oxygen","ribose"],
+     sentence:["ATP stores energy in the bonds between its ",{z:"f1"}," groups. When the last bond breaks, ATP becomes ",{z:"f2"}," and energy is released. Cells rebuild ATP using energy from food such as ",{z:"f3"},"."],
+     zones:[{id:"f1",name:"Blank 1",answer:0},{id:"f2",name:"Blank 2",answer:1},{id:"f3",name:"Blank 3",answer:2}],
+     x:"Energy is stored in the bonds between phosphate groups. Breaking the last one turns ATP into ADP. Energy from glucose rebuilds ATP."}]}],
+ steps:[
+  {name:"Phenomenon",type:"phen"},
+  {name:"Build ATP",type:"custom",html:()=>`<div class="card step">${kick()}<h2>Build an ATP molecule</h2>${stepper("build",BUILD)}<div class="rule" style="margin-top:14px"><h3>Key words</h3><ul><li><b>ATP:</b> adenosine triphosphate, the cell's energy carrier (3 phosphates)</li><li><b>ADP:</b> adenosine diphosphate (2 phosphates)</li><li><b>Phosphate group:</b> the part that breaks off to release energy</li></ul></div>${nav()}</div>`},
+  {name:"The ATP cycle",type:"custom",html:()=>`<div class="card step">${kick()}<h2>A rechargeable battery</h2>
+   <div class="two"><div class="panelw">${ATP.cycle()}</div><div><p>A cell uses ATP like a <b>rechargeable battery</b>. When it needs energy, ATP loses a phosphate and becomes ADP. Then energy from food, released in <b>cellular respiration</b>, puts the phosphate back to make ATP again.</p>
+   <p>Your body recycles a lot of ATP. You only have a few grams at any moment, but you rebuild about your own body weight in ATP every day.</p></div></div>
+   <h3 style="margin-top:14px">Try it: the ATP battery</h3><div id="batt" class="ctrlbox"></div>${nav()}</div>`,
+   enter:()=>{ATP.battery($("#batt"),{atp:8});}},
+  {name:"Cell energy lab",type:"custom",html:()=>`<div class="card step">${kick()}<h2>Cell energy lab</h2>
+   <p>Choose how hard the muscle is working and how much fuel the cell has. Press <b>Start</b> and watch ATP and ADP on the graph.</p>
+   <div class="rule"><h3>Try these</h3><ul><li>Rest, then sprint, with plenty of glucose and oxygen. Does ATP run out?</li><li>Sprint with <b>no glucose</b>. What happens to the muscle?</li><li>Turn off oxygen while walking. How fast does ATP recover?</li></ul></div>
+   <div id="elwrap">${elHTML()}</div>${nav()}</div>`,
+   enter:()=>{if(!EL.raf)EL.raf=requestAnimationFrame(elLoop);},exit:()=>{if(EL.raf)cancelAnimationFrame(EL.raf);EL.raf=null;EL.run=false;},
+   leave:()=>Object.keys(EL.tried).length<3?"Run the lab with at least 3 different settings before you move on.":null},
+  {name:"Investigation",type:"cluster",c:0},
+  {name:"Wrap-up",type:"wrap"}],
+ onClick:e=>{const t=e.target;
+  const a=t.closest("[data-act]");if(a){EL.act=a.dataset.act;elRefresh();document.querySelector(`[data-act="${EL.act}"]`).focus();return;}
+  const g=t.closest("[data-glu]");if(g){EL.glu=g.dataset.glu;elRefresh();document.querySelector(`[data-glu="${EL.glu}"]`).focus();return;}
+  if(t.closest("#elrun")){EL.run=!EL.run;$("#elrun").textContent=EL.run?"Pause":"Start";announce(EL.run?"Running.":"Paused.");return;}
+  if(t.closest("#elreset")){EL.run=false;EL.atp=90;EL.t=0;EL.hist=[];EL.phase=0;elRefresh();return;}},
+ onChange:e=>{if(e.target.id==="elO2"){EL.o2=e.target.checked;}}
+};
+
+/* ===== Lesson core: sign-in, steps, CAST investigations, scoring, Sheet export ===== */
+const CFG=Object.assign({SHEET_URL:"",TEACHERS:[],PERIODS:[1,2,3,4,5,6,7]},window.EXIT_TICKET_CONFIG||{});
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const announce=m=>{const l=$("#live");l.textContent="";setTimeout(()=>l.textContent=m,30);};
+const REDUCED=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const S={stu:null,step:0,maxStep:0,wonder:"",reflect:"",done:false,cl:[],tab:[],ex:{},v:{}};
+const STEPS=LESSON.steps.map(s=>s.name);const NS=STEPS.length;
+LESSON.clusters.forEach((c,k)=>{S.cl[k]=[];S.tab[k]=0;});
+document.title=LESSON.title+" Lesson";
+$("#stubart").innerHTML=LESSON.stub?LESSON.stub():"";
+
+/* ---- sign in ---- */
+$("#period").innerHTML=`<option value="">Choose</option>`+CFG.PERIODS.map(p=>`<option>${esc(p)}</option>`).join("");
+$("#teacherslot").outerHTML=CFG.TEACHERS.length?`<label for="teacher">Teacher<select id="teacher"><option value="">Choose your teacher</option>${CFG.TEACHERS.map(t=>`<option>${esc(t)}</option>`).join("")}</select></label>`:`<label for="teacher">Teacher<input id="teacher" type="text" autocomplete="off"></label>`;
+function start(){
+  const f={first:$("#first"),last:$("#last"),sid:$("#sid"),sid2:$("#sid2"),period:$("#period"),teacher:$("#teacher")};
+  Object.values(f).forEach(el=>el.classList.remove("error"));
+  const v=k=>f[k].value.trim();let msg="";
+  for(const k of Object.keys(f))if(!v(k)){f[k].classList.add("error");msg=msg||"Fill in every box before you start.";}
+  const sid=v("sid").replace(/\s+/g,""),sid2=v("sid2").replace(/\s+/g,"");
+  if(!msg&&!/^\d+$/.test(sid)){f.sid.classList.add("error");msg="Use only numbers in your student ID. No letters, dashes, or other symbols.";}
+  if(!msg&&sid.length>15){f.sid.classList.add("error");msg="That student ID is too long. Check your ID number.";}
+  if(!msg&&sid!==sid2){f.sid2.classList.add("error");msg="The two student ID boxes don't match. Check your ID number.";}
+  if(msg){$("#signerr").textContent=msg;const b=document.querySelector(".fields .error");if(b)b.focus();return;}
+  S.stu={first:v("first"),last:v("last"),id:sid,period:v("period"),teacher:v("teacher")};
+  $("#whoami").textContent=`${S.stu.first} ${S.stu.last}, Period ${S.stu.period}`;
+  $("#signin").hidden=true;$("#lesson").hidden=false;if(window.LOCKDOWN)LOCKDOWN.start();go(0);
+}
+$("#startbtn").addEventListener("click",start);
+$("#signform").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();start();}});
+
+/* ---- navigation ---- */
+function curDef(){return LESSON.steps[S.step];}
+function canLeave(){
+  const d=curDef(),m=t=>{const el=$("#stepMsg");if(el)el.textContent=t;announce(t);return false;};
+  if(d.type==="phen"&&S.wonder.trim().length<5)return m("Write your first idea before you move on. There's no wrong answer yet.");
+  if(d.type==="cluster"&&LESSON.clusters[d.c].items.some((it,k)=>!itemState(d.c,k).done))return m("Check every question in this investigation first.");
+  if(d.leave){const r=d.leave();if(r)return m(r);}
+  return true;
+}
+function go(i){
+  if(i>S.step&&!canLeave())return;
+  const old=curDef();if(old&&old.exit)old.exit();
+  S.step=i;S.maxStep=Math.max(S.maxStep,i);const d=curDef();
+  $("#steps").innerHTML=STEPS.map((n,k)=>`<button type="button" data-step="${k}" class="${k===i?"cur":k<=S.maxStep?"done":""}"${k>S.maxStep||S.done?" disabled":""}${k===i?' aria-current="step"':""}>${k+1}. ${n}</button>`).join("");
+  $("#prog").style.width=`${(i/(NS-1))*100}%`;
+  $("#main").innerHTML=d.type==="phen"?phenHTML():d.type==="cluster"?clusterHTML(d.c,i):d.type==="wrap"?wrapHTML():d.html();
+  if(d.enter)d.enter();
+  window.scrollTo({top:0});
+  const h=$("#main h2");if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+}
+const nav=()=>{const i=S.step;return `<div class="err" id="stepMsg" role="alert"></div><div class="nav no-print">${i>0?`<button class="btn secondary" type="button" data-go="${i-1}">Back</button>`:"<span></span>"}${i<NS-1?`<button class="btn" type="button" data-go="${i+1}">Next</button>`:""}</div>`;};
+const kick=()=>`<div class="kicker">Step ${S.step+1} of ${NS}: ${STEPS[S.step]}</div>`;
+
+/* ---- reusable stepper (click through pictures) ---- */
+function stepper(id,frames){const k=S.ex[id]||0,f=frames[k];
+  return `<div class="two"><div class="panelw">${f.svg()}</div><div><p class="say" style="font-size:18px" aria-live="polite"><b style="background:${f.color||"var(--accent)"};color:#fff;border-radius:6px;padding:0 8px;margin-right:6px">${f.tag||`Step ${k+1} of ${frames.length}`}</b>${f.say}</p>
+   <div class="btn-row"><button class="btn secondary" type="button" data-exn="${id}:-1"${k===0?" disabled":""}>Previous</button><button class="btn" type="button" data-exn="${id}:1"${k===frames.length-1?" disabled":""}>Next picture</button></div>${f.side||""}</div></div>`;}
+
+/* ---- phenomenon and wrap-up ---- */
+function phenHTML(){const P=LESSON.phen;return `<div class="card step">${kick()}<h2>${P.title}</h2><div class="two"><div>${P.left}</div>
+ <div>${P.right||""}<label for="wonder" style="display:block;margin-top:14px"><b>Your first idea:</b> ${P.prompt}</label>
+ <textarea id="wonder" style="margin-top:6px">${esc(S.wonder)}</textarea><p class="hint">Just write your best guess. You'll come back to it at the end.</p></div></div>${nav()}</div>`;}
+function wrapHTML(){if(S.done)return resultsHTML();const W=LESSON.wrap;
+ return `<div class="card step">${kick()}<h2>${W.title}</h2><div class="two"><div>${W.html}
+ <div class="rule" style="margin-top:12px"><h3>Your first idea was</h3><p style="margin:0;white-space:pre-wrap">${esc(S.wonder)||"<i>(blank)</i>"}</p></div></div>
+ <div><label for="reflect"><b>Look back at your first idea.</b> What would you change or add now? Use the words ${W.words}.</label>
+ <textarea id="reflect" style="margin-top:6px;min-height:140px">${esc(S.reflect)}</textarea>
+ <div class="btn-row"><button class="btn" type="button" id="finish">Finish lesson</button></div><div class="err" id="finMsg" role="alert"></div></div></div>
+ <div class="nav no-print"><button class="btn secondary" type="button" data-go="${S.step-1}">Back</button><span></span></div></div>`;}
+
+/* ---- CAST-style investigations ---- */
+const CL=LESSON.clusters;
+const itemMax=it=>it.type==="ab"?2:it.type==="num"?it.fields.length:(it.layout==="sort"?it.chips.length:it.zones.length);
+function itemState(c,k){if(!S.cl[c][k])S.cl[c][k]={pts:null,pl:{},a:null,b:null,vals:CL[c].items[k].fields?CL[c].items[k].fields.map(()=>""):[]};const st=S.cl[c][k];st.done=st.pts!==null;return st;}
+function itemHTML(c,k){const it=CL[c].items[k],st=itemState(c,k),done=st.done,mx=itemMax(it),id=`c${c}i${k}`;
+  const uses=it.uses?`<div class="chips" style="margin:-4px 0 8px">${it.uses.map(u=>`<button type="button" class="usetab" data-usetab="${c}:${u}">Use the ${u} tab</button>`).join("")}</div>`:"";
+  let body="";
+  if(it.type==="drag")body=DND.mount("K"+c+"_"+k,it,st.pl,{locked:done,marks:true});
+  if(it.type==="ab")body=["a","b"].map(p=>{const P=it[p],sel=st[p];return `<fieldset class="q" style="margin:0 0 12px"><legend style="font-size:17px;font-weight:400">${P.q}</legend><div style="display:flex;flex-direction:column;gap:8px">${P.o.map((o,j)=>{const good=done&&j===P.ans,bad=done&&sel===j&&j!==P.ans;return `<label style="display:flex;gap:10px;align-items:center;border:2px solid ${good?"var(--ok)":bad?"var(--bad)":"var(--line)"};background:${good?"var(--ok-bg)":bad?"var(--bad-bg)":"#fff"};border-radius:10px;padding:8px 12px;cursor:pointer"><input type="radio" name="${id}${p}" data-ab="${c}:${k}:${p}" value="${j}"${sel===j?" checked":""}${done?" disabled":""}><span>${o}</span></label>`;}).join("")}</div></fieldset>`;}).join("");
+  if(it.type==="num")body=`<div style="display:flex;flex-wrap:wrap;gap:14px">${it.fields.map((f,j)=>`<label style="display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:15px">${f.label}<span style="display:flex;align-items:center;gap:6px;font-weight:400"><input class="n" type="text" inputmode="decimal" data-numf="${c}:${k}:${j}" value="${esc(st.vals[j])}"${done?" disabled":""}> ${f.unit||""}</span></label>`).join("")}</div>${done?`<p class="hint">Correct answers: ${it.fields.map(f=>`${f.label}: ${f.answer} ${f.unit||""}`).join("; ")}</p>`:""}`;
+  return `<div class="q castq" id="${id}"><p class="qp">${k+1}. ${it.q}</p>${uses}${body}
+   ${done?`<div class="explain"><b>${st.pts===mx?"All correct!":`${st.pts} of ${mx} correct.`}</b> ${it.x}</div>`:`<div class="btn-row"><button class="btn secondary" type="button" data-icheck="${c}:${k}">Check</button></div><div class="err" id="${id}err" role="alert"></div>`}</div>`;}
+function checkItem(c,k){const it=CL[c].items[k],st=itemState(c,k),id=`c${c}i${k}`;let pts=0;
+  if(it.type==="drag"){if(!DND.complete(it,st.pl)){$("#"+id+"err").textContent="Place every card before you check.";return;}pts=DND.grade(it,st.pl).pts;}
+  if(it.type==="ab"){if(st.a===null||st.b===null){$("#"+id+"err").textContent="Answer both Part A and Part B before you check.";return;}pts=(st.a===it.a.ans?1:0)+(st.b===it.b.ans?1:0);}
+  if(it.type==="num"){if(st.vals.some(v=>!String(v).trim())){$("#"+id+"err").textContent="Fill in every box before you check.";return;}
+    pts=it.fields.filter((f,j)=>{const v=parseFloat(String(st.vals[j]).replace(/,/g,""));return !isNaN(v)&&Math.abs(v-f.answer)<=(f.tol||0)+1e-9;}).length;}
+  st.pts=pts;const y=window.scrollY;go(S.step);window.scrollTo({top:y});const mx=itemMax(it);announce(pts===mx?"All correct!":`${pts} of ${mx} correct.`);}
+function clusterHTML(c){const C=CL[c],tab=S.tab[c];
+  return `<div class="card step">${kick()}<h2>${C.title}</h2><p>Read the stimulus on the left, then answer the questions. Your first answer to each question counts, so check your work before you press <b>Check</b>.</p>
+  <div class="cast"><div class="stimpanel"><div class="phenbox"><b>Phenomenon</b>${C.phen}</div>
+   <div class="stabs" role="tablist">${C.stim.map((s,k)=>`<button type="button" role="tab" class="stab" aria-selected="${k===tab}" data-stab="${c}:${k}">${s.name}</button>`).join("")}</div>
+   <div class="stimbody" role="tabpanel">${C.stim[tab].html}</div></div>
+  <div class="qcol">${C.items.map((it,k)=>itemHTML(c,k)).join("")}</div></div>${nav()}</div>`;}
+
+/* ---- finish, results, export ---- */
+let RESULT=null;
+function finish(){if(S.reflect.trim().length<10){$("#finMsg").textContent="Write your updated idea before you finish.";return;}
+  if(window.LOCKDOWN)LOCKDOWN.stop();const LD=window.LOCKDOWN&&LOCKDOWN.enabled?LOCKDOWN.summary():null;
+  const allPts=[],labels=[];CL.forEach((C,c)=>C.items.forEach((it,k)=>{allPts.push(itemState(c,k).pts||0);labels.push(`Inv${c+1} Q${k+1}`);}));
+  const pts=allPts.reduce((a,b)=>a+b,0),max=CL.flatMap(C=>C.items.map(itemMax)).reduce((a,b)=>a+b,0);
+  const s=S.stu,now=new Date();
+  const header=["Student ID","# Correct","Last Name","First Name","Period","Teacher","Points Possible","Percent","Lesson","Submitted"].concat(labels,["First Idea","Updated Idea"]).concat(LD?["Times Left Page","Seconds Away"]:[]);
+  const row=[s.id,pts,s.last,s.first,s.period,s.teacher,max,Math.round(pts/max*1000)/10,LESSON.title,now.toLocaleString()].concat(allPts,[S.wonder.trim(),S.reflect.trim()]).concat(LD?[LD.count,LD.away]:[]);
+  RESULT={header,row,tab:`${LESSON.short}${CFG.TEACHERS.length>1?" "+s.teacher.split(/\s+/).pop():""} P${s.period}`,pts,max,now,LD};S.done=true;go(S.step);send();}
+function resultsHTML(){const R=RESULT,s=S.stu;return `<div class="card step"><div class="kicker">Lesson complete</div><h2>Nice work, ${esc(s.first)}!</h2><div class="score">${R.pts}<small> / ${R.max}</small></div>
+  <div class="hint" style="margin-top:6px">${esc(s.first)} ${esc(s.last)}, ID ${esc(s.id)}, Period ${esc(s.period)}, ${esc(s.teacher)}. ${R.now.toLocaleString()}${R.LD?`. Left the lesson: ${R.LD.count} time${R.LD.count===1?"":"s"}`:""}</div>
+  <div id="sendbox" class="sendbox wait no-print">Sending your score to your teacher…</div>
+  <table class="summary"><tbody>${CL.map((C,c)=>C.items.map((it,k)=>`<tr><td>Investigation ${c+1}, question ${k+1}</td><td>${itemState(c,k).pts||0} / ${itemMax(it)}</td></tr>`).join("")).join("")}</tbody></table>
+  <div class="rule"><h3>Your updated idea</h3><p style="margin:0;white-space:pre-wrap">${esc(S.reflect)}</p></div>
+  <div class="btn-row no-print"><button class="btn" type="button" id="print">Print</button><button class="btn secondary" type="button" id="dlcsv">Download my results (CSV)</button></div></div>`;}
+function send(){const box=$("#sendbox");if(!box)return;
+  if(!CFG.SHEET_URL){box.className="sendbox bad no-print";box.innerHTML="This lesson isn't connected to your teacher's gradebook yet. Click <b>Download my results (CSV)</b> and turn in the file the way your teacher asks.";return;}
+  box.className="sendbox wait no-print";box.textContent="Sending your score to your teacher…";
+  fetch(CFG.SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({header:RESULT.header,row:RESULT.row,tab:RESULT.tab})})
+   .then(()=>{box.className="sendbox ok no-print";box.textContent="✓ Your score was sent to your teacher.";})
+   .catch(()=>{box.className="sendbox bad no-print";box.innerHTML=`Your score didn't send. Check your internet, then <button type="button" class="btn secondary" id="resend" style="padding:4px 12px;font-size:15px">try again</button>. If it still won't send, download your results.`;});}
+function csvCell(v){v=String(v);return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v;}
+function downloadCSV(){const csv=[RESULT.header,RESULT.row].map(r=>r.map(csvCell).join(",")).join("\r\n");const u=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));const a=document.createElement("a");a.href=u;a.download=`${LESSON.short.replace(/\s+/g,"-")}_${S.stu.last}_${S.stu.first}_${S.stu.id}.csv`.replace(/[^\w.-]/g,"");document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+
+/* ---- events ---- */
+document.addEventListener("click",e=>{const t=e.target;
+  const g=t.closest("[data-go]");if(g){go(+g.dataset.go);return;}
+  const sp=t.closest("[data-step]");if(sp&&!sp.disabled){const k=+sp.dataset.step;if(k<=S.maxStep)go(k);return;}
+  const ex=t.closest("[data-exn]");if(ex&&!ex.disabled){const[id,d]=ex.dataset.exn.split(":");S.ex[id]=(S.ex[id]||0)+(+d);go(S.step);const b=document.querySelector(`[data-exn="${id}:${d}"]`);(b&&!b.disabled?b:document.querySelector(`[data-exn="${id}:${-d}"]`)).focus();return;}
+  const ic=t.closest("[data-icheck]");if(ic){const[c,k]=ic.dataset.icheck.split(":").map(Number);checkItem(c,k);return;}
+  const stb=t.closest("[data-stab]");if(stb){const[c,k]=stb.dataset.stab.split(":").map(Number);S.tab[c]=k;const p=document.querySelector(".stimpanel");p.querySelector(".stabs").innerHTML=CL[c].stim.map((s,j)=>`<button type="button" role="tab" class="stab" aria-selected="${j===k}" data-stab="${c}:${j}">${s.name}</button>`).join("");p.querySelector(".stimbody").innerHTML=CL[c].stim[k].html;document.querySelector(`[data-stab="${c}:${k}"]`).focus();return;}
+  const ut=t.closest("[data-usetab]");if(ut){const[c,name]=ut.dataset.usetab.split(":");const k=CL[+c].stim.findIndex(s=>s.name===name);const btn=document.querySelector(`[data-stab="${c}:${k}"]`);if(btn){btn.click();if(window.innerWidth<900)document.querySelector(".stimpanel").scrollIntoView({block:"start"});}return;}
+  if(t.closest("#finish")){finish();return;}
+  if(t.closest("#print")){window.print();return;}
+  if(t.closest("#dlcsv")){downloadCSV();return;}
+  if(t.closest("#resend")){send();return;}
+  if(LESSON.onClick){const m=$("#stepMsg");if(m&&t.closest("button,input,label"))m.textContent="";LESSON.onClick(e);}
+});
+document.addEventListener("change",e=>{const ab=e.target.dataset&&e.target.dataset.ab;if(ab){const[c,k,p]=ab.split(":");itemState(+c,+k)[p]=+e.target.value;return;}if(LESSON.onChange)LESSON.onChange(e);});
+document.addEventListener("input",e=>{const t=e.target;
+  if(t.id==="wonder"){S.wonder=t.value;const m=$("#stepMsg");if(m)m.textContent="";}
+  if(t.id==="reflect")S.reflect=t.value;
+  if(t.dataset&&t.dataset.numf){const[c,k,j]=t.dataset.numf.split(":").map(Number);itemState(c,k).vals[j]=t.value;}
+  if(t.classList)t.classList.remove("error");
+  if(LESSON.onInput){const m=$("#stepMsg");if(m&&t.id!=="wonder"&&t.id!=="reflect")m.textContent="";LESSON.onInput(e);}});
+window.addEventListener("beforeunload",e=>{if(S.stu&&!S.done){e.preventDefault();e.returnValue="";}});
+if(location.hash==="#selftest")window.__L={LESSON,S,CL};
+
+})();
+</script>
+</body>
+</html>
