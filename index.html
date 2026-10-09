@@ -12,7 +12,7 @@
    YOUR SITE'S CONTENT
    To add an activity: copy a line like
        { title: "Homeostasis", file: "homeostasis-lesson.html" },
-   paste it into the right unit and section (warmups, labs, lessons, or formative),
+   paste it into the right unit and section (warmups, labs, lessons, formative, or tests),
    and change the title and file.
    The file must be uploaded to GitHub in the SAME place as this index.html.
    ===================================================================== */
@@ -119,29 +119,29 @@ const SITE = {
         labs: [], lessons: [], formative: [] } ] },
 
     { name: "AP Chemistry", color: "#8a3b5c", soft: "#f7e8ef", art: "molecule", units: [
-      { name: "Intro to AP Chem", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Stoichiometry", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Chemical Reactions", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Basic Solutions", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Gases", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Thermochemistry", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Electrons and Periodicity", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Bonding and Forces", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Advanced Solutions", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Chemical Kinetics", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "General Equilibrium", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Acid-Base Equilibrium", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Ksp Equilibrium", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Advanced Thermochemistry", warmups: [], labs: [], lessons: [], formative: [] },
-      { name: "Electrochemistry", warmups: [], labs: [], lessons: [], formative: [] } ] },
+      { name: "Intro to AP Chem", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Stoichiometry", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Chemical Reactions", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Basic Solutions", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Gases", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Thermochemistry", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Electrons and Periodicity", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Bonding and Forces", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Advanced Solutions", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Chemical Kinetics", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "General Equilibrium", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Acid-Base Equilibrium", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Ksp Equilibrium", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Advanced Thermochemistry", tests: [], warmups: [], labs: [], lessons: [], formative: [] },
+      { name: "Electrochemistry", tests: [], warmups: [], labs: [], lessons: [], formative: [] } ] },
 
     { name: "Physics", color: "#2f5d9b", soft: "#e6eef9", art: "pendulum", units: [
-      { name: "1D Kinematics",
+      { name: "1D Kinematics", tests: [ { title: "1-D Kinematics Unit Test", file: "1D-Kinematics-Test.html" } ],
         warmups: [],
         labs: [],
         lessons: [ { title: "1D Kinematics", file: "1d-kinematics-lesson.html" } ],
         formative: [ { title: "1D Kinematics Exit Ticket", file: "exit-ticket-1d-kinematics.html" } ] },
-      { name: "2D Kinematics",
+      { name: "2D Kinematics", tests: [],
         warmups: [],
         labs: [],
         lessons: [
@@ -150,31 +150,31 @@ const SITE = {
         formative: [
           { title: "Vectors Exit Ticket", file: "exit-ticket-vectors.html" },
           { title: "Projectile Motion Exit Ticket", file: "exit-ticket-projectile-motion.html" } ] },
-      { name: "Forces", warmups: [],
+      { name: "Forces", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Circular Motion", warmups: [],
+      { name: "Circular Motion", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Gravitational Fields", warmups: [],
+      { name: "Gravitational Fields", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Energy", warmups: [],
+      { name: "Energy", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Nuclear Energy", warmups: [],
+      { name: "Nuclear Energy", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Momentum", warmups: [],
+      { name: "Momentum", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Waves and Sound", warmups: [],
+      { name: "Waves and Sound", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Optics", warmups: [],
+      { name: "Optics", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Wave Nature of Light", warmups: [],
+      { name: "Wave Nature of Light", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Static Electricity", warmups: [],
+      { name: "Static Electricity", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Current Electricity", warmups: [],
+      { name: "Current Electricity", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "EM Induction", warmups: [],
+      { name: "EM Induction", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] },
-      { name: "Electric and Magnetic Fields", warmups: [],
+      { name: "Electric and Magnetic Fields", tests: [], warmups: [],
         labs: [], lessons: [], formative: [] } ] }
   ]
 };
@@ -251,10 +251,11 @@ const ART={
    return `<svg viewBox="0 0 120 100" aria-hidden="true"><polygon points="${hx(48,52,26)}" fill="#fff" stroke="${c}" stroke-width="5" stroke-linejoin="round"/><polygon points="${hx(48,52,15)}" fill="none" stroke="${c}" stroke-width="3" opacity=".55"/><line x1="70.5" y1="39" x2="86" y2="30" stroke="${c}" stroke-width="5" stroke-linecap="round"/><circle cx="90" cy="28" r="7" fill="${c}"/><line x1="48" y1="78" x2="48" y2="92" stroke="${c}" stroke-width="5" stroke-linecap="round"/><rect x="74" y="58" width="38" height="28" rx="7" fill="${c}"/><text x="93" y="78" font-size="17" font-weight="800" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif">AP</text></svg>`;},
  dna:c=>{let s="";for(let i=0;i<=10;i++){const y=8+i*8.4,x1=60+26*Math.sin(i*.62),x2=60-26*Math.sin(i*.62);s+=`<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-width="3" opacity=".55"/><circle cx="${x1.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="${c}"/><circle cx="${x2.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="#fff" stroke="${c}" stroke-width="2.5"/>`;}return `<svg viewBox="0 0 120 100" aria-hidden="true">${s}</svg>`;}};
 const ICON={warmups:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 18a5 5 0 0 1 10 0" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 5v3M5.6 8.6l2.1 2.1M18.4 8.6l-2.1 2.1M3 13h2M19 13h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+ tests:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 3h9l3 3v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="17" r="3.2" fill="currentColor"/></svg>`,
  labs:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7.5 15h9" stroke="currentColor" stroke-width="2"/></svg>`,
  lessons:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z M4 19V5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 7h7M8 11h7" stroke="currentColor" stroke-width="2"/></svg>`,
  formative:`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`};
-const SECT=[["warmups","Warm-Ups"],["labs","Labs"],["lessons","Self-Taught Lessons"],["formative","Formative Assessments"]];
+const SECT=[["warmups","Warm-Ups"],["labs","Labs"],["lessons","Self-Taught Lessons"],["formative","Formative Assessments"],["tests","Tests"]];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const $=s=>document.querySelector(s);
@@ -270,10 +271,10 @@ function home(){crumbs([["Home","#"]]);
     $("#results").innerHTML=hits.length?hits.slice(0,30).map(h=>`<a class="item" style="${sty(h.s)}" href="${esc(h.it.file)}"><span class="dot"></span><span><b>${esc(h.it.title)}</b><small>${esc(h.s.name)} · Unit ${h.ui+1} · ${esc(h.lab)}</small></span></a>`).join(""):`<p class="none">No matches yet.</p>`;});}
 function subject(s){crumbs([["Home","#"],[s.name,"#"+slug(s.name)]]);
   $("#main").innerHTML=`<div class="subhead" style="${sty(s)}"><span class="icon">${ART[s.art](s.color)}</span><h2>${esc(s.name)}</h2></div>
-   <div class="units">${s.units.map((u,i)=>{const n=count(u);return `<a class="unit${n?"":" empty"}" style="${sty(s)}" href="#${slug(s.name)}/${i+1}" data-go="${slug(s.name)}/${i+1}"><span class="num">${i+1}</span><span><h3>${esc(u.name)}</h3><p>${n?SECT.map(([k,l])=>(u[k]||[]).length?`${u[k].length} ${({warmups:"warm-up",labs:"lab",lessons:"lesson",formative:"assessment"})[k]}${u[k].length>1?"s":""}`:"").filter(Boolean).join(" · "):"Coming soon"}</p></span></a>`;}).join("")}</div>`;}
+   <div class="units">${s.units.map((u,i)=>{const n=count(u);return `<a class="unit${n?"":" empty"}" style="${sty(s)}" href="#${slug(s.name)}/${i+1}" data-go="${slug(s.name)}/${i+1}"><span class="num">${i+1}</span><span><h3>${esc(u.name)}</h3><p>${n?SECT.map(([k,l])=>(u[k]||[]).length?`${u[k].length} ${({warmups:"warm-up",labs:"lab",lessons:"lesson",formative:"assessment",tests:"test"})[k]}${u[k].length>1?"s":""}`:"").filter(Boolean).join(" · "):"Coming soon"}</p></span></a>`;}).join("")}</div>`;}
 function unit(s,i){const u=s.units[i];crumbs([["Home","#"],[s.name,"#"+slug(s.name)],[`Unit ${i+1}`,`#${slug(s.name)}/${i+1}`]]);
   $("#main").innerHTML=`<div class="subhead" style="${sty(s)}"><span class="icon">${ART[s.art](s.color)}</span><div><p style="margin:0;color:var(--muted);font-weight:700">${esc(s.name)} · Unit ${i+1}</p><h2>${esc(u.name)}</h2></div></div>
-   <div class="sections">${SECT.map(([k,l])=>`<section class="section" style="${sty(s)}" aria-labelledby="h-${k}"><h3 id="h-${k}"><span class="badge">${ICON[k]}</span>${l}</h3>${(u[k]||[]).length?`<div class="items">${u[k].map(it=>`<a class="item" href="${esc(it.file)}"><span class="dot"></span><span><b>${esc(it.title)}</b></span></a>`).join("")}</div>`:`<p class="none">Nothing posted here yet.</p>`}</section>`).join("")}</div>`;}
+   <div class="sections">${SECT.filter(([k])=>u[k]!==undefined).map(([k,l])=>`<section class="section" style="${sty(s)}" aria-labelledby="h-${k}"><h3 id="h-${k}"><span class="badge">${ICON[k]}</span>${l}</h3>${(u[k]||[]).length?`<div class="items">${u[k].map(it=>`<a class="item" href="${esc(it.file)}"><span class="dot"></span><span><b>${esc(it.title)}</b></span></a>`).join("")}</div>`:`<p class="none">Nothing posted here yet.</p>`}</section>`).join("")}</div>`;}
 function route(target){let raw=target;if(raw==null){try{raw=decodeURIComponent(location.hash.slice(1));}catch(e){raw="";}}const h=raw.split("/");const s=SITE.subjects.find(x=>slug(x.name)===h[0]);
   if(!s)home();else if(h[1]&&s.units[+h[1]-1])unit(s,+h[1]-1);else subject(s);window.scrollTo(0,0);const t=$("#main h2");if(t){t.setAttribute("tabindex","-1");t.focus({preventScroll:true});}}
 /* Navigation works by clicking, even inside previews that block page links */
