@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cell Transport Lesson Study Exit Ticket</title>
+<style>
+:root{
+ --navy:#17365d; --blue:#2a6fb5; --pale:#eef4fa; --line:#c5d3e2; --ink:#1c2733; --muted:#586878;
+ --ok:#1b7f4b; --okbg:#e6f4ec; --bad:#b3261e; --badbg:#fbeceb; --flag:#d99a00; --paper:#fff; --hl:#fff3c4;
+ --fs:17px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);background:#dfe7f0;font-size:var(--fs);line-height:1.45}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid #f2b705;outline-offset:2px}
+ 
+/* top bar */
+.top{background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;gap:12px}
+.top h1{font-size:1.05rem;margin:0;font-weight:600;letter-spacing:.2px}
+.top small{display:block;font-weight:400;color:#b8cbe2;font-size:.78rem}
+.tools button{background:transparent;color:#fff;border:1px solid #6d8bb0;border-radius:4px;padding:3px 10px;margin-left:6px}
+.tools button:hover{background:#25497a}
+ 
+#root{height:calc(100% - 58px)}
+ 
+/* intro / review / results screens */
+.screen{max-width:860px;margin:26px auto;background:var(--paper);border:1px solid var(--line);padding:30px 36px;border-radius:4px}
+.screen h2{margin:0 0 6px;color:var(--navy);font-size:1.6rem}
+.screen h3{color:var(--navy);margin:22px 0 6px;font-size:1.1rem}
+.phen{background:var(--pale);border-left:6px solid var(--blue);padding:14px 18px;margin:16px 0}
+.phen b{color:var(--navy)}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:4px;padding:10px 22px;font-weight:600}
+.btn:hover{background:#215c98}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.btn.ghost:hover{background:var(--pale)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.namebox{margin:14px 0}
+.namebox input{font:inherit;padding:8px 10px;border:1.5px solid #8ea4bc;border-radius:4px;width:280px;max-width:100%}
+.namebox .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.namebox .fld{display:flex;flex-direction:column;gap:4px}
+.namebox .fld label{font-size:.85rem;color:var(--muted)}
+.namebox .fld input{width:200px}
+.namebox .fld.pd input{width:80px}
+.namebox .err{color:var(--bad);font-size:.88rem;margin-top:8px;display:none}
+.sheetbox{font-size:.9rem;color:var(--muted);margin-top:6px}
+ 
+/* test layout */
+.app{display:grid;grid-template-columns:1.12fr 1fr;height:calc(100% - 62px)}
+.stim,.qp{overflow:auto;padding:0}
+.stim{background:#f6f9fc;border-right:3px solid var(--navy)}
+.qp{background:var(--paper)}
+.pane-head{position:sticky;top:0;z-index:2;background:#e3ecf5;border-bottom:1px solid var(--line);padding:8px 14px;font-weight:600;color:var(--navy);font-size:.92rem}
+.tabs{display:flex;gap:4px;padding:8px 12px 0;background:#e3ecf5;position:sticky;top:0;z-index:2;border-bottom:1px solid var(--line)}
+.tab{border:1px solid var(--line);border-bottom:none;background:#cfdcea;color:var(--navy);padding:7px 14px;border-radius:5px 5px 0 0;font-weight:600;font-size:.9rem}
+.tab[aria-selected="true"]{background:#fff;border-color:var(--navy);border-bottom:2px solid #fff;margin-bottom:-1px}
+.tabbody{padding:18px 22px 40px}
+.tabbody h2{font-size:1.1rem;color:var(--navy);margin:0 0 8px}
+.passage p{font-family:Georgia,"Times New Roman",serif;font-size:1.02em;line-height:1.62;margin:0 0 12px;max-width:66ch}
+.passage mark{background:var(--hl)}
+.cap{font-size:.85rem;color:var(--muted);margin-top:6px}
+figure{margin:0}
+svg text{font-family:"Segoe UI",Helvetica,Arial,sans-serif}
+table.data{border-collapse:collapse;width:100%;background:#fff;font-size:.93rem;margin:6px 0 16px}
+table.data th,table.data td{border:1px solid #9db2c9;padding:6px 9px;text-align:left;vertical-align:top}
+table.data th{background:#dbe6f2;color:var(--navy)}
+ 
+.qbody{padding:18px 24px 40px}
+.qnum{font-weight:700;color:#fff;background:var(--navy);display:inline-block;padding:2px 10px;border-radius:3px;margin-right:8px}
+.qtype{font-size:.82rem;color:var(--muted);margin:4px 0 10px}
+.prompt{font-size:1.02em;margin:10px 0 14px}
+.hint{background:var(--hl);border:1px solid #e6cf7a;border-radius:4px;padding:6px 10px;font-size:.88rem;margin-bottom:12px}
+label.opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid #b7c7d9;border-radius:6px;padding:10px 12px;margin:8px 0;cursor:pointer;background:#fff}
+label.opt:hover{background:var(--pale)}
+label.opt.sel{border-color:var(--blue);background:#e4effb}
+label.opt input{margin-top:5px;transform:scale(1.2)}
+table.match{border-collapse:collapse;width:100%;font-size:.93rem}
+table.match th,table.match td{border:1px solid #9db2c9;padding:7px 8px}
+table.match th{background:#dbe6f2;color:var(--navy);text-align:center}
+table.match td:first-child{text-align:left}
+table.match td{text-align:center}
+table.match input{transform:scale(1.25)}
+.eq{background:var(--pale);border:1px solid var(--line);border-radius:6px;padding:14px;font-size:1.05rem;margin:10px 0;line-height:2.4}
+.eq input,.inline input{font:inherit;width:64px;text-align:center;padding:4px;border:1.5px solid #6f89a6;border-radius:4px}
+.sup{font-size:.7em;vertical-align:super}
+.cerbox{margin:12px 0}
+.cerbox label{font-weight:700;color:var(--navy);display:block;margin-bottom:3px}
+.cerbox textarea{width:100%;font:inherit;min-height:88px;padding:8px 10px;border:1.5px solid #8ea4bc;border-radius:4px;resize:vertical}
+.cerbox .wc{font-size:.78rem;color:var(--muted);text-align:right}
+.hotsel{margin-top:8px;font-weight:600;color:var(--navy)}
+ 
+/* simulation */
+canvas#simcv{width:100%;height:auto;display:block;border:2px solid var(--navy);border-radius:4px;background:#10233a;cursor:crosshair}
+.modes{display:flex;gap:6px;margin:4px 0 10px}
+.mode{border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:6px 18px;border-radius:20px;font-weight:600}
+.mode.on{background:var(--navy);color:#fff}
+.simread{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.simread div{background:#fff;border:1px solid var(--line);border-radius:5px;padding:6px 8px;text-align:center}
+.simread b{display:block;font-size:1.25rem;color:var(--navy)}
+.simread span{font-size:.75rem;color:var(--muted)}
+.simctl{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:8px 0}
+.simctl .btn{padding:7px 16px}
+.sl{display:block;font-weight:600;color:var(--navy);min-width:220px;font-size:.92rem}
+.sl input{display:block;width:100%;margin-top:6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.legend span i+i{margin-left:-2px}
+ 
+/* footer nav */
+.foot{height:62px;background:#fff;border-top:3px solid var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 14px;gap:10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.chip{width:34px;height:34px;border-radius:50%;border:2px solid #8ea4bc;background:#fff;color:var(--navy);font-weight:700;position:relative;padding:0}
+.chip.done{background:#cfe3f7;border-color:var(--blue)}
+.chip.cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip.flag::after{content:"";position:absolute;top:-4px;right:-4px;width:12px;height:12px;background:var(--flag);border:2px solid #fff;border-radius:50%}
+.flagbtn{background:#fff;border:1.5px solid var(--flag);color:#7a5600;border-radius:4px;padding:6px 12px;font-weight:600}
+.flagbtn.on{background:var(--flag);color:#fff}
+ 
+/* review + results */
+.rvlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:14px 0}
+.rvitem{border:1.5px solid #8ea4bc;border-radius:6px;padding:10px;background:#fff;text-align:left}
+.rvitem.done{background:#e4effb;border-color:var(--blue)}
+.rvitem.todo{background:#fff8e1;border-color:var(--flag)}
+.rvitem b{display:block;color:var(--navy)}
+.score{font-size:2.3rem;font-weight:700;color:var(--navy)}
+.res{border:1.5px solid var(--line);border-left-width:8px;border-radius:5px;padding:12px 16px;margin:14px 0;background:#fff}
+.res.good{border-left-color:var(--ok)}
+.res.miss{border-left-color:var(--bad)}
+.res.self{border-left-color:var(--blue)}
+.res h4{margin:0 0 6px;color:var(--navy)}
+.tag{font-size:.8rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px}
+.tag.good{background:var(--okbg);color:var(--ok)}
+.tag.miss{background:var(--badbg);color:var(--bad)}
+.model{background:var(--pale);border-radius:5px;padding:10px 14px;margin-top:8px;font-size:.95rem}
+.resp{white-space:pre-wrap;background:#fafafa;border:1px dashed #98a9bb;padding:6px 10px;border-radius:4px;margin:4px 0 8px;font-size:.95rem}
+.checks label{display:block;margin:4px 0}
+ 
+@media (max-width:900px){
+ .app{grid-template-columns:1fr;grid-template-rows:48% 52%}
+ .stim{border-right:none;border-bottom:3px solid var(--navy)}
+ .screen{margin:10px;padding:20px}
+ .foot{flex-wrap:wrap;height:auto;padding:6px}
+ #root{height:calc(100% - 58px)}
+}
+@media print{
+ body{background:#fff}
+ .top,.foot,.noprint{display:none!important}
+ #root{height:auto}
+ .screen{border:none;margin:0;max-width:none;padding:0}
+}
+ 
+/* isotope additions */
+.viewbox{background:#fff;border:2px solid var(--navy);border-radius:4px;padding:6px}
+.status{margin:8px 0;padding:8px 12px;background:var(--hl);border:1px solid #e6cf7a;border-radius:4px;font-weight:600;color:#3d3200}
+.tile{display:inline-block;border:2px solid var(--navy);border-radius:4px;padding:6px 16px;text-align:center;background:#fff;margin:4px 0 10px}
+.tile .z{font-size:.85rem;text-align:left}.tile .s{font-size:1.9rem;font-weight:700;color:var(--navy);line-height:1}.tile .nm{font-size:.85rem}.tile .m{font-size:.95rem;font-weight:700}
+.formula{background:var(--pale);border-left:6px solid var(--blue);padding:10px 14px;margin:8px 0 14px}
+.sup{font-size:.7em;vertical-align:super}.sub{font-size:.7em;vertical-align:sub}
+.modes{display:flex;gap:6px;margin:4px 0 10px}
+.mode{border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:6px 18px;border-radius:20px;font-weight:600}
+.mode.on{background:var(--navy);color:#fff}
+.simread{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.simread div{background:#fff;border:1px solid var(--line);border-radius:5px;padding:6px 8px;text-align:center}
+.simread b{display:block;font-size:1.2rem;color:var(--navy)}
+.simread span{font-size:.75rem;color:var(--muted)}
+.simctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;margin:10px 0}
+.simctl .btn{padding:7px 16px}
+.sl{display:block;font-weight:600;color:var(--navy);min-width:200px;font-size:.92rem}
+.sl input{display:block;width:100%;margin-top:6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--muted);margin-top:4px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+ 
+ 
+ 
+/* cell transport additions */
+.calcrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line)}
+.calcrow:last-child{border-bottom:none}
+.calcrow .lab{flex:1;min-width:220px}
+.calcrow input{width:90px;font:inherit;text-align:center;padding:6px;border:1.5px solid #6f89a6;border-radius:4px}
+select{font:inherit;padding:3px 6px;border:1.5px solid #6f89a6;border-radius:4px;background:#fff;color:var(--ink);margin:0 3px}
+.talk{background:var(--pale);border-left:6px solid var(--blue);padding:12px 16px;margin:18px 0}
+.legend2{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.85rem;color:var(--muted);margin:6px 0}
+.legend2 i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.small{font-size:.9rem;color:var(--muted)}
+.gtitle{font-weight:700;color:var(--navy);margin:14px 0 4px}
+
+</style>
+</head>
+<body>
+
+<div class="top">
+ <h1>Cell Transport Exit Ticket<small>CAST-style exit ticket &bull; Diffusion, facilitated diffusion, active transport, osmosis &bull; 5 questions</small></h1>
+ <div class="tools noprint" aria-label="Text size">
+   <button onclick="fs(-1)" aria-label="Smaller text">A&minus;</button><button onclick="fs(1)" aria-label="Larger text">A+</button>
+ </div>
+</div>
+<div id="root"></div>
+
+<script src="sheets-config.js"></script>
+<script>
+/* ---------- line chart helper (inline SVG) ---------- */
+function genChart(o){
+ const W=o.w||600,H=o.h||300,L=60,R=18,T=o.legend?36:18,B=48;
+ const X=v=>L+(v-o.xmin)/(o.xmax-o.xmin)*(W-L-R),Y=v=>H-B-(v-o.ymin)/(o.ymax-o.ymin)*(H-T-B);
+ let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${o.aria}"><rect width="${W}" height="${H}" fill="#fff" stroke="#9db2c9"/>`;
+ for(let v=o.ymin;v<=o.ymax+1e-9;v+=o.ystep)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e2eaf2"/><text x="${L-7}" y="${Y(v)+4}" font-size="11" text-anchor="end">${v}</text>`;
+ for(let v=o.xmin;v<=o.xmax+1e-9;v+=o.xstep)g+=`<line x1="${X(v)}" x2="${X(v)}" y1="${T}" y2="${H-B}" stroke="#eef4fa"/><text x="${X(v)}" y="${H-B+16}" font-size="11" text-anchor="middle">${v}</text>`;
+ g+=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#33475b" stroke-width="2"/><line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" stroke="#33475b" stroke-width="2"/>`;
+ g+=`<text x="${(L+W-R)/2}" y="${H-10}" font-size="12.5" font-weight="600" text-anchor="middle">${o.xlabel}</text>`;
+ g+=`<text transform="translate(14 ${(T+H-B)/2}) rotate(-90)" font-size="12.5" font-weight="600" text-anchor="middle">${o.ylabel}</text>`;
+ (o.hlines||[]).forEach(v=>{g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v.y)}" y2="${Y(v.y)}" stroke="#33475b" stroke-width="1.6"/>${v.label?`<text x="${W-R-4}" y="${Y(v.y)-5}" font-size="11" text-anchor="end" fill="#33475b">${v.label}</text>`:''}`;});
+ (o.vlines||[]).forEach(v=>{g+=`<line x1="${X(v.x)}" x2="${X(v.x)}" y1="${T}" y2="${H-B}" stroke="#8a6a00" stroke-width="1.6" stroke-dasharray="5 4"/><text x="${X(v.x)+5}" y="${T+14}" font-size="11" fill="#8a6a00">${v.label}</text>`;});
+ (o.series||[]).forEach(s=>{
+  const pts=[];const n=140;
+  for(let i=0;i<=n;i++){const v=o.xmin+(o.xmax-o.xmin)*i/n;pts.push([v,s.fn(v)]);}
+  g+=`<polyline fill="none" stroke="${s.col}" stroke-width="3" ${s.dash?'stroke-dasharray="7 5"':''} points="${pts.map(p=>X(p[0]).toFixed(1)+","+Y(Math.max(o.ymin,Math.min(o.ymax,p[1]))).toFixed(1)).join(" ")}"/>`;
+  (s.marks||[]).forEach(x=>{g+=`<circle cx="${X(x).toFixed(1)}" cy="${Y(s.fn(x)).toFixed(1)}" r="4.5" fill="#fff" stroke="${s.col}" stroke-width="2.5"/>`;});
+ });
+ if(o.legend)(o.series||[]).forEach((s,i)=>{const lx=L+i*(o.legW||170);g+=`<line x1="${lx}" x2="${lx+22}" y1="18" y2="18" stroke="${s.col}" stroke-width="3.5" ${s.dash?'stroke-dasharray="7 5"':''}/><text x="${lx+28}" y="22" font-size="11.5">${s.name}</text>`;});
+ return g+`</svg>`;
+}
+
+/* =========================================================
+  EXIT TICKET CONTENT: Road salt and roadside grass
+  ========================================================= */
+const SOL_COL="#e8891c",WAT_COL="#7cc4ea";
+
+/* ---------- reference diagram: four ways across a membrane ---------- */
+function dots(ox,pts,col,r){return pts.map(p=>`<circle cx="${ox+p[0]}" cy="${p[1]}" r="${r}" fill="${col}" stroke="#5a5a5a" stroke-width=".6"/>`).join("");}
+function arrow(x1,y1,x2,y2,col,dash){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="3" ${dash?'stroke-dasharray="6 4"':''} marker-end="url(#ar${col.replace('#','')})"/>`;}
+function refPanel(ox,letter,title,kind){
+ const many=[[22,50],[50,70],[112,52],[132,78],[30,88],[70,46],[95,84],[140,48]];
+ const few=[[40,168],[118,176]];
+ const manyIn=[[22,148],[50,170],[112,152],[132,178],[30,185],[70,146],[95,184],[140,150]];
+ const fewOut=[[40,58],[118,72]];
+ let g=`<text x="${ox+80}" y="20" font-size="14" font-weight="700" text-anchor="middle" fill="#33475b">${letter}. ${title}</text>`;
+ g+=`<rect x="${ox}" y="30" width="160" height="72" fill="#eaf3fb"/><rect x="${ox}" y="132" width="160" height="72" fill="#f3ead8"/>`;
+ g+=`<rect x="${ox}" y="102" width="160" height="30" fill="#e2cfa3" stroke="#a88b4e"/>`;
+ g+=`<text x="${ox+4}" y="43" font-size="10" fill="#586878">outside the cell</text><text x="${ox+4}" y="200" font-size="10" fill="#586878">inside the cell</text>`;
+ if(kind==="A"){
+  g+=dots(ox,many.map(p=>[p[0],p[1]+6]),SOL_COL,5)+dots(ox,few,SOL_COL,5);
+  g+=arrow(ox+80,80,ox+80,160,"#33475b",true);
+ }
+ if(kind==="C"){
+  g+=dots(ox,many.map(p=>[p[0],p[1]+6]),SOL_COL,5)+dots(ox,few,SOL_COL,5);
+  g+=`<rect x="${ox+58}" y="96" width="44" height="42" rx="10" fill="#bcd6f0" stroke="#1f5fa8" stroke-width="2.5"/><circle cx="${ox+80}" cy="117" r="9" fill="#fff" stroke="#1f5fa8" stroke-width="2"/>`;
+  g+=arrow(ox+80,80,ox+80,160,"#1f5fa8",false);
+ }
+ if(kind==="B"){
+  g+=dots(ox,fewOut.map(p=>[p[0],p[1]+6]),SOL_COL,5)+dots(ox,manyIn,SOL_COL,5);
+  g+=`<rect x="${ox+58}" y="96" width="44" height="42" rx="10" fill="#f6cf9e" stroke="#b5610e" stroke-width="2.5"/>`;
+  g+=arrow(ox+80,170,ox+80,66,"#b5610e",false);
+  g+=`<rect x="${ox+108}" y="108" width="46" height="18" rx="3" fill="#f2c200" stroke="#8a6a00"/><text x="${ox+131}" y="121" font-size="10.5" font-weight="700" text-anchor="middle" fill="#3d3200">ATP</text>`;
+ }
+ if(kind==="D"){
+  const w=[[26,48],[60,62],[104,50],[136,66],[44,84],[90,88],[124,86]];
+  g+=dots(ox,w,WAT_COL,3.5)+dots(ox,[[26,164],[62,182],[104,168],[136,184],[44,190],[90,158],[122,192],[144,160]],SOL_COL,5);
+  g+=dots(ox,[[52,196]],WAT_COL,3.5)+dots(ox,[[30,92],[134,54]],SOL_COL,5);
+  g+=arrow(ox+80,76,ox+80,164,"#2a6fb5",false);
+ }
+ const cap={A:["high \u2192 low concentration","no protein, no ATP"],B:["low \u2192 high concentration","protein pump, uses ATP"],C:["high \u2192 low concentration","protein helps, no ATP"],D:["water moves toward more solute","no ATP"]}[kind];
+ g+=`<text x="${ox+80}" y="222" font-size="11" text-anchor="middle" fill="#33475b">${cap[0]}</text><text x="${ox+80}" y="236" font-size="11" text-anchor="middle" fill="#33475b">${cap[1]}</text>`;
+ return g;
+}
+function refDiagramSVG(){
+ const cols=["333333","1f5fa8","b5610e","2a6fb5"];
+ const defs=`<defs>${["33475b","1f5fa8","b5610e","2a6fb5"].map(c=>`<marker id="ar${c}" markerWidth="9" markerHeight="9" refX="5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#${c}"/></marker>`).join("")}</defs>`;
+ return `<svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Four ways substances cross a membrane: A diffusion, B active transport, C facilitated diffusion, D osmosis">${defs}<rect width="700" height="250" fill="#fff" stroke="#9db2c9"/>${refPanel(10,"A","Diffusion","A")}${refPanel(182,"B","Active transport","B")}${refPanel(354,"C","Facilitated diffusion","C")}${refPanel(526,"D","Osmosis","D")}</svg>`;
+}
+
+/* ---------- graphs ---------- */
+function massChange(x){return (0.6-x)*(12-2*x);}
+function graphMass(){
+ return genChart({xmin:0,xmax:3,xstep:0.5,ymin:-20,ymax:10,ystep:5,xlabel:"Salt (NaCl) in solution (%)",ylabel:"Change in root tissue mass (%)",
+  hlines:[{y:0,label:"no change"}],
+  series:[{name:"Root tissue",col:"#1f7a55",fn:massChange,marks:[0,0.5,1,1.5,2,2.5,3]}],
+  aria:"Change in grass root tissue mass after 30 minutes in salt solutions. Tissue gains about 7 percent in pure water, has no change near 0.6 percent salt, and loses mass at higher salt, about 11 percent at 2.0 percent salt and about 14 percent at 3.0 percent salt."});
+}
+function kDrug(t){return t<=10?100:1+99*Math.exp(-(t-10)/25);}
+function graphK(){
+ return genChart({xmin:0,xmax:60,xstep:10,ymin:0,ymax:120,ystep:20,xlabel:"Time (minutes)",ylabel:"K\u207A inside root cells (mmol/L)",legend:true,legW:200,
+  vlines:[{x:10,label:"Drug A added to one sample"}],
+  series:[{name:"No drug",col:"#1b7f4b",fn:t=>100},{name:"Drug A added at 10 min",col:"#b3261e",fn:kDrug,dash:true}],
+  aria:"Potassium inside grass root cells over 60 minutes. With no drug it stays at 100. When Drug A is added at 10 minutes it falls steadily toward the soil level of about 1."});
+}
+
+/* ---------- config ---------- */
+const CFG={
+ activityName:"Cell Transport Lesson Study Exit Ticket",
+ title:"Exit Ticket: Why Does Road Salt Kill Roadside Grass?",
+ introText:"This is a short exit ticket (about 20 to 25 minutes) that works like a computer-based science test. Read the passage, study the diagram, tables, and graphs, and then answer 5 questions. The last question asks for a written Claim, Evidence, and Reasoning response.",
+ driving:"Every spring, a strip of brown, dead grass shows up right along roads that were salted in winter, even though melting snow kept that soil wet all season. How can grass die of thirst while sitting in wet soil?",
+ startLabel:"Begin exit ticket",
+ tabs:[["passage","Passage"],["diagram","Diagram"],["data","Data tables"],["graph","Graphs"]],
+ stim:{
+  passage:()=>`<div class="passage"><h2>Road Salt and Roadside Grass</h2>
+  <p>In snowy places, road crews spread rock salt (<mark>sodium chloride, NaCl</mark>) to melt ice. In spring, a strip of brown, dead grass often appears right along the pavement, even though melting snow keeps that soil wet. Scientists studied grass roots to find out why.</p>
+  <p>Roots take in what a plant needs from the water in the soil: <mark>water</mark>, <mark>oxygen</mark> for cellular respiration, and minerals such as <mark>potassium ions (K\u207A)</mark>. When salt washes off the road, <mark>sodium ions (Na\u207A)</mark> from the salt also end up in the soil water.</p>
+  <p><b>Experiment 1 (field survey).</b> Scientists measured the salt in the soil water at different distances from a salted road, counted how much grass survived in spring, and looked at root cells under a microscope. See Table 1.</p>
+  <p><b>Experiment 2.</b> Pieces of grass root tissue were weighed, soaked in salt solutions for 30 minutes, and weighed again. The inside of a normal root cell has the same water concentration as a <mark>0.6% salt solution</mark>. See Graph 1.</p>
+  <p><b>Experiment 3.</b> Scientists measured how substances enter root cells. They repeated the measurements with two drugs. <mark>Drug A</mark> stops the cell from making ATP. <mark>Drug B</mark> blocks the carrier and channel proteins in the membrane. See Table 2 and Graph 2.</p></div>`,
+  diagram:()=>`<h2>Reference diagram: four ways across a membrane</h2>${refDiagramSVG()}
+  <div class="legend2"><span><i style="background:${SOL_COL}"></i>Solute particle</span><span><i style="background:${WAT_COL}"></i>Water molecule</span></div>
+  <p class="cap">These are the same four types from the four-corners activity. Arrows show the direction of net movement.</p>`,
+  data:()=>`<h2>Table 1: Experiment 1 (field survey)</h2>
+  <table class="data"><tr><th>Distance from road (m)</th><th>Salt in soil water (%)</th><th>Grass surviving in spring (%)</th><th>Root cells under the microscope</th></tr>
+  <tr><td>0.5</td><td>2.5</td><td>8</td><td>Most cells shrunk away from their cell walls</td></tr>
+  <tr><td>2</td><td>1.2</td><td>35</td><td>Many cells shrunk away from their cell walls</td></tr>
+  <tr><td>5</td><td>0.4</td><td>88</td><td>Cells normal and firm</td></tr>
+  <tr><td>10</td><td>0.1</td><td>97</td><td>Cells normal and firm</td></tr></table>
+  <h2>Table 2: Experiment 3 (substances entering root cells)</h2>
+  <table class="data"><tr><th>Substance</th><th>In soil water (mmol/L)</th><th>Inside root cell (mmol/L)</th><th>Net movement</th><th>Uptake with Drug A (% of normal)</th><th>Uptake with Drug B (% of normal)</th></tr>
+  <tr><td>Oxygen (O\u2082)</td><td>0.25</td><td>0.05</td><td>Into the cell</td><td>100</td><td>100</td></tr>
+  <tr><td>Potassium ions (K\u207A)</td><td>1</td><td>100</td><td>Into the cell</td><td>5</td><td>4</td></tr>
+  <tr><td>Sodium ions (Na\u207A), soil 0.5 m from road</td><td>430</td><td>30</td><td>Into the cell</td><td>97</td><td>7</td></tr></table>
+  <p class="cap">A higher salt percentage means a higher solute concentration and a lower water concentration.</p>`,
+  graph:()=>`<h2>Graph 1: Root tissue in salt solutions (Experiment 2)</h2>${graphMass()}
+  <p class="cap">Positive values mean the tissue gained mass. Negative values mean it lost mass.</p>
+  <h2 style="margin-top:20px">Graph 2: K\u207A inside root cells (Experiment 3)</h2>${graphK()}`
+ }
+};
+
+const QS=[
+{t:"table",tab:"data",label:"Table match \u00b7 Select one answer per row",head:"Substance or situation",
+ prompt:"Use the <b>Data tables</b>, <b>Graphs</b>, and <b>Diagram</b> tabs. For each row, choose the type of transport that best fits the evidence.",
+ cols:[["A","A. Diffusion"],["B","B. Active transport"],["C","C. Facilitated diffusion"],["D","D. Osmosis"]],
+ rows:[["Oxygen (O\u2082) entering root cells (Table 2)","A"],["Potassium ions (K\u207A) entering root cells (Table 2)","B"],["Sodium ions (Na\u207A) entering root cells near the road (Table 2)","C"],["Water, when root tissue is placed in 2.0% salt solution (Graph 1)","D"]],
+ why:"Oxygen moves down its gradient (0.25 to 0.05) and neither drug changes it, so it needs no protein and no ATP: diffusion. K\u207A moves from 1 to 100, against its gradient, and Drug A drops it to 5%, so it needs ATP: active transport. Na\u207A moves down its gradient (430 to 30) and does not need ATP (97% with Drug A), but Drug B drops it to 7%, so it needs a protein: facilitated diffusion. In Graph 1, water is what crosses the membrane, moving toward the saltier side: osmosis."},
+{t:"calc",tab:"graph",label:"Graph reading \u00b7 Enter a number for each row",
+ prompt:"Use <b>Graph 1</b> to answer each row.",
+ hint:"A loss of mass is a negative number (for example, \u22125). Read to the nearest whole number, or the nearest tenth for the salt percentage.",
+ rows:[
+  {label:"Change in root tissue mass in 0% salt (pure water)",unit:"%",key:7.2,tol:1.5},
+  {label:"Change in root tissue mass in 2.0% salt",unit:"%",key:-11.2,tol:1.5},
+  {label:"Salt concentration where root tissue mass does not change",unit:"% salt",key:0.6,tol:0.12}],
+ why:"In pure water the tissue gains about 7% (water moves in). At 2.0% salt it loses about 11% (water moves out). The mass does not change at about 0.6% salt, which matches the water concentration inside a normal root cell, so water moves in and out equally."},
+{t:"mc",tab:"data",label:"Multiple choice \u00b7 Select one answer",
+ prompt:"A student says, \u201cNa\u207A from road salt must get into root cells by active transport.\u201d Which evidence from Table 2 <b>best shows the student is incorrect</b>?",
+ opts:[["a","Na\u207A is an ion, so it cannot cross the membrane on its own."],["b","Na\u207A moves from 430 mmol/L in the soil to 30 mmol/L inside the cell, and stopping ATP production (Drug A) leaves its uptake at 97% of normal."],["c","Blocking membrane proteins (Drug B) drops Na\u207A uptake to 7% of normal."],["d","Soil closest to the road has the most salt in it."]],
+ key:"b",
+ why:"Active transport moves a substance against its gradient and needs ATP. Na\u207A moves down its gradient and keeps entering even when ATP is stopped, so it is passive. Choice C shows Na\u207A needs a protein, but active transport pumps are proteins too, so C alone cannot rule out active transport."},
+{t:"mc",tab:"graph",label:"Multiple choice \u00b7 Select one answer",
+ prompt:"Which observation is the <b>best evidence</b> that root cells take in K\u207A by active transport?",
+ opts:[["a","K\u207A enters root cells through proteins in the membrane."],["b","K\u207A is a mineral that the grass needs to survive."],["c","K\u207A is about 100 times more concentrated inside root cells than in the soil water, and when Drug A stops ATP production, K\u207A uptake drops to 5% and the level inside the cells falls (Graph 2)."],["d","K\u207A enters root cells faster than oxygen does."]],
+ key:"c",
+ why:"Active transport is identified by two things together: movement against the gradient (1 in the soil, 100 inside) and a need for ATP (uptake drops to 5% with Drug A, and Graph 2 shows K\u207A leaking back out once the pumps stop). Using a protein (choice A) is also true of facilitated diffusion, and needing K\u207A or taking it in quickly says nothing about energy or direction."},
+{t:"cer",tab:"data",label:"Written response \u00b7 Claim, Evidence, Reasoning",
+ prompt:"<b>Why does salt on snowy roads kill the grass along the side of the road?</b> Name the type of cell transport involved. Support your claim with <b>at least two pieces of evidence</b> from the tables and graphs, and explain your reasoning.",
+ hint:"Use the <b>Data tables</b> and <b>Graphs</b> tabs. Write in complete sentences.",
+ ph:{c:"Road salt kills the grass because...",e:"Cite specific numbers or observations from Table 1 and Graph 1...",r:"Explain which way water moves and why, and what that does to the root cells..."},
+ model:{c:"Road salt kills roadside grass by osmosis: the salty soil water pulls water out of the root cells, so the grass dries out even though the soil is wet.",
+  e:"At 0.5 m from the road, the soil water was 2.5% salt and only 8% of the grass survived, while at 10 m the soil was 0.1% salt and 97% survived. Near the road, most root cells had shrunk away from their cell walls. In Graph 1, root tissue lost about 11% of its mass in 2.0% salt, but gained about 7% in pure water.",
+  r:"Salty soil water has a higher solute concentration, and so a lower water concentration, than the inside of a root cell (which matches about 0.6% salt). In osmosis, water moves across the membrane from higher water concentration to lower water concentration, so water leaves the root cells and moves into the soil. The cells shrink and the roots cannot take in the water the grass needs, so it wilts and dies."},
+ checks:["My claim says the grass dies because water leaves the root cells by osmosis.","My evidence uses at least two specific data points or observations (for example 2.5% salt and 8% survival, cells shrinking, or the mass loss in Graph 1).","My reasoning explains that water moves toward the saltier side (from higher to lower water concentration), so the root cells lose water and shrink."],
+ kw:{claim:[/osmosis|water (moves|leaves|goes|flows|is pulled|comes|gets pulled) out|los(e|es|ing) (their |its )?water|dehydrat|dr(y|ies) out/,/water/],
+  evidence:[/\b2\.5\b|0\.5 ?m|near(est)? (the )?road|\b8 ?%|\b8\b|\b35\b/,
+            /\b97\b|\b88\b|\b10 ?m\b|\b0\.1\b|far(ther)? (from|away)/,
+            /\b1[0-4](\.\d)? ?%|lost (mass|weight)|mass (loss|decrease|went down|dropped|decreased)|los(e|es|t) (mass|weight)|\b2\.0\b|graph 1/,
+            /shr[ua]nk|plasmoly|pulled away|away from (the |their )?(cell )?wall/],
+  reasoning:[/more solute|higher solute|(high|higher|more) (water )?concentration.{0,50}(low|lower|less)|toward (the )?(salt|more|higher)|saltier|hypertonic|less water (outside|in the soil)|lower water concentration/,
+             /shr[ua]nk|wilt|dehydrat|dr(y|ies)|los(e|es|ing|t) (their |its )?water|plasmoly|can'?t (get|absorb|take)|cannot (get|absorb|take)/]}}
+];
+
+/* =========================================================
+  ENGINE (shared by warm-up and exit ticket)
+  Expects CFG and QS to be defined before this script.
+  ========================================================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let screen="intro",cur=0,tab=CFG.tabs[0][0],ans={},flagged=new Set(),student=null,selfChecks=[false,false,false],cerRevised=false,fsize=17;
+const cerIdx=QS.findIndex(q=>q.t==="cer");
+const hasCER=cerIdx>=0;
+
+/* ---------- stimulus ---------- */
+function stimHTML(){
+ return `<div class="tabs" role="tablist">${CFG.tabs.map(t=>`<button class="tab" role="tab" aria-selected="${tab===t[0]}" onclick="setTab('${t[0]}')">${t[1]}</button>`).join("")}</div><div class="tabbody">${CFG.stim[tab]()}</div>`;
+}
+function setTab(t){tab=t;const s=$("#stim");if(s)s.innerHTML=stimHTML();if(CFG.onTab)CFG.onTab(t);}
+
+/* ---------- question rendering ---------- */
+function blanksOf(q){return q.parts.filter(p=>typeof p!=="string");}
+function isAnswered(i){const q=QS[i],a=ans[i];
+ if(a===undefined||a===null)return false;
+ if(q.t==="table")return a.filter(x=>x).length===q.rows.length;
+ if(q.t==="calc")return q.rows.every((r,k)=>a[k]!==undefined&&String(a[k]).trim()!=="");
+ if(q.t==="mc")return !!a;
+ if(q.t==="cloze")return blanksOf(q).every((b,k)=>a[k]);
+ if(q.t==="cer")return !!(a.c||a.e||a.r);
+ return true;}
+function qHTML(i){
+ const q=QS[i],a=ans[i];
+ let h=`<div class="qbody"><div><span class="qnum">${i+1}</span><b>Question ${i+1} of ${QS.length}</b></div><div class="qtype">${q.label}</div><div class="prompt">${q.prompt}</div>`;
+ if(q.hint)h+=`<div class="hint">${q.hint}</div>`;
+ if(q.t==="table"){
+  h+=`<table class="match"><tr><th>${q.head||"Situation"}</th>${q.cols.map(c=>`<th>${c[1]}</th>`).join("")}</tr>`+
+  q.rows.map((r,k)=>`<tr><td>${r[0]}</td>`+q.cols.map(c=>`<td><input type="radio" name="r${k}" aria-label="${c[1]}" ${a&&a[k]===c[0]?"checked":""} onchange="setTable(${k},'${c[0]}')"></td>`).join("")+`</tr>`).join("")+`</table>`;
+ }
+ if(q.t==="calc"){
+  h+=q.rows.map((r,k)=>`<div class="calcrow"><div class="lab">${r.label}</div><input inputmode="decimal" aria-label="${esc(r.label.replace(/<[^>]+>/g,""))}" value="${a&&a[k]!==undefined?esc(a[k]):""}" oninput="setCalc(${k},this.value)"> <span class="cap">${r.unit}</span></div>`).join("");
+ }
+ if(q.t==="mc"){
+  h+=q.opts.map(o=>`<label class="opt ${a===o[0]?"sel":""}"><input type="radio" name="mc" ${a===o[0]?"checked":""} onchange="setMC('${o[0]}')"><span><b>${o[0].toUpperCase()}.</b> ${o[1]}</span></label>`).join("");
+ }
+ if(q.t==="cloze"){
+  let k=0;
+  h+=`<div class="eq" style="line-height:2.6">`+q.parts.map(p=>{
+   if(typeof p==="string")return p;
+   const idx=k++;
+   return `<select aria-label="Blank ${idx+1}" onchange="setCloze(${idx},this.value)"><option value="">choose</option>${p.opts.map(o=>`<option value="${o}" ${a&&a[idx]===o?"selected":""}>${o}</option>`).join("")}</select>`;
+  }).join("")+`</div>`;
+ }
+ if(q.t==="cer"){
+  const v=a||{c:"",e:"",r:""};
+  h+=`<div class="cerbox"><label for="cc">Claim</label><textarea id="cc" oninput="setCER('c',this.value)" onpaste="return false" placeholder="${q.ph.c}">${esc(v.c)}</textarea></div>
+  <div class="cerbox"><label for="ce">Evidence</label><textarea id="ce" oninput="setCER('e',this.value)" onpaste="return false" placeholder="${q.ph.e}">${esc(v.e)}</textarea></div>
+  <div class="cerbox"><label for="cr">Reasoning</label><textarea id="cr" oninput="setCER('r',this.value)" onpaste="return false" placeholder="${q.ph.r}">${esc(v.r)}</textarea></div>`;
+ }
+ return h+`</div>`;
+}
+function setTable(r,v){const a=ans[cur]||new Array(QS[cur].rows.length).fill(null);a[r]=v;ans[cur]=a;refreshChips()}
+function setCalc(k,v){const a=Array.isArray(ans[cur])?ans[cur]:new Array(QS[cur].rows.length).fill(undefined);a[k]=v;ans[cur]=a;refreshChips()}
+function setMC(v){ans[cur]=v;document.querySelectorAll("label.opt").forEach(l=>l.classList.toggle("sel",l.querySelector("input").checked));refreshChips()}
+function setCloze(k,v){const a=Array.isArray(ans[cur])?ans[cur]:new Array(blanksOf(QS[cur]).length).fill("");a[k]=v;ans[cur]=a;refreshChips()}
+function setCER(k,v){const a=ans[cur]||{c:"",e:"",r:""};a[k]=v;ans[cur]=a;refreshChips()}
+function refreshChips(){const c=$("#chips");if(c)c.innerHTML=chipsHTML()}
+
+/* ---------- navigation ---------- */
+function go(i){cur=i;tab=QS[i].tab||tab;screen="test";render()}
+function next(){if(cur<QS.length-1)go(cur+1);else openReview()}
+function prev(){if(cur>0)go(cur-1)}
+function toggleFlag(){flagged.has(cur)?flagged.delete(cur):flagged.add(cur);render(true)}
+function openReview(){screen="review";render()}
+function submitAll(){autoCheckCER();screen="results";window.scrollTo(0,0);render()}
+function reviseCER(){if(cerRevised||!hasCER)return;cur=cerIdx;tab=QS[cur].tab||tab;screen="reviseCER";render();window.scrollTo(0,0);}
+function saveRevision(){cerRevised=true;autoCheckCER();screen="results";render();window.scrollTo(0,0);}
+function autoCheckCER(){
+ if(!hasCER)return;
+ const kw=QS[cerIdx].kw,a=ans[cerIdx]||{c:"",e:"",r:""};
+ const all=((a.c||"")+" "+(a.e||"")+" "+(a.r||"")).toLowerCase(),c=(a.c||"").toLowerCase();
+ const claimOK=kw.claim[0].test(c)&&kw.claim[1].test(all);
+ const evidenceOK=kw.evidence.filter(p=>p.test(all)).length>=2;
+ const reasoningOK=kw.reasoning[0].test(all)&&kw.reasoning[1].test(all);
+ selfChecks=[claimOK,evidenceOK,reasoningOK];
+}
+function fs(d){fsize=Math.min(24,Math.max(13,fsize+d*2));document.documentElement.style.setProperty("--fs",fsize+"px")}
+function startTest(){
+ const sid=($("#sid")||{value:""}).value.trim(),f=($("#fn")||{value:""}).value.trim(),l=($("#ln")||{value:""}).value.trim(),p=($("#pd")||{value:""}).value.trim(),t=($("#tc")||{value:""}).value.trim();
+ if(!sid||!f||!l||!p||!t){const e=$("#nmerr");if(e)e.style.display="block";return;}
+ student={id:sid,first:f,last:l,period:p,teacher:t};
+ go(0);
+}
+function sendToSheet(){
+ const st=$("#sheetStatus");
+ if(typeof SHEETS_WEBHOOK_URL==="undefined"||!SHEETS_WEBHOOK_URL||SHEETS_WEBHOOK_URL.indexOf("PASTE")>=0){
+  if(st)st.textContent="This activity isn't connected to your teacher's gradebook sheet yet.";
+  return;
+ }
+ const auto=autoTotal(),autoMax=QS.filter(q=>q.t!=="cer").length,n=selfChecks.filter(Boolean).length;
+ const body=new URLSearchParams({studentId:student.id,firstName:student.first,lastName:student.last,period:student.period,teacher:student.teacher,activity:CFG.activityName,score:String(auto+n),total:String(autoMax+(hasCER?3:0)),when:new Date().toString()});
+ if(st)st.textContent="Sending...";
+ fetch(SHEETS_WEBHOOK_URL,{method:"POST",mode:"no-cors",body:body})
+  .then(function(){if(st)st.textContent="Sent! Your teacher will see your score.";})
+  .catch(function(){if(st)st.textContent="Could not send \u2014 check your internet connection and try again.";});
+}
+function chipsHTML(){
+ return QS.map((q,i)=>`<button class="chip ${i===cur?"cur":""} ${isAnswered(i)?"done":""} ${flagged.has(i)?"flag":""}" onclick="go(${i})" aria-label="Question ${i+1}${isAnswered(i)?", answered":""}${flagged.has(i)?", flagged":""}">${i+1}</button>`).join("");
+}
+
+/* ---------- screens ---------- */
+function introHTML(){
+return `<div class="screen">
+ <h2>${CFG.title}</h2>
+ <p>${CFG.introText}</p>
+ <div class="phen"><b>Driving question:</b> ${CFG.driving}</div>
+ <h3>Directions</h3>
+ <ul>
+  <li>Use the tabs on the left (${CFG.tabs.map(t=>t[1]).join(", ")}) to find evidence.</li>
+  <li>Answer on the right. Use the numbered circles at the bottom to move between questions. Flag a question to come back to it.</li>
+  ${CFG.extraDirections||""}
+  <li>When you finish, choose <b>Review and submit</b> to see your score and an explanation for each question.</li>
+ </ul>
+ <div class="namebox"><b>Student information</b> (required \u2014 used to record your score)
+  <div class="row">
+   <div class="fld"><label for="sid">Student ID</label><input id="sid" autocomplete="off" inputmode="numeric"></div>
+   <div class="fld"><label for="fn">First name</label><input id="fn" autocomplete="off"></div>
+   <div class="fld"><label for="ln">Last name</label><input id="ln" autocomplete="off"></div>
+   <div class="fld pd"><label for="pd">Period</label><input id="pd" autocomplete="off"></div>
+   <div class="fld"><label for="tc">Teacher's name</label><input id="tc" autocomplete="off"></div>
+  </div>
+  <div class="err" id="nmerr">Please fill in all five fields before starting.</div>
+ </div>
+ <button class="btn" onclick="startTest()">${CFG.startLabel}</button>
+</div>`;
+}
+function testHTML(){
+return `<div class="app">
+ <section class="stim" id="stim" aria-label="Stimulus">${stimHTML()}</section>
+ <section class="qp" id="qp" aria-label="Question">${qHTML(cur)}</section>
+</div>
+<div class="foot">
+ <div><button class="btn ghost" onclick="prev()" ${cur===0?"disabled":""}>Previous</button></div>
+ <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center">
+   <button class="flagbtn ${flagged.has(cur)?"on":""}" onclick="toggleFlag()">${flagged.has(cur)?"Flagged":"Flag for review"}</button>
+   <div class="chips" id="chips">${chipsHTML()}</div>
+ </div>
+ <div><button class="btn" onclick="next()">${cur===QS.length-1?"Review and submit":"Next"}</button></div>
+</div>`;
+}
+function reviseCERHTML(){
+return `<div class="app">
+ <section class="stim" id="stim" aria-label="Stimulus">${stimHTML()}</section>
+ <section class="qp" id="qp" aria-label="Question">${qHTML(cur)}</section>
+</div>
+<div class="foot">
+ <div></div>
+ <div style="text-align:center"><p class="small" style="margin:0"><b>Revising your response.</b> This is your only chance to change it.</p></div>
+ <div><button class="btn" onclick="saveRevision()">Save revision and return to results</button></div>
+</div>`;
+}
+function reviewHTML(){
+const un=QS.map((q,i)=>i).filter(i=>!isAnswered(i));
+return `<div class="screen">
+ <h2>Review your answers</h2>
+ <p>${un.length?`You have <b>${un.length}</b> unanswered question${un.length>1?"s":""}: ${un.map(i=>i+1).join(", ")}.`:"All questions have an answer."} Select a question to go back to it.</p>
+ <div class="rvlist">${QS.map((q,i)=>`<button class="rvitem ${isAnswered(i)?"done":"todo"}" onclick="go(${i})"><b>Question ${i+1}${flagged.has(i)?" (flagged)":""}</b>${isAnswered(i)?"Answered":"Not answered"}</button>`).join("")}</div>
+ <button class="btn" onclick="submitAll()">Submit and see results</button>
+ <button class="btn ghost" onclick="go(QS.length-1)" style="margin-left:8px">Back to task</button>
+</div>`;
+}
+
+/* ---------- scoring + results ---------- */
+function score(i){
+ const q=QS[i],a=ans[i];
+ if(a===undefined||a===null)return 0;
+ if(q.t==="table")return q.rows.every((r,k)=>a[k]===r[1])?1:0;
+ if(q.t==="calc")return q.rows.every((r,k)=>{const n=parseFloat(a[k]);return !isNaN(n)&&Math.abs(n-r.key)<=r.tol;})?1:0;
+ if(q.t==="mc")return a===q.key?1:0;
+ if(q.t==="cloze")return blanksOf(q).every((b,k)=>a[k]===b.key)?1:0;
+ return 0;
+}
+function clozeText(q,vals){let k=0;return q.parts.map(p=>{if(typeof p==="string")return p;const v=vals[k++];return `<b>${v?esc(v):"____"}</b>`;}).join("");}
+function yourText(i){
+ const q=QS[i],a=ans[i];
+ if(a===undefined||a===null)return "No answer";
+ if(q.t==="table"){const lab=id=>{const c=q.cols.find(c=>c[0]===id);return c?c[1]:"none";};return q.rows.map((r,k)=>r[0]+" \u2192 <b>"+lab(a[k])+"</b>").join("<br>");}
+ if(q.t==="calc")return q.rows.map((r,k)=>r.label+": <b>"+(a[k]!==undefined&&a[k]!==""?esc(a[k]):"blank")+"</b> "+r.unit).join("<br>");
+ if(q.t==="mc"){const o=q.opts.find(o=>o[0]===a);return o?"<b>"+o[0].toUpperCase()+".</b> "+o[1]:"No answer";}
+ if(q.t==="cloze")return clozeText(q,a);
+ return "";
+}
+function keyText(i){
+ const q=QS[i];
+ if(q.t==="table"){const lab=id=>q.cols.find(c=>c[0]===id)[1];return q.rows.map(r=>r[0]+" \u2192 <b>"+lab(r[1])+"</b>").join("<br>");}
+ if(q.t==="calc")return q.rows.map(r=>r.label+": about <b>"+r.key+"</b> "+r.unit).join("<br>");
+ if(q.t==="mc"){const o=q.opts.find(o=>o[0]===q.key);return "<b>"+o[0].toUpperCase()+".</b> "+o[1];}
+ if(q.t==="cloze")return clozeText(q,blanksOf(q).map(b=>b.key));
+ return "";
+}
+function toggleSelf(k){selfChecks[k]=!selfChecks[k];const n=selfChecks.filter(Boolean).length;$("#cerscore").textContent=n;$("#totalscore").textContent=autoTotal()+n;}
+function autoTotal(){let t=0;QS.forEach((q,i)=>{if(q.t!=="cer")t+=score(i)});return t}
+function resultsHTML(){
+ const auto=autoTotal(),autoMax=QS.filter(q=>q.t!=="cer").length;
+ const n=selfChecks.filter(Boolean).length,max=autoMax+(hasCER?3:0);
+ let h=`<div class="screen">
+ <h2>Results: ${esc(student.first)} ${esc(student.last)} \u2014 Period ${esc(student.period)} \u2014 ${esc(student.teacher)}</h2>
+ <div>Scored automatically: <span class="score">${auto} / ${autoMax}</span></div>
+ ${hasCER?`<div>Question ${cerIdx+1} (Claim, Evidence, Reasoning; auto-checked from keywords): <b><span id="cerscore">${n}</span> / 3</b></div>`:""}
+ <div>Total: <b><span id="totalscore">${auto+n}</span> / ${max}</b></div>
+ <p class="noprint"><button class="btn" onclick="window.print()">Print or save as PDF</button> <button class="btn ghost" onclick="sendToSheet()">Send my score to my teacher</button></p>
+ <p class="sheetbox noprint" id="sheetStatus"></p>`;
+ QS.forEach((q,i)=>{
+  if(q.t==="cer")return;
+  const ok=score(i)===1;
+  h+=`<div class="res ${ok?"good":"miss"}"><h4>Question ${i+1}<span class="tag ${ok?"good":"miss"}">${ok?"Correct":"Not yet"}</span></h4>
+    <div><b>Your answer:</b><br>${yourText(i)}</div>
+    ${ok?"":`<div style="margin-top:6px"><b>Correct answer:</b><br>${keyText(i)}</div>`}
+    <div class="model" style="margin-top:8px">${q.why}</div></div>`;
+ });
+ if(hasCER){
+  const cq=QS[cerIdx],ca=ans[cerIdx]||{c:"",e:"",r:""};
+  h+=`<div class="res self"><h4>Question ${cerIdx+1}: Claim, Evidence, Reasoning</h4>
+   <div><b>Your claim:</b></div><div class="resp">${esc(ca.c||"(blank)")}</div>
+   <div><b>Your evidence:</b></div><div class="resp">${esc(ca.e||"(blank)")}</div>
+   <div><b>Your reasoning:</b></div><div class="resp">${esc(ca.r||"(blank)")}</div>
+   <div class="model" oncopy="return false" style="user-select:none"><b>Model response</b><br><b>Claim:</b> ${cq.model.c}<br><b>Evidence:</b> ${cq.model.e}<br><b>Reasoning:</b> ${cq.model.r}</div>
+   <p><b>Auto-checked.</b> These boxes were checked automatically based on keywords and numbers in your response (not a full reading). Compare your response to the model and adjust any box that isn't right.</p>
+   <div class="checks">${cq.checks.map((c,k)=>`<label><input type="checkbox" ${selfChecks[k]?"checked":""} onchange="toggleSelf(${k})"> ${c}</label>`).join("")}</div>
+   ${cerRevised?`<p class="small" style="margin-top:10px"><b>You have used your one revision for this response.</b></p>`:`<p class="noprint" style="margin-top:10px"><button class="btn ghost" onclick="reviseCER()">Revise your answer (one chance)</button></p>`}
+   </div>`;
+ }
+ if(CFG.talk)h+=`<div class="talk">${CFG.talk}</div>`;
+ return h+`</div>`;
+}
+
+/* ---------- render ---------- */
+function render(keepScroll){
+ const root=$("#root");
+ let sy=0,qy=0;
+ if(keepScroll){const s=$("#stim"),q=$("#qp");if(s)sy=s.scrollTop;if(q)qy=q.scrollTop;}
+ root.innerHTML=screen==="intro"?introHTML():screen==="test"?testHTML():screen==="reviseCER"?reviseCERHTML():screen==="review"?reviewHTML():resultsHTML();
+ if(keepScroll){const s=$("#stim"),q=$("#qp");if(s)s.scrollTop=sy;if(q)q.scrollTop=qy;}
+ if((screen==="test"||screen==="reviseCER")&&CFG.onTab)CFG.onTab(tab);
+ root.style.overflow=(screen==="test"||screen==="reviseCER")?"hidden":"auto";
+}
+render();
+
+</script>
+</body>
+</html>
